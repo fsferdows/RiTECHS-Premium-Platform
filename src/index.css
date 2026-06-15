@@ -1,0 +1,176 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-primary-navy: #0A1F44;
+  --color-accent-gold: #C9A961;
+  --color-neutral-warm: #FAFAF7;
+  --color-charcoal: #1A1A1A;
+  --color-muted-gray: #6B7280;
+  --color-divider-gold: #E5E5E0;
+  
+  --font-serif-display: "Fraunces", Georgia, serif;
+  --font-sans: "Inter", sans-serif;
+  --font-serif-accent: "Cormorant Garamond", serif;
+  --font-mono: "JetBrains Mono", monospace;
+  
+  --animate-carousel-scroll: carousel-scroll 40s linear infinite;
+  @keyframes carousel-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  --animate-fade-in-up: fade-in-up 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  @keyframes fade-in-up {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+}
+
+/* Base resets & styles for high-end academic design */
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-neutral-warm);
+  color: var(--color-charcoal);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: 0.01em;
+}
+
+h1, .font-serif-display {
+  letter-spacing: -0.03em; /* Deep elegant display header tracking */
+  line-height: 1.2; /* Sophisticated display height */
+}
+
+h2 {
+  letter-spacing: -0.025em;
+  line-height: 1.35; /* Open header leading rhythm */
+}
+
+h3, h4 {
+  letter-spacing: -0.015em;
+  line-height: 1.4;
+}
+
+p, .font-sans {
+  line-height: 1.62; /* Elegant academic editorial leading, tightly optimized */
+  letter-spacing: 0.015em; /* Elegant high-end readable tracking */
+  word-spacing: 0.01em;
+}
+
+.font-mono {
+  letter-spacing: 0.16em; /* Elite wide letter tracking for mono metadata */
+  line-height: 1.5;
+}
+
+/* Custom premium scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-neutral-warm);
+}
+::-webkit-scrollbar-thumb {
+  background: #C9A96155;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent-gold);
+}
+
+/* Premium noise effect overlay optionally applied to sections */
+.premium-noise {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.025'/%3E%3C/svg%3E");
+}
+
+/* Line clamping helper */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
+}
+
+/* @media print CSS rules for clean, scholarly printing of publications & manuscripts */
+@media print {
+  /* Suppress and hide all interactive, animated, non-academic components */
+  #scroll-progress-bar,
+  #ritechs-breadcrumbs,
+  #ecosystem-breadcrumbs,
+  #premium-footer,
+  #copilot-bubble,
+  #nav-btn-logout,
+  .no-print,
+  button,
+  nav,
+  footer,
+  aside,
+  .ai-assistant-widget,
+  .interactive-btn {
+    display: none !important;
+  }
+
+  /* Reset layout constraints for precise grid & standard margin printing on A4 or Letter physical sheets */
+  body, html, main, #app, .print-container {
+    background: #ffffff !important;
+    color: #1a1a1a !important;
+    font-size: 11pt !important;
+    line-height: 1.62 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Academic paper formatting */
+  h1, h2, h3, h4 {
+    color: #030a17 !important;
+    font-family: "Fraunces", Georgia, serif !important;
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
+
+  h1 {
+    font-size: 24pt !important;
+    margin-bottom: 12pt !important;
+  }
+
+  h2 {
+    font-size: 18pt !important;
+    margin-top: 18pt !important;
+    margin-bottom: 10pt !important;
+  }
+
+  p, article, li {
+    orphans: 3;
+    widows: 3;
+    font-family: inherit !important;
+  }
+
+  /* Turn dark sections into classy high-contrast print layouts */
+  .bg-primary-navy, .bg-charcoal, .bg-neutral-warm, .bg-[#030a17], .bg-white\/5 {
+    background: none !important;
+    color: #1a1a1a !important;
+    border: 1px solid #e5e5e0 !important;
+  }
+
+  /* Print link destination clearly in footnotes */
+  a[href]:not([href^="#"])::after {
+    content: " (" attr(href) ")" !important;
+    font-size: 8.5pt !important;
+    color: #555555 !important;
+    font-weight: normal;
+  }
+}
+

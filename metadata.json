@@ -1,0 +1,6 @@
+{
+  "name": "RiTECHS Premium Platform",
+  "description": "Premium multi-page academic ecosystem for global research excellence, mentorship matchmaking, and editing solutions.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

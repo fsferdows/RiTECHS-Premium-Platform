@@ -1,0 +1,693 @@
+import { ArrowRight, Globe, Shield, Zap, Users, GraduationCap, ArrowUpRight, Award, MessageSquare, BookOpen, ChevronLeft, ChevronRight, Search, Play, Pause, Video, Volume2, VolumeX } from 'lucide-react';
+import { Conference, Mentor, BlogPost } from '../types';
+import { useState, useEffect } from 'react';
+import { ALL_PARTNERS } from '../data';
+import { motion, AnimatePresence } from 'motion/react';
+import { TiltCard } from './TiltCard';
+import { FadeUpSection } from './FadeUpSection';
+import { CinematicHero } from './CinematicHero';
+import { ConferenceCard } from './ConferenceCard';
+import { MentorCard } from './MentorCard';
+
+interface HomeViewProps {
+  onNavigate: (path: string) => void;
+  conferences: Conference[];
+  mentors: Mentor[];
+  blogs: BlogPost[];
+}
+
+export default function HomeView({ onNavigate, conferences, mentors, blogs }: HomeViewProps) {
+  const [activeTestimony, setActiveTestimony] = useState(0);
+  const [homeIsPlaying, setHomeIsPlaying] = useState(false);
+  const [homeActiveVideo, setHomeActiveVideo] = useState<'vid1' | 'vid2'>('vid1');
+  const [homeIsMuted, setHomeIsMuted] = useState(true);
+  const [videoHasError, setVideoHasError] = useState(false);
+
+  useEffect(() => {
+    setVideoHasError(false);
+  }, [homeActiveVideo, homeIsPlaying]);
+
+  const homeLectures = [
+    {
+      id: 'vid1' as const,
+      title: "01. Post-Quantum Cryptographic Readiness Protocols (ICETCS Lecture)",
+      category: "Sovereign Cybersecurity",
+      duration: "18:42"
+    },
+    {
+      id: 'vid2' as const,
+      title: "02. TinyML Load Prediction Algorithms on Smart Energy Grids",
+      category: "Adaptive Systems & ML",
+      duration: "24:15"
+    }
+  ];
+
+  const testimonials = [
+    {
+      quote: "The pre-peer review formatting service resolved grammatical nuances that saved my PhD submission. RiTECHS is the definitive baseline for high-impact publishing.",
+      author: "Dr. Alistair Vance",
+      title: "Assistant Professor, University of Wolverhampton",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200"
+    },
+    {
+      quote: "My mentor, Prof. Santos, helped me target ML-KEM integration for 6G microgrids. Within four months, our joint manuscript was accepted into Q1 Cybersecurity Journals.",
+      author: "Amina Al-Mansoor",
+      title: "PhD Candidate, University of Lagos",
+      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=200"
+    },
+    {
+      quote: "The quality of organizing and the depth of papers presented at AIoT-RSE established an extraordinary reference point for sustainable renewable energy research.",
+      author: "Prof. Dr-Ing. Marcus Weber",
+      title: "Director, Munich Energy Institute",
+      image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=200"
+    }
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveTestimony((prev) => (prev + 1) % testimonials.length);
+    }, 8000);
+    return () => clearInterval(timer);
+  }, [testimonials.length]);
+
+  return (
+    <div id="home-view" className="animate-fade-in-up text-neutral-800">
+      {/* 1. Cinematic Hero with sliding images */}
+      <CinematicHero onNavigate={onNavigate} conferences={conferences} mentors={mentors} />
+
+      {/* 2. Trusted Partners Infinite Auto-scroll Marquee */}
+      <FadeUpSection id="partners-marquee" className="bg-primary-navy border-y border-accent-gold/15 py-7 overflow-hidden relative w-full">
+        <div className="max-w-6xl mx-auto px-6 mb-2 text-center">
+          <p className="text-[10px] font-mono tracking-widest text-accent-gold/60 uppercase">
+            Associated Universities & Scholarly Channels
+          </p>
+        </div>
+        
+        {/* Infinite marquee block */}
+        <div className="flex gap-12 items-center relative select-none w-full">
+          <div className="flex gap-16 items-center animate-carousel-scroll whitespace-nowrap min-w-full">
+            {[1, 2].map((loopIdx) => (
+              <div key={loopIdx} className="flex gap-16 items-center shrink-0">
+                {ALL_PARTNERS.map((partner, pIdx) => (
+                  <span 
+                    key={`${partner.name}-${pIdx}`} 
+                    className={`text-white/40 font-serif-display text-base tracking-widest hover:text-accent-gold transition-colors ${
+                      pIdx % 2 === 0 ? 'italic' : ''
+                    }`}
+                  >
+                    {partner.name}
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      </FadeUpSection>
+
+      {/* 3. Global Impact Stats Grid */}
+      <FadeUpSection id="impact-stats" className="py-16 bg-white border-b border-divider-gold/60">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-10">
+            <h3 className="text-xs font-mono tracking-widest text-accent-gold uppercase mb-2">Scale & Network</h3>
+            <h2 className="font-serif-display text-2.5xl sm:text-3.5xl text-primary-navy font-bold">Rigorous Global Engagement</h2>
+          </div>
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { value: "47+", label: "Countries Represented" },
+              { value: "1,200+", label: "Expert Mentors" },
+              { value: "15,000+", label: "Researchers Served" },
+              { value: "98%", label: "Satisfaction Rate" }
+            ].map((stat, idx) => (
+              <TiltCard key={idx} className="bg-neutral-warm p-6 text-center border border-divider-gold/40 hover:border-accent-gold/40 transition-colors group">
+                <div className="font-serif-display text-4.5xl sm:text-5xl font-extrabold text-primary-navy mb-2 group-hover:text-accent-gold transition-colors">
+                  {stat.value}
+                </div>
+                <div className="text-xs uppercase tracking-widest text-muted-gray font-sans font-medium">
+                  {stat.label}
+                </div>
+              </TiltCard>
+            ))}
+          </div>
+        </div>
+      </FadeUpSection>
+
+      {/* 4. Featured Conferences */}
+      <FadeUpSection id="featured-conferences" className="py-20 bg-[#FAFAF7] premium-noise">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10">
+            <div>
+              <h3 className="text-xs font-mono tracking-widest text-accent-gold uppercase mb-2">Academic Forums</h3>
+              <h2 className="font-serif-display text-2.5xl sm:text-4xl text-primary-navy font-bold leading-tight">Featured Conferences</h2>
+            </div>
+            <button
+              onClick={() => onNavigate("#/conferences")}
+              className="mt-4 md:mt-0 text-xs font-sans uppercase tracking-widest font-semibold text-accent-gold hover:text-primary-navy flex items-center gap-2 group transition-colors cursor-pointer"
+            >
+              View Conference Hub <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {conferences.map((conf) => (
+              <ConferenceCard 
+                key={conf.slug}
+                conf={conf}
+                onNavigate={onNavigate}
+              />
+            ))}
+          </div>
+        </div>
+      </FadeUpSection>
+
+      {/* 5. Mentor Spotlight */}
+      <FadeUpSection id="mentor-spotlight" className="py-16 bg-white border-y border-divider-gold/60">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10">
+            <div>
+              <h3 className="text-xs font-mono tracking-widest text-accent-gold uppercase mb-2">Peer Guidance</h3>
+              <h2 className="font-serif-display text-2.5xl sm:text-3.5xl text-primary-navy font-bold leading-tight">Advisor Spotlight</h2>
+            </div>
+            <button
+              onClick={() => onNavigate("#/mentors")}
+              className="mt-4 md:mt-0 text-xs font-sans uppercase tracking-widest font-semibold text-accent-gold hover:text-primary-navy flex items-center gap-2 group transition-colors cursor-pointer"
+            >
+              Matchmaker Directory <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {mentors.slice(0, 3).map((mentor) => (
+              <MentorCard 
+                key={mentor.id}
+                mentor={mentor}
+                onClick={() => onNavigate("#/mentors")}
+              />
+            ))}
+          </div>
+        </div>
+      </FadeUpSection>
+
+      {/* Interactive Academic Broadcast Lectures Showcase */}
+      <FadeUpSection id="academic-transmissions" className="py-20 bg-neutral-warm border-y border-divider-gold/60 w-full text-left">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <h3 className="text-xs font-mono tracking-widest text-accent-gold uppercase mb-2">SCHOLASTIC BROADCASTS</h3>
+            <h2 className="font-serif-display text-2.5xl sm:text-4xl text-primary-navy font-bold leading-tight">Virtual Symposium & Lecture Screenings</h2>
+            <p className="text-muted-gray text-xs sm:text-sm font-light max-w-2xl mx-auto mt-2">
+              Preview our premium digital curricula and recorded keynotes. Click any lecture on the sidebar to load the real-time scholar feed from our active peer training chapters.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 bg-white border border-divider-gold/60 p-4 sm:p-6 shadow-[0_15px_40px_rgba(3,10,23,0.06)] relative overflow-hidden">
+            {/* Corner styling lines */}
+            <div className="absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 border-accent-gold/40" />
+            <div className="absolute top-0 right-0 w-2 h-2 border-t-2 border-r-2 border-accent-gold/40" />
+            <div className="absolute bottom-0 left-0 w-2 h-2 border-b-2 border-l-2 border-accent-gold/40" />
+            <div className="absolute bottom-0 right-0 w-2 h-2 border-b-2 border-r-2 border-accent-gold/40" />
+
+            {/* Main Interactive Player Box */}
+            <div className="lg:col-span-8 flex flex-col gap-4">
+              <div className="aspect-video bg-charcoal/95 border border-primary-navy/10 relative overflow-hidden flex items-center justify-center rounded-sm group">
+                {homeIsPlaying ? (
+                  videoHasError ? (
+                    <div className="absolute inset-0 bg-[#05122b] flex flex-col justify-between p-6 sm:p-8 select-none font-mono text-[11px] leading-relaxed border border-accent-gold/20 animate-fade-in text-white/90">
+                      {/* Top status bar */}
+                      <div className="flex justify-between items-center border-b border-white/10 pb-3">
+                        <div className="flex items-center gap-2">
+                          <span className="w-2.5 h-2.5 bg-accent-gold rounded-full animate-ping shrink-0" />
+                          <span className="text-accent-gold font-bold uppercase tracking-wider text-[10px]">
+                            CARRIER SYNC ACTIVE // DIGITAL COURSEWARE STREAM
+                          </span>
+                        </div>
+                        <div className="text-white/40 uppercase tracking-widest text-[9px]">
+                          SECURE SEC_ID: {homeActiveVideo === 'vid1' ? 'Q-LAT-09' : 'T-ML-55'}
+                        </div>
+                      </div>
+
+                      {/* Middle audio and telemetry visualizer */}
+                      <div className="grid grid-cols-1 md:grid-cols-12 gap-6 my-auto items-center">
+                        <div className="md:col-span-5 flex flex-col justify-center items-center md:items-start text-center md:text-left">
+                          <span className="text-[9px] uppercase tracking-widest text-white/50 block mb-1.5 font-bold">
+                            Active Frequency Carrier
+                          </span>
+                          {/* Dancing Waveform Visualizer */}
+                          <div className="flex items-end gap-1.5 h-14 mb-4">
+                            {[0.4, 0.75, 0.3, 0.9, 0.5, 0.8, 0.25, 0.65, 0.85, 0.45, 0.6].map((h, i) => (
+                              <div
+                                key={i}
+                                className="w-1 bg-accent-gold rounded-full animate-bounce"
+                                style={{
+                                  height: `${h * 100}%`,
+                                  animationDuration: `${0.9 + i * 0.12}s`,
+                                  animationDelay: `${i * 0.08}s`
+                                }}
+                              />
+                            ))}
+                          </div>
+                          <span className="text-[10px] text-accent-gold/80 italic font-serif-accent font-light">
+                            "Muted listening mode active"
+                          </span>
+                        </div>
+
+                        <div className="md:col-span-1 border-r border-white/5 h-16 hidden md:block" />
+
+                        {/* Telemetry data box */}
+                        <div className="md:col-span-6 text-left flex flex-col gap-1.5 text-white/70 overflow-hidden">
+                          <div>
+                            <span className="text-white/40 select-none font-bold">LECTURE: </span>
+                            <span className="text-white font-medium">
+                              {homeActiveVideo === 'vid1' 
+                                ? 'Post-Quantum Cryptographic Readiness Protocols' 
+                                : 'TinyML Load Prediction on Smart Energy Grids'
+                              }
+                            </span>
+                          </div>
+                          <div>
+                            <span className="text-white/40 select-none font-bold">CHAPTER: </span>
+                            <span className="text-accent-gold">
+                              {homeActiveVideo === 'vid1' ? 'Sovereign Cybersecurity Advisory' : 'Autonomous Microgrids & ML'}
+                            </span>
+                          </div>
+                          <div>
+                            <span className="text-white/40 select-none font-bold">SCHOLAR: </span>
+                            <span>
+                              {homeActiveVideo === 'vid1' ? 'Dr. Alistair J. Evans (Scientific Chair)' : 'Prof. Maria Santos'}
+                            </span>
+                          </div>
+                          <div className="text-[9px] text-white/30 truncate mt-1">
+                            LOG // SYNCING ENCRYPTION MATRIX // VERIFIED COMPILATION
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Bottom action bar */}
+                      <div className="bg-[#0b1b36] border border-white/5 rounded px-4 py-2.5 flex justify-between items-center text-[10px]">
+                        <span className="text-white/50">
+                          {homeActiveVideo === 'vid1' ? 'STREAM OFFSET 18:42 Min' : 'STREAM OFFSET 24:15 Min'}
+                        </span>
+                        <a 
+                          href={homeActiveVideo === 'vid1' 
+                            ? 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4' 
+                            : 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4'
+                          }
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-accent-gold underline hover:text-white transition-colors uppercase font-bold tracking-wider"
+                          title="Open native stream in a new tab"
+                        >
+                          Bypass Sandbox & Open Stream ↗
+                        </a>
+                      </div>
+                    </div>
+                  ) : (
+                    <video
+                      key={homeActiveVideo}
+                      src={homeActiveVideo === 'vid1' ? '/video 1.mp4' : '/video 2.mp4'}
+                      className="w-full h-full object-cover z-0 animate-fade-in"
+                      playsInline
+                      autoPlay
+                      controls={false}
+                      muted={homeIsMuted}
+                      onEnded={() => setHomeIsPlaying(false)}
+                      onError={(e) => {
+                        const video = e.currentTarget;
+                        const fallbackUrl = homeActiveVideo === 'vid1'
+                          ? 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4'
+                          : 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4';
+                        if (video.src !== fallbackUrl) {
+                          video.src = fallbackUrl;
+                          video.load();
+                          video.play().catch(() => {});
+                        } else {
+                          setVideoHasError(true);
+                        }
+                      }}
+                      id="homepage-academic-video"
+                    />
+                  )
+                ) : (
+                  <div className="absolute inset-0 z-0">
+                    <img
+                      src={homeActiveVideo === 'vid1' 
+                        ? 'https://images.unsplash.com/photo-1639322537228-f710d846310a' 
+                        : 'https://images.unsplash.com/photo-1466611653911-95081537e5b7'
+                      }
+                      alt="Seminar Poster Frame"
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-cover brightness-[40%] contrast-110 blur-xs"
+                    />
+                  </div>
+                )}
+
+                {/* Overlays / Play trigger button */}
+                {!homeIsPlaying && (
+                  <button
+                    onClick={() => setHomeIsPlaying(true)}
+                    className="w-16 h-16 rounded-full bg-accent-gold text-primary-navy flex items-center justify-center shadow-2xl z-10 transition-transform duration-300 hover:scale-108 focus:outline-none cursor-pointer"
+                    title="Click to Stream Lecture"
+                    id="home-play-video-trigger"
+                  >
+                    <Play className="w-8 h-8 fill-current translate-x-0.5" />
+                  </button>
+                )}
+
+                {homeIsPlaying && (
+                  <div 
+                    onClick={() => setHomeIsPlaying(false)}
+                    className="absolute inset-0 cursor-pointer z-10 flex items-center justify-center bg-black/10 opacity-0 hover:opacity-100 transition-opacity"
+                  >
+                    <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white flex items-center justify-center">
+                      <Pause className="w-6 h-6 fill-current" />
+                    </div>
+                  </div>
+                )}
+
+                {/* Live Transmission Badge */}
+                <div className="absolute top-4 left-4 z-20 bg-[#030a17]/85 border border-accent-gold/20 backdrop-blur-md px-3 py-1 font-mono text-[9px] text-accent-gold uppercase tracking-[0.2em] flex items-center gap-2 select-none shadow-md">
+                  <span className="relative flex h-1.5 w-1.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"></span>
+                  </span>
+                  <span>{homeIsPlaying ? "Transmission Stream Active" : "Stream Suspended"}</span>
+                </div>
+
+                {/* Mute switcher */}
+                {homeIsPlaying && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setHomeIsMuted(!homeIsMuted);
+                    }}
+                    className="absolute bottom-4 right-4 z-20 w-8 h-8 rounded-full bg-[#030a17]/70 text-white border border-white/10 flex items-center justify-center hover:bg-accent-gold hover:text-primary-navy transition-colors focus:outline-none"
+                    title={homeIsMuted ? "Unmute Audio" : "Mute Audio"}
+                  >
+                    {homeIsMuted ? <VolumeX className="w-4.5 h-4.5" /> : <Volume2 className="w-4.5 h-4.5" />}
+                  </button>
+                )}
+              </div>
+
+              {/* Status footer with metadata */}
+              <div className="flex flex-wrap items-center justify-between gap-3 text-[10px] font-mono text-muted-gray uppercase bg-neutral-warm/80 p-3 border border-divider-gold/30 rounded-xs select-none">
+                <div className="flex items-center gap-2">
+                  <Video className="w-4 h-4 text-accent-gold" />
+                  <span>PREVIEW: {homeActiveVideo === 'vid1' ? 'POST-QUANTUM READY CRYPTO' : 'TINYML LOAD PREDICTION FOR 6G'}</span>
+                </div>
+                <div className="text-accent-gold tracking-widest font-bold">
+                  {homeIsPlaying ? "1080P SCHOLASTIC CAPTURE" : "INTERACTIVE DEMO"}
+                </div>
+              </div>
+            </div>
+
+            {/* Sidebar list */}
+            <div className="lg:col-span-4 flex flex-col gap-3">
+              <div className="text-xs font-mono font-bold uppercase tracking-widest text-primary-navy border-b border-divider-gold pb-2 select-none">
+                Transmitted Lessons ({homeLectures.length})
+              </div>
+
+              <div className="flex flex-col gap-2">
+                {homeLectures.map((lecture) => {
+                  const isActive = homeActiveVideo === lecture.id;
+                  return (
+                    <button
+                      key={lecture.id}
+                      onClick={() => {
+                        setHomeActiveVideo(lecture.id);
+                        setHomeIsPlaying(true);
+                      }}
+                      className={`text-left p-4 border transition-all duration-300 flex flex-col gap-1.5 relative group ${
+                        isActive 
+                          ? 'bg-primary-navy border-accent-gold text-white' 
+                          : 'bg-neutral-warm/30 border-divider-gold/60 hover:bg-neutral-warm/60 hover:border-divider-gold text-charcoal'
+                      }`}
+                      id={`home-video-btn-${lecture.id}`}
+                    >
+                      {isActive && (
+                        <div className="absolute top-0 right-0 w-1.5 h-1.5 bg-accent-gold rounded-bl-sm" />
+                      )}
+                      <div className={`text-[9px] font-mono uppercase tracking-[0.15em] ${isActive ? 'text-accent-gold' : 'text-accent-gold/80'}`}>
+                        {lecture.category}
+                      </div>
+                      <div className="text-[11px] font-bold leading-snug font-serif-display font-medium">
+                        {lecture.title}
+                      </div>
+                      <div className="flex items-center justify-between text-[9px] font-mono text-muted-gray group-hover:text-primary-navy/70 transition-colors mt-2">
+                        <span>Duration: {lecture.duration}</span>
+                        {isActive && homeIsPlaying ? (
+                          <span className="text-green-500 font-bold uppercase animate-pulse flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block" /> PLAYING
+                          </span>
+                        ) : (
+                          <span className="text-accent-gold font-sans font-semibold">Preview ➔</span>
+                        )}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <button
+                onClick={() => onNavigate('#/dashboard')}
+                className="mt-4 w-full bg-primary-navy hover:bg-accent-gold text-white hover:text-primary-navy py-3 px-4 font-sans font-bold uppercase tracking-widest text-[9px] border border-primary-navy/10 transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                Enter Student Dashboard <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </FadeUpSection>
+
+      {/* 6. Service Overviews */}
+      <FadeUpSection id="services-overview" className="py-16 bg-primary-navy text-white premium-noise relative w-full">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center max-w-3xl mx-auto mb-12 animate-fade-in">
+            <h3 className="text-xs font-mono tracking-widest text-accent-gold uppercase mb-2">Solutions & Support</h3>
+            <h2 className="font-serif-display text-2.5xl sm:text-3.5xl font-bold leading-tight mb-4">
+              Our Academic Pillars
+            </h2>
+            <p className="text-white/75 text-sm font-light leading-relaxed font-serif-accent italic">
+              "Fostering continuous research capability, language precision, and global publication strategy."
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                icon: <GraduationCap className="w-8 h-8 text-accent-gold" />,
+                title: "Scholastic e-Learning",
+                desc: "High-grade specialized video curricula on post-quantum protocols, TinyML load forecasting, and journal technical writing standards.",
+                btnText: "Take Free Courses"
+              },
+              {
+                icon: <Shield className="w-8 h-8 text-accent-gold" />,
+                title: "Publication Support",
+                desc: "Rigorous language polishing, professional formatting, and logic assessments tailored to eliminate over 30% of editorial denials.",
+                btnText: "Upload Manuscript"
+              },
+              {
+                icon: <Users className="w-8 h-8 text-accent-gold" />,
+                title: "Elite Mentorship",
+                desc: "Private matchmaking pathways linking PhD candidates and university professors with industry advisors across three continents.",
+                btnText: "Register as Mentee"
+              }
+            ].map((srv, idx) => (
+              <TiltCard 
+                key={idx}
+                className="bg-white/5 border border-white/10 p-8 flex flex-col hover:border-accent-gold/40 group text-left h-full"
+              >
+                <div className="mb-6">{srv.icon}</div>
+                <h3 className="font-serif-display text-xl text-white font-medium mb-4">{srv.title}</h3>
+                <p className="text-white/70 text-xs leading-relaxed font-light mb-8">{srv.desc}</p>
+                <button
+                  onClick={() => onNavigate("#/services")}
+                  className="mt-auto text-left text-xs font-sans uppercase tracking-widest text-accent-gold hover:text-white font-semibold flex items-center gap-2 group transition-colors cursor-pointer"
+                >
+                  {srv.btnText}
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                </button>
+              </TiltCard>
+            ))}
+          </div>
+        </div>
+      </FadeUpSection>
+
+      {/* 7. Comprehensive Testimonial Carousel */}
+      <FadeUpSection id="testimonials" className="py-20 bg-[#FAFAF7] border-y border-divider-gold/60 w-full overflow-hidden">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <MessageSquare className="w-8 h-8 text-accent-gold/40 mx-auto mb-4" />
+          
+          <div className="min-h-[180px] sm:min-h-[140px] flex items-center justify-center relative my-2 px-4 sm:px-12">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeTestimony}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                className="w-full flex flex-col items-center"
+              >
+                <p className="font-serif-accent text-lg sm:text-2xl italic text-primary-navy leading-relaxed font-normal mb-8 max-w-3xl">
+                  "{testimonials[activeTestimony].quote}"
+                </p>
+
+                <div className="flex flex-col items-center">
+                  <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-accent-gold/40 mb-3 bg-charcoal/10 shadow-md">
+                    <img 
+                      src={testimonials[activeTestimony].image} 
+                      alt={testimonials[activeTestimony].author} 
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <h4 className="font-serif-display text-base font-bold text-primary-navy leading-tight">
+                    {testimonials[activeTestimony].author}
+                  </h4>
+                  <p className="text-[10px] uppercase tracking-widest font-mono text-muted-gray mt-1.5 font-medium">
+                    {testimonials[activeTestimony].title}
+                  </p>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Indicators */}
+          <div className="flex justify-center gap-2 mt-6">
+            {testimonials.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setActiveTestimony(idx)}
+                className={`w-1.5 h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                  activeTestimony === idx ? 'bg-accent-gold w-5' : 'bg-divider-gold'
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+      </FadeUpSection>
+
+      {/* 8. Editorial News Spotlight */}
+      <FadeUpSection id="editorial-news" className="py-16 bg-white">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10">
+            <div>
+              <h3 className="text-xs font-mono tracking-widest text-accent-gold uppercase mb-2">Editorial Desk</h3>
+              <h2 className="font-serif-display text-2.5xl sm:text-3.5xl text-primary-navy font-bold">Litterae & Gazette</h2>
+            </div>
+            <button
+              onClick={() => onNavigate("#/blog")}
+              className="mt-4 md:mt-0 text-xs font-sans uppercase tracking-widest font-semibold text-accent-gold hover:text-primary-navy flex items-center gap-2 group transition-colors cursor-pointer"
+            >
+              Browse Magazine <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            {blogs.filter((b) => b.featured).map((post) => (
+              <div 
+                key={post.id}
+                className="flex flex-col gap-6 group cursor-pointer"
+                onClick={() => onNavigate("#/blog")}
+              >
+                <div className="aspect-[16/9] overflow-hidden border border-divider-gold/40">
+                  <img 
+                    src={post.image} 
+                    alt={post.title}
+                    referrerPolicy="no-referrer"
+                    className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-700"
+                  />
+                </div>
+                <div>
+                  <div className="flex items-center gap-4 text-xs font-mono text-accent-gold uppercase mb-3">
+                    <span>{post.category}</span>
+                    <span>·</span>
+                    <span>{post.date}</span>
+                  </div>
+                  <h3 className="font-serif-display text-2xl sm:text-3xl text-primary-navy font-bold leading-tight mb-4 group-hover:text-accent-gold transition-colors text-left font-serif-display">
+                    {post.title}
+                  </h3>
+                  <p className="text-sm text-muted-gray leading-relaxed font-light text-left">
+                    {post.excerpt}
+                  </p>
+                </div>
+              </div>
+            ))}
+
+            <div className="flex flex-col gap-8 justify-between">
+              {blogs.filter((b) => !b.featured).slice(0, 3).map((post) => (
+                <div 
+                  key={post.id} 
+                  className="flex gap-4 sm:gap-6 group cursor-pointer"
+                  onClick={() => onNavigate("#/blog")}
+                >
+                  <div className="w-24 sm:w-32 aspect-square shrink-0 overflow-hidden border border-divider-gold/30">
+                    <img 
+                      src={post.image} 
+                      alt={post.title} 
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+                  <div className="flex flex-col justify-center text-left">
+                    <span className="text-[10px] font-mono text-accent-gold uppercase mb-1">{post.category}</span>
+                    <h4 className="font-serif-display text-base sm:text-lg text-primary-navy font-semibold mb-2 group-hover:text-accent-gold transition-colors line-clamp-2">
+                      {post.title}
+                    </h4>
+                    <p className="text-xs text-muted-gray font-light line-clamp-1">{post.excerpt}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </FadeUpSection>
+
+      {/* 9. Join The Network Banner CTA */}
+      <FadeUpSection id="banner-cta" className="border-t border-accent-gold/25 py-20 text-center text-white overflow-hidden relative w-full bg-primary-navy">
+        {/* Background Premium Banner 5 */}
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          <img 
+            src="/banner 5.png" 
+            alt="Corporate Banner 5" 
+            className="w-full h-full object-cover opacity-20 filter brightness-[30%] contrast-[110%]"
+            onError={(e) => {
+              const el = e.currentTarget;
+              const bkp = "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=1600";
+              if (el.src !== bkp) {
+                el.src = bkp;
+              } else {
+                el.style.display = 'none';
+              }
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#030a17]/95 via-primary-navy/90 to-[#030a17] mix-blend-multiply" />
+        </div>
+
+        <div className="relative z-10 max-w-3xl mx-auto px-6">
+          <GraduationCap className="w-10 h-10 text-accent-gold mx-auto mb-4" />
+          <h2 className="font-serif-display text-2.5xl sm:text-4xl font-bold mb-4">
+            Begin Your Journey to Excellence
+          </h2>
+          <p className="text-white/70 text-xs sm:text-sm leading-relaxed mb-6 max-w-xl mx-auto font-light font-serif-accent italic">
+            "We foster critical support for ambitious academics targeting global reach. Create your free account to access mentorship, courseware, and pre-submission proofs."
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <button
+              onClick={() => onNavigate("#/login?mode=register")}
+              className="bg-accent-gold hover:bg-[#B3934B] text-primary-navy font-sans uppercase tracking-widest text-xs font-semibold px-8 py-3.5 transition-all duration-300 shadow-md cursor-pointer"
+              id="cta-register-bottom"
+            >
+              Configure Student/Mentor Account
+            </button>
+            <button
+              onClick={() => onNavigate("#/about")}
+              className="text-white hover:text-accent-gold underline text-xs font-sans uppercase tracking-widest font-mono py-2 cursor-pointer"
+            >
+              Verify RiTECHS Status & Governance
+            </button>
+          </div>
+        </div>
+      </FadeUpSection>
+    </div>
+  );
+}
