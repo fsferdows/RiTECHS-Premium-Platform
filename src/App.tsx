@@ -9,6 +9,7 @@ import {
   BlogPost, Conference, Mentor
 } from './types';
 import { INITIAL_MENTORS } from './data';
+import { Clock } from 'lucide-react';
 import AdminDashboardView from './components/AdminDashboardView';
 
 // Importing beautiful modular pages
@@ -351,6 +352,16 @@ export default function App() {
         style={{ width: `${scrollProgress}%` }}
         id="scroll-progress-bar"
       />
+
+      {/* Real-time reading time overlay for scroll progression */}
+      {(currentPath === '#/blog' || currentPath.startsWith('#/conferences/') || currentPath === '#/dashboard') && (
+        <div className="fixed top-2.5 right-6 z-[9999] bg-primary-maroon/95 backdrop-blur-md text-accent-gold border border-accent-gold/45 text-[9px] font-mono font-semibold tracking-widest px-3 py-1 uppercase rounded-xs shadow-lg flex items-center gap-1.5 select-none print:hidden">
+          <Clock className="w-3 h-3 text-accent-gold animate-pulse" />
+          <span>
+            EST. READING: {Math.max(1, Math.ceil((currentPath === '#/blog' ? 5 : currentPath === '#/dashboard' ? 12 : 4) * (1 - scrollProgress / 100)))} MINS LEFT
+          </span>
+        </div>
+      )}
 
       {/* Premium Sticky Navigation */}
       <Navigation 

@@ -813,22 +813,32 @@ export default function DashboardView({ user, manuscripts, onUpdateUser, onNavig
                     </div>
                   </div>
 
-                  {selectedManuscript.status === 'Delivered' ? (
-                    <a 
-                      href="#download-camera-ready" 
-                      onClick={(e) => { e.preventDefault(); alert('Signed cryptographic URL activated. Beginning download of: camera_ready_' + selectedManuscript.fileName); }}
-                      className="bg-accent-gold hover:bg-[#B3934B] text-primary-navy font-sans uppercase font-bold text-[10px] tracking-widest px-5 py-3 flex items-center gap-1.5 shadow-sm"
-                    >
-                      <Download className="w-3.5 h-3.5" /> Download Camera-Ready
-                    </a>
-                  ) : (
+                  <div className="flex flex-wrap gap-3 mt-4 sm:mt-0 select-none">
                     <button 
-                      disabled
-                      className="bg-white/40 text-black/40 border border-black/10 cursor-not-allowed font-sans uppercase font-bold text-[10px] tracking-widest px-5 py-3"
+                      onClick={() => window.print()}
+                      className="bg-primary-navy hover:bg-opacity-90 text-white font-sans uppercase font-bold text-[10px] tracking-widest px-5 py-3 flex items-center gap-1.5 shadow-sm border border-accent-gold/30 hover:border-accent-gold transition-colors cursor-pointer"
+                      title="Generate high-fidelity research PDF"
                     >
-                      Awaiting Vetting Completion
+                      <Printer className="w-3.5 h-3.5 text-accent-gold" /> Download as PDF
                     </button>
-                  )}
+
+                    {selectedManuscript.status === 'Delivered' ? (
+                      <a 
+                        href="#download-camera-ready" 
+                        onClick={(e) => { e.preventDefault(); alert('Signed cryptographic URL activated. Beginning download of: camera_ready_' + selectedManuscript.fileName); }}
+                        className="bg-accent-gold hover:bg-[#B3934B] text-primary-maroon font-sans uppercase font-bold text-[10px] tracking-widest px-5 py-3 flex items-center gap-1.5 shadow-sm transition-colors"
+                      >
+                        <Download className="w-3.5 h-3.5" /> Download Camera-Ready
+                      </a>
+                    ) : (
+                      <button 
+                        disabled
+                        className="bg-neutral-200 text-stone-400 border border-stone-200 cursor-not-allowed font-sans uppercase font-bold text-[10px] tracking-widest px-5 py-3"
+                      >
+                        Awaiting Vetting Completion
+                      </button>
+                    )}
+                  </div>
                 </div>
 
               </div>
@@ -984,6 +994,87 @@ export default function DashboardView({ user, manuscripts, onUpdateUser, onNavig
 
             </div>
 
+          </div>
+        </div>
+      )}
+      {/* 4. PRINT PREVIEW TEMPLATE BLOCK (HIDDEN ON WEB SCREEN, VISIBLE ON PRINT LAYOUT) */}
+      {selectedManuscript && (
+        <div className="hidden print:block bg-white text-black p-12 max-w-4xl mx-auto font-serif" id="print-manuscript-preprint">
+          <div className="text-center mb-8 border-b-2 border-black pb-6">
+            <span className="text-[10px] uppercase tracking-widest font-mono text-neutral-600 block mb-2">
+              RiTECHS High-Security Peer-Rebuttal Scholarly Repository
+            </span>
+            <h1 className="text-2xl font-bold font-serif leading-tight mb-4" style={{ color: '#000000' }}>
+              {selectedManuscript.title}
+            </h1>
+            <p className="text-sm italic mb-3 font-serif font-serif-accent">Original Research Document Pre-publication Version — ID: {selectedManuscript.id}</p>
+            <div className="text-[10px] text-neutral-700 font-sans flex justify-center gap-6 mt-4 uppercase tracking-wider font-semibold">
+              <span><strong>Category:</strong> {selectedManuscript.serviceType}</span>
+              <span>·</span>
+              <span><strong>Size:</strong> {selectedManuscript.fileSize}</span>
+              <span>·</span>
+              <span><strong>Indexed:</strong> {selectedManuscript.date}</span>
+            </div>
+          </div>
+
+          <div className="mb-8">
+            <h2 className="text-sm font-bold uppercase mb-3 font-serif border-b border-black/35 pb-1">Abstract</h2>
+            <p className="text-xs leading-relaxed text-justify indent-8 mb-6 text-neutral-800">
+              This research study presents the formal verification, parameter optimizations, and secure peer-vetting bounds for mission-critical technology frameworks under the direction of the RiTECHS Board of Directors. In high-density settings, traditional protection schemes scale sub-optimally. We present a low-resource cryptographic methodology that ensures quantum-resistant security bounds. Experimental captures show robust performance resilience across academic networks.
+            </p>
+          </div>
+
+          <div className="mb-8 animate-fadeIn">
+            <h2 className="text-sm font-bold uppercase mb-3 font-serif border-b border-black/35 pb-1">1. Introduction</h2>
+            <p className="text-xs leading-relaxed text-justify indent-8 mb-4 text-neutral-800">
+              The paradigm shift towards distributed intelligent services requires persistent coordination between localized edge architectures and central verification databases. As grid complexity increases, physical and digital vulnerability indexes scale dramatically, necessitating real-time threat hunting patterns.
+            </p>
+            <p className="text-xs leading-relaxed text-justify indent-8 mb-4 text-neutral-800">
+              Earlier scholarly works focused primarily on centralized, high-overhead consensus loops. Although resilient, these structures trigger heavy transmission overhead, rendering agricultural telemetries and municipal energy smart-grids sub-optimal. This work provides an elegant, lightweight alternative.
+            </p>
+          </div>
+
+          <div className="mb-8">
+            <h2 className="text-sm font-bold uppercase mb-3 font-serif border-b border-black/35 pb-1">2. Computational Parameters & Benchmarking Table</h2>
+            <p className="text-xs leading-relaxed text-justify indent-8 mb-4 text-neutral-800">
+              We captured and logged throughput and latency values across our experimental topology under varying standard conditions. These statistics confirm our sovereign protection constraints without degrading standard signal quality.
+            </p>
+            <table className="w-full border-collapse border border-black my-4 text-[10px] font-sans">
+              <thead>
+                <tr className="bg-neutral-100">
+                  <th className="border border-black p-2 font-bold text-left">Topology Reference Code</th>
+                  <th className="border border-black p-2 font-bold text-left">Throughput (Mpps)</th>
+                  <th className="border border-black p-2 font-bold text-left">Latency Margin (ms)</th>
+                  <th className="border border-black p-2 font-bold text-left">Peer Security Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="border border-black p-2">Standard IoT Agri-Telemetry</td>
+                  <td className="border border-black p-2">142.5</td>
+                  <td className="border border-black p-2">1.22</td>
+                  <td className="border border-black p-2">Standard Encryption</td>
+                </tr>
+                <tr>
+                  <td className="border border-black p-2">Quantum-Resistant Edge-Shield</td>
+                  <td className="border border-black p-2">498.1</td>
+                  <td className="border border-black p-2">0.05</td>
+                  <td className="border border-black p-2">Validated Secure Bounds</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div className="mb-8">
+            <h2 className="text-sm font-bold uppercase mb-3 font-serif border-b border-black/35 pb-1">3. Concluding Remarks & Board Recommendation</h2>
+            <p className="text-xs leading-relaxed text-justify indent-8 mb-4 text-neutral-800">
+              In conclusion, the proposed cryptographic pattern satisfies security targets and is fully calibrated to fit standard Springer Nature and IEEE format templates. Development is recommended for immediate industrial pilot rollout.
+            </p>
+          </div>
+
+          <div className="border-t border-dashed border-black pt-6 text-center mt-12">
+            <p className="text-[9px] font-mono text-neutral-500">Official Peer Reprint logged at: http://ritechs.org/submissions/{selectedManuscript.id.toLowerCase()}</p>
+            <p className="text-[8px] text-neutral-400 font-sans mt-0.5">Verified by RiTECHS Secretariat. Export compiled dynamically in June 2026.</p>
           </div>
         </div>
       )}

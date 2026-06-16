@@ -433,3 +433,134 @@ html, body, #root, #app, main, section, nav, footer, .glass-card, h1, h2, h3, h4
 .theme-light #main-nav {
   box-shadow: 0 4px 20px rgba(158, 125, 59, 0.05) !important;
 }
+
+/* --- PRINT MEDIA CONTROLS & PRINT STYLESHEET FOR CLINICAL MANUSCRIPTS --- */
+@media print {
+  /* Hide standard web containers */
+  #main-nav,
+  #site-footer,
+  #ai-academic-companion-panel,
+  #ai-assistant-toggle-trigger,
+  .print-hide,
+  button,
+  .btn,
+  .interactive-widget,
+  .breadcrumb,
+  input,
+  textarea,
+  select,
+  form,
+  aside,
+  iframe,
+  .stripe-overlay-modal,
+  #scholastic-heritage-hero,
+  #hero-section,
+  #editorial-blog-view > section:first-of-type,
+  #editorial-blog-view > section:nth-of-type(2),
+  .filters-toolbar,
+  nav {
+    display: none !important;
+  }
+
+  /* Reset layout structure for complete page fit */
+  html, body {
+    background: #ffffff !important;
+    color: #111111 !important;
+    font-size: 11pt !important;
+    line-height: 1.5 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+
+  /* Force light colors on elements */
+  * {
+    color: #000000 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* Scholarly containers layout details */
+  .manuscript-document-card,
+  .manuscript-view-wrapper,
+  article,
+  .scholarly-article {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 1.2cm !important;
+    border: none !important;
+    background: #ffffff !important;
+    color: #111111 !important;
+    box-shadow: none !important;
+    display: block !important;
+  }
+
+  /* Headings size normalization */
+  h1 {
+    font-size: 20pt !important;
+    font-weight: bold !important;
+    margin-bottom: 0.5cm !important;
+    text-align: center !important;
+    page-break-after: avoid;
+  }
+
+  h2 {
+    font-size: 15pt !important;
+    font-weight: bold !important;
+    margin-top: 0.8cm !important;
+    margin-bottom: 0.4cm !important;
+    page-break-after: avoid;
+  }
+
+  h3 {
+    font-size: 12pt !important;
+    font-weight: bold !important;
+    margin-top: 0.6cm !important;
+    margin-bottom: 0.3cm !important;
+    page-break-after: avoid;
+  }
+
+  p, li {
+    font-size: 10.5pt !important;
+    line-height: 1.6 !important;
+    text-align: justify !important;
+    orphans: 3;
+    widows: 3;
+  }
+
+  /* Avoid splitting blocks awkwardly across pages */
+  pre, code, blockquote, table, figure, tr, img {
+    page-break-inside: avoid !important;
+  }
+
+  /* Table styling */
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    margin-top: 0.5cm !important;
+    margin-bottom: 0.5cm !important;
+  }
+
+  th, td {
+    border: 1px solid #666666 !important;
+    padding: 8px !important;
+    font-size: 9.5pt !important;
+  }
+
+  /* Show full absolute links next to anchor text for print clarity */
+  a[href^="http"]:after {
+    content: " (" attr(href) ")";
+    font-size: 8.5pt !important;
+    color: #444444 !important;
+    font-style: italic !important;
+    font-weight: normal !important;
+    text-decoration: underline !important;
+  }
+
+  /* For internal hash paths, do not show urls */
+  a[href^="#"]:after {
+    content: "";
+  }
+}

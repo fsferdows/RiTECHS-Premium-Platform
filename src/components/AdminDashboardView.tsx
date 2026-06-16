@@ -1447,21 +1447,234 @@ export default function AdminDashboardView({
               </div>
             )}
 
-            <div className="flex gap-4 justify-end">
+          </div>
+        )}
+
+        {/* TAB CONTENT: ASSET MANAGER */}
+        {activeTab === 'assets' && (
+          <div className="bg-primary-maroon/15 border border-accent-gold/20 p-6 rounded-xs text-left animate-fadeIn">
+            <h2 className="font-serif-display text-xl text-white font-bold flex items-center gap-2 mb-2">
+              <ImageIcon className="w-5 h-5 text-accent-gold" />
+              Regional Asset & Corporate Brand Manager
+            </h2>
+            <p className="text-xs text-neutral-300 font-light max-w-xl mb-6 font-sans">
+              Update site-wide logos and featured section hero assets dynamically in real-time. Changes are immediately stored locally and rendered across global corporate blocks.
+            </p>
+
+            <form onSubmit={handleSaveAssets} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-primary-maroon border border-accent-gold/20 rounded-xs">
+                
+                <div className="flex flex-col gap-2">
+                  <label className="font-mono text-[9px] uppercase tracking-widest text-[#C9A961] font-bold">
+                    Official Institutional Logo URI
+                  </label>
+                  <input
+                    type="text"
+                    value={logoSetting}
+                    onChange={(e) => setLogoSetting(e.target.value)}
+                    placeholder="e.g. /logo.png or link address"
+                    className="w-full px-4 py-2.5 bg-maroon-dark border border-accent-gold/25 focus:border-accent-gold outline-none text-xs rounded-xs text-white placeholder-neutral-500 font-mono"
+                  />
+                  <div className="mt-2 flex items-center gap-3 bg-black/20 p-2.5 border border-accent-gold/10 rounded-xs">
+                    <img
+                      src={logoSetting}
+                      alt="Logo Preview"
+                      className="w-10 h-10 object-contain bg-primary-maroon p-1 border border-accent-gold/25 rounded-xs"
+                      onError={(e) => {
+                        e.currentTarget.src = "/logo.png";
+                      }}
+                    />
+                    <span className="text-[8px] font-mono text-neutral-400">Current Logo Live Preview</span>
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <label className="font-mono text-[9px] uppercase tracking-widest text-[#C9A961] font-bold">
+                    Featured Exhibition Hero Banner Link
+                  </label>
+                  <input
+                    type="text"
+                    value={featuredSectionSetting}
+                    onChange={(e) => setFeaturedSectionSetting(e.target.value)}
+                    placeholder="e.g. /banner 5.png or external link"
+                    className="w-full px-4 py-2.5 bg-maroon-dark border border-accent-gold/25 focus:border-accent-gold outline-none text-xs rounded-xs text-white placeholder-neutral-500 font-mono"
+                  />
+                  <div className="mt-2 flex items-center gap-3 bg-black/20 p-2.5 border border-accent-gold/10 rounded-xs">
+                    <img
+                      src={featuredSectionSetting}
+                      alt="Hero Banner Preview"
+                      className="w-14 h-8 object-cover rounded-xs border border-accent-gold/20"
+                      onError={(e) => {
+                        e.currentTarget.src = "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=400&q=80";
+                      }}
+                    />
+                    <span className="text-[8px] font-mono text-neutral-400">Current Hero Banner Preview</span>
+                  </div>
+                </div>
+
+              </div>
+
+              {assetSavedSuccess && (
+                <div id="asset-success-notif" className="p-3 bg-green-900/40 border border-green-500/50 text-green-300 font-mono text-[9px] tracking-widest uppercase rounded-xs animate-pulse">
+                  ✓ High-fidelity corporate assets synchronized successfully! Brand maps updated.
+                </div>
+              )}
+
+              <div className="flex justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setLogoSetting('/logo.png');
+                    setFeaturedSectionSetting('/banner 5.png');
+                  }}
+                  className="px-4 py-2 border border-white/20 hover:bg-white/5 font-mono text-[8px] tracking-widest uppercase cursor-pointer rounded-xs text-stone-300"
+                >
+                  Restore Factory Originals
+                </button>
+                <button
+                  type="submit"
+                  className="px-6 py-2.5 bg-accent-gold hover:bg-[#B3934B] text-primary-maroon font-bold font-mono text-[8.5px] tracking-widest uppercase cursor-pointer rounded-xs shadow-md"
+                >
+                  Save and Publish Brand Assets
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
+
+        {/* TAB CONTENT: INTERNATIONAL SEO MANAGER */}
+        {activeTab === 'seo' && (
+          <div className="bg-primary-maroon/15 border border-accent-gold/20 p-6 rounded-xs text-left animate-fadeIn">
+            <h2 className="font-serif-display text-xl text-white font-bold flex items-center gap-2 mb-2">
+              <Globe className="w-5 h-5 text-accent-gold" />
+              Search Engine & Metatag Optimization Center
+            </h2>
+            <p className="text-xs text-neutral-300 font-light max-w-xl mb-6 font-sans">
+              Dynamically manipulate the DOM title and semantic description meta header variables. This keeps crawled content fresh and optimized for international academic search engines.
+            </p>
+
+            <form onSubmit={handleSaveSEO} className="space-y-6">
+              <div className="grid grid-cols-1 gap-6 p-6 bg-primary-maroon border border-accent-gold/20 rounded-xs">
+                
+                <div className="flex flex-col gap-2">
+                  <span className="font-mono text-[9px] uppercase tracking-widest text-[#C9A961] font-bold">
+                    Target Document Title Tag (Real-Time DOM)
+                  </span>
+                  <input
+                    type="text"
+                    value={docTitle}
+                    onChange={(e) => setDocTitle(e.target.value)}
+                    className="w-full px-4 py-2.5 bg-maroon-dark border border-accent-gold/25 focus:border-accent-gold outline-none text-xs rounded-xs text-white"
+                    placeholder="RiTECHS Platform — Global Academic Excellence"
+                  />
+                  <span className="text-[8px] font-mono text-neutral-400/85">Updates standard browser title bars and search query snippet headers.</span>
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <span className="font-mono text-[9px] uppercase tracking-widest text-[#C9A961] font-bold">
+                    Global Meta Description Content
+                  </span>
+                  <textarea
+                    rows={4}
+                    value={metaDesc}
+                    onChange={(e) => setMetaDesc(e.target.value)}
+                    className="w-full px-4 py-2.5 bg-maroon-dark border border-accent-gold/25 focus:border-accent-gold outline-none text-xs rounded-xs text-white font-sans"
+                    placeholder="Enter global SEO crawler summary details..."
+                  />
+                  <span className="text-[8px] font-mono text-neutral-400/85">Provides descriptions utilized by search indexing crawlers.</span>
+                </div>
+
+              </div>
+
+              {seoSavedSuccess && (
+                <div id="seo-success-notif" className="p-3 bg-green-900/40 border border-green-500/50 text-green-300 font-mono text-[9px] tracking-widest uppercase rounded-xs">
+                  ✓ SEO DOM Meta Variables compiled and aligned for international indexing engines!
+                </div>
+              )}
+
+              <div className="flex justify-end">
+                <button
+                  type="submit"
+                  className="px-6 py-2.5 bg-accent-gold hover:bg-[#B3934B] text-primary-maroon font-bold font-mono text-[8.5px] tracking-widest uppercase cursor-pointer rounded-xs shadow-md"
+                >
+                  Sync Metadata Registers
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
+
+        {/* TAB CONTENT: CHANGE HISTORY & AUDIT LOG */}
+        {activeTab === 'history' && (
+          <div className="bg-primary-maroon/15 border border-accent-gold/20 p-6 rounded-xs text-left animate-fadeIn">
+            <div className="flex justify-between items-start gap-4 mb-2 flex-wrap">
+              <div>
+                <h2 className="font-serif-display text-xl text-white font-bold flex items-center gap-2">
+                  <History className="w-5 h-5 text-accent-gold" />
+                  Administrative Audit Logs & History Tracker
+                </h2>
+                <p className="text-xs text-neutral-300 font-light max-w-xl mt-1 font-sans">
+                  Chronological trace of recent modifications made to academic data elements (Conferences, Mentors, Blogs, Assets, or SEO parameters) during this session.
+                </p>
+              </div>
               <button
-                onClick={handleResetToDefault}
-                className="px-4 py-2 border border-white/20 hover:bg-white/5 font-mono text-[9px] tracking-widest uppercase cursor-pointer rounded-xs"
+                type="button"
+                onClick={() => {
+                  const cleared = [{
+                    id: 'log-clear-0',
+                    timestamp: new Date().toISOString(),
+                    category: 'seo' as const,
+                    action: 'Audit Log Cleaned',
+                    details: 'Log records flushed by admin command.'
+                  }];
+                  setLogs(cleared);
+                  localStorage.setItem('ritechs_audit_logs', JSON.stringify(cleared));
+                }}
+                className="px-3 py-1.5 border border-red-500/30 hover:bg-red-500/10 hover:text-red-300 text-red-100 font-mono text-[8.5px] uppercase tracking-wider rounded-xs cursor-pointer"
               >
-                Reset original rates
-              </button>
-              <button
-                onClick={handleSaveRates}
-                className="px-6 py-2.5 bg-accent-gold hover:bg-[#B3934B] text-primary-maroon font-bold font-mono text-[9px] tracking-widest uppercase cursor-pointer rounded-xs shadow-md"
-              >
-                Apply Custom Pricing Rules
+                Clear History Logs
               </button>
             </div>
 
+            <div className="mt-6 bg-primary-maroon border border-accent-gold/20 rounded-xs overflow-hidden">
+              <div className="px-4 py-2.5 bg-maroon-dark/60 border-b border-accent-gold/15 flex items-center justify-between text-[8px] font-mono uppercase tracking-widest text-accent-gold/60 font-bold">
+                <span>Action & Registered System Components</span>
+                <span>Timestamp (Local)</span>
+              </div>
+
+              <div className="divide-y divide-accent-gold/10 max-h-[420px] overflow-y-auto">
+                {logs.length === 0 ? (
+                  <div className="p-8 text-center text-neutral-400 font-mono text-xs">
+                    No active modifications have been logged in the system.
+                  </div>
+                ) : (
+                  logs.map((log) => {
+                    let catColor = "text-blue-450 bg-blue-500/10 border-blue-500/20";
+                    if (log.category === 'conference') catColor = "text-amber-400 bg-amber-500/10 border-amber-500/20";
+                    if (log.category === 'mentor') catColor = "text-emerald-400 bg-emerald-500/10 border-emerald-500/20";
+                    if (log.category === 'blog') catColor = "text-purple-400 bg-purple-500/10 border-purple-500/20";
+                    if (log.category === 'assets') catColor = "text-cyan-400 bg-cyan-500/10 border-cyan-500/20";
+
+                    return (
+                      <div key={log.id} className="p-4 hover:bg-white/2.5 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-left">
+                        <div className="flex items-start gap-3">
+                          <span className={`px-2 py-0.5 text-[7px] font-mono uppercase tracking-widest border font-semibold shrink-0 rounded-xs mt-0.5 ${catColor}`}>
+                            {log.category}
+                          </span>
+                          <div>
+                            <p className="text-white text-xs font-semibold leading-tight">{log.action}</p>
+                            <p className="text-[#9CA3AF] text-[10px] mt-1 font-light font-sans">{log.details}</p>
+                          </div>
+                        </div>
+                        <span className="text-[9px] font-mono text-neutral-450 shrink-0 bg-maroon-dark px-2 py-1 border border-accent-gold/10 rounded-xs sm:self-center self-start">
+                          {new Date(log.timestamp).toLocaleTimeString()}
+                        </span>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+            </div>
           </div>
         )}
 

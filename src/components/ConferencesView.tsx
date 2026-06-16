@@ -201,6 +201,7 @@ interface ConferencesViewProps {
 export default function ConferencesView({ currentPath, conferences, onNavigate }: ConferencesViewProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [formatFilter, setFormatFilter] = useState<'All' | 'Hybrid' | 'In-Person'>('All');
+  const [subjectFilter, setSubjectFilter] = useState<'All' | 'Cybersecurity' | 'Internet of Things'>('All');
   
   // Payment states
   const [stripeModalOpen, setStripeModalOpen] = useState(false);
@@ -226,9 +227,14 @@ export default function ConferencesView({ currentPath, conferences, onNavigate }
   const filteredConferences = conferences.filter(c => {
     const matchesSearch = c.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
                           c.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          c.location.toLowerCase().includes(searchTerm.toLowerCase());
+                          c.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          (c.tracks && c.tracks.some(track => track.toLowerCase().includes(searchTerm.toLowerCase())));
     const matchesFormat = formatFilter === 'All' || c.format === formatFilter;
-    return matchesSearch && matchesFormat;
+    const matchesSubject = subjectFilter === 'All' || (
+      subjectFilter === 'Cybersecurity' ? (c.slug === 'icetcs' || c.name.toLowerCase().includes('cyber') || (c.tracks && c.tracks.some(t => t.toLowerCase().includes('cyber') || t.toLowerCase().includes('crypt')))) :
+      subjectFilter === 'Internet of Things' ? (c.slug === 'itss-ioe' || c.name.toLowerCase().includes('ioe') || (c.tracks && c.tracks.some(t => t.toLowerCase().includes('iot') || t.toLowerCase().includes('internet') || t.toLowerCase().includes('everything')))) : true
+    );
+    return matchesSearch && matchesFormat && matchesSubject;
   });
 
   const launchStripe = (confName: string, tier: string, price: string) => {
@@ -1388,34 +1394,57 @@ export default function ConferencesView({ currentPath, conferences, onNavigate }
       </section>
 
       {/* Filters & Search Toolbar */}
-      <section className="py-8 bg-maroon-dark/95 border-b border-accent-gold/15 sticky top-16 z-20 shadow-xl backdrop-blur-md text-white">
-        <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row gap-6 items-center justify-between">
+      <section className="py-6 bg-maroon-dark/95 border-b border-accent-gold/15 sticky top-16 z-20 shadow-xl backdrop-blur-md text-white">
+        <div className="max-w-5xl mx-auto px-6 flex flex-col lg:flex-row gap-4 items-center justify-between">
           
-          <div className="relative w-full md:w-96">
+          <div className="relative w-full lg:w-80 shrink-0">
             <Search className="w-4 h-4 text-accent-gold absolute left-3.5 top-3.5" />
             <input 
               type="text" 
-              placeholder="Search by city, name, or keywords..."
+              placeholder="Search by city, name, or track..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-primary-maroon/60 border border-accent-gold/25 focus:border-accent-gold outline-none text-xs text-white placeholder-neutral-400 font-mono transition-colors rounded-xs"
+              className="w-full pl-10 pr-4 py-2.5 bg-primary-maroon/60 border border-accent-gold/25 focus:border-accent-gold outline-none text-xs text-white placeholder-neutral-400 font-mono transition-colors rounded-xs"
             />
           </div>
 
-          <div className="flex gap-2 w-full md:w-auto">
-            {(["All", "Hybrid", "In-Person"] as const).map((format) => (
-              <button
-                key={format}
-                onClick={() => setFormatFilter(format)}
-                className={`flex-grow md:flex-grow-0 px-4 py-2 border text-xs tracking-widest font-mono uppercase transition-colors cursor-pointer ${
-                  formatFilter === format 
-                    ? 'bg-accent-gold border-accent-gold text-primary-maroon font-bold shadow-md' 
-                    : 'border-accent-gold/25 bg-transparent text-white/80 hover:bg-primary-maroon hover:border-accent-gold/45'
-                }`}
-              >
-                {format}
-              </button>
-            ))}
+          {/* Real-time Category & Format selectors */}
+          <div className="flex flex-col sm:flex-row gap-4 w-full justify-end items-stretch sm:items-center">
+            {/* Subject Area Categories */}
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <span className="text-[9px] font-mono uppercase tracking-wider text-accent-gold/60 mr-1.5 self-center">Subject Area:</span>
+              {(["All", "Cybersecurity", "Internet of Things"] as const).map((subject) => (
+                <button
+                  key={subject}
+                  onClick={() => setSubjectFilter(subject)}
+                  className={`px-3 py-1.5 border text-[10px] font-mono uppercase tracking-wider transition-colors cursor-pointer rounded-xs ${
+                    subjectFilter === subject 
+                      ? 'bg-accent-gold border-accent-gold text-primary-maroon font-bold shadow-xs' 
+                      : 'border-accent-gold/15 bg-transparent text-neutral-300 hover:bg-primary-maroon hover:text-white hover:border-accent-gold/30'
+                  }`}
+                >
+                  {subject === "Internet of Things" ? "IoT" : subject}
+                </button>
+              ))}
+            </div>
+
+            {/* Attendance Format */}
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <span className="text-[9px] font-mono uppercase tracking-wider text-accent-gold/60 mr-1.5 self-center">Format:</span>
+              {(["All", "Hybrid", "In-Person"] as const).map((format) => (
+                <button
+                  key={format}
+                  onClick={() => setFormatFilter(format)}
+                  className={`px-3 py-1.5 border text-[10px] font-mono uppercase tracking-wider transition-colors cursor-pointer rounded-xs ${
+                    formatFilter === format 
+                      ? 'bg-accent-gold border-accent-gold text-primary-maroon font-bold shadow-xs' 
+                      : 'border-accent-gold/15 bg-transparent text-neutral-300 hover:bg-primary-maroon hover:text-white hover:border-accent-gold/30'
+                  }`}
+                >
+                  {format}
+                </button>
+              ))}
+            </div>
           </div>
 
         </div>
