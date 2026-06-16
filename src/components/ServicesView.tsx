@@ -206,16 +206,18 @@ export default function ServicesView({ onNavigate, isLoggedIn }: ServicesViewPro
 
               {/* Publisher format selection */}
               <div className="flex flex-col gap-2">
-                <span className="font-mono text-[10px] text-white font-bold uppercase">Academic Format:</span>
-                <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 text-center text-[10px] font-mono leading-none">
+                <span className="font-mono text-[10px] text-accent-gold font-bold uppercase tracking-wider">Academic Format Options:</span>
+                <div id="academic-format-grid" className="flex flex-wrap gap-2 text-center text-xs font-mono leading-tight">
                   {(['IEEE', 'Springer', 'Elsevier', 'ACM', 'ICETS'] as const).map(fmt => (
                     <button
                       key={fmt}
+                      id={`format-btn-${fmt.toLowerCase()}`}
+                      type="button"
                       onClick={() => setAcademicFormat(fmt)}
-                      className={`p-2.5 border transition-colors cursor-pointer ${
+                      className={`flex-grow min-w-[75px] max-w-[124px] sm:min-w-[90px] p-2.5 rounded-xs border transition-all duration-300 cursor-pointer text-center text-xs font-semibold uppercase tracking-wider ${
                         academicFormat === fmt 
-                          ? 'bg-maroon-dark border-accent-gold/25 text-accent-gold font-bold font-sans shadow-xs' 
-                          : 'bg-primary-maroon/50 border-accent-gold/15 text-neutral-300 hover:bg-primary-maroon'
+                          ? 'bg-accent-gold border-accent-gold text-primary-maroon font-bold shadow-md scale-103' 
+                          : 'bg-primary-maroon border-accent-gold/20 text-[#FAFAF7] hover:text-accent-gold hover:bg-accent-gold/10 hover:border-accent-gold/40'
                       }`}
                     >
                       {fmt}

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, GraduationCap, ChevronRight, LayoutDashboard, LogOut, Award } from 'lucide-react';
+import { Menu, X, GraduationCap, ChevronRight, LayoutDashboard, LogOut, Award, Sun, Moon } from 'lucide-react';
 import { UserState } from '../types';
 
 interface NavigationProps {
@@ -7,9 +7,11 @@ interface NavigationProps {
   onNavigate: (path: string) => void;
   user: UserState;
   onLogout: () => void;
+  theme: 'dark' | 'light';
+  onToggleTheme: () => void;
 }
 
-export default function Navigation({ currentPath, onNavigate, user, onLogout }: NavigationProps) {
+export default function Navigation({ currentPath, onNavigate, user, onLogout, theme, onToggleTheme }: NavigationProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [logoError, setLogoError] = useState(false);
@@ -50,9 +52,11 @@ export default function Navigation({ currentPath, onNavigate, user, onLogout }: 
     <nav
       id="main-nav"
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled || currentPath !== "#/"
-          ? 'bg-maroon-dark/95 backdrop-blur-md shadow-lg border-b border-accent-gold/10'
-          : 'bg-transparent'
+        theme === 'light'
+          ? 'bg-[#FAFAF7]/95 border-b border-accent-gold/20 backdrop-blur-md shadow-xs'
+          : isScrolled || currentPath !== "#/"
+            ? 'bg-maroon-dark/95 backdrop-blur-md shadow-lg border-b border-accent-gold/10'
+            : 'bg-transparent'
       }`}
     >
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
@@ -75,13 +79,17 @@ export default function Navigation({ currentPath, onNavigate, user, onLogout }: 
             )}
           </div>
           <div>
-            <div className="font-serif-display text-xl font-bold tracking-tight text-white flex items-center leading-none">
+            <div className={`font-serif-display text-xl font-bold tracking-tight flex items-center leading-none ${
+              theme === 'light' ? 'text-primary-maroon' : 'text-white'
+            }`}>
               RiTECHS
               <span className="text-accent-gold text-xs font-sans font-semibold tracking-widest ml-1 md:inline hidden align-top">
                 PLATFORM
               </span>
             </div>
-            <p className="text-[9px] font-mono tracking-widest text-[#C9A961]/80 md:block hidden uppercase">
+            <p className={`text-[9px] font-mono tracking-widest md:block hidden uppercase ${
+              theme === 'light' ? 'text-primary-maroon/70' : 'text-[#C9A961]/80'
+            }`}>
               Global Academic Excellence
             </p>
           </div>
@@ -97,7 +105,9 @@ export default function Navigation({ currentPath, onNavigate, user, onLogout }: 
                 className={`relative py-2.5 text-xs font-sans uppercase tracking-widest transition-all duration-300 flex items-center gap-1.5 group/nav cursor-pointer ${
                   isActive(item.path)
                     ? 'text-accent-gold font-semibold'
-                    : 'text-white/80 hover:text-accent-gold'
+                    : theme === 'light'
+                      ? 'text-charcoal/80 hover:text-accent-gold'
+                      : 'text-white/80 hover:text-accent-gold'
                 }`}
               >
                 <span>{item.name}</span>
@@ -114,7 +124,24 @@ export default function Navigation({ currentPath, onNavigate, user, onLogout }: 
             ))}
           </div>
 
-          <div className="h-4 w-px bg-white/20" />
+          <div className={`h-4 w-px ${theme === 'light' ? 'bg-charcoal/10' : 'bg-white/20'}`} />
+
+          {/* Theme Dynamic Controller */}
+          <button
+            onClick={onToggleTheme}
+            className="w-8 h-8 rounded-full border border-accent-gold/20 hover:border-accent-gold hover:rotate-30 transition-all duration-300 flex items-center justify-center cursor-pointer bg-black/5 hover:bg-neutral-100"
+            title={theme === 'dark' ? "Toggle Luxurious Light Theme" : "Toggle Classic Dark Theme"}
+            id="theme-toggle"
+            type="button"
+          >
+            {theme === 'dark' ? (
+              <Sun className="w-4 h-4 text-accent-gold" />
+            ) : (
+              <Moon className="w-4 h-4 text-[#9E7D3B]" />
+            )}
+          </button>
+
+          <div className={`h-4 w-px ${theme === 'light' ? 'bg-charcoal/10' : 'bg-white/20'}`} />
 
           {/* User Controls */}
           <div className="flex items-center gap-4">
@@ -133,14 +160,14 @@ export default function Navigation({ currentPath, onNavigate, user, onLogout }: 
                   Dashboard
                 </button>
                 <div className="hidden xl:flex flex-col text-right">
-                  <span className="text-[10px] text-white/50 leading-tight">Logged as</span>
+                  <span className={`text-[10px] leading-tight ${theme === 'light' ? 'text-charcoal/60' : 'text-white/50'}`}>Logged as</span>
                   <span className="text-[11px] text-accent-gold font-medium leading-none max-w-[100px] truncate">
                     {user.name}
                   </span>
                 </div>
                 <button
                   onClick={onLogout}
-                  className="text-white/60 hover:text-red-400 p-2 transition-colors"
+                  className={`p-2 transition-colors ${theme === 'light' ? 'text-charcoal/60 hover:text-red-600' : 'text-white/60 hover:text-red-400'}`}
                   title="Logout"
                   id="nav-btn-logout"
                 >
@@ -151,7 +178,9 @@ export default function Navigation({ currentPath, onNavigate, user, onLogout }: 
               <>
                 <button
                   onClick={() => handleNav("#/login?mode=login")}
-                  className="text-white/80 hover:text-white text-xs font-sans uppercase tracking-widest transition-colors py-2"
+                  className={`text-xs font-sans uppercase tracking-widest transition-colors py-2 ${
+                    theme === 'light' ? 'text-charcoal/80 hover:text-primary-maroon font-medium' : 'text-white/80 hover:text-white'
+                  }`}
                   id="nav-btn-login"
                 >
                   Scholar Login
@@ -171,7 +200,7 @@ export default function Navigation({ currentPath, onNavigate, user, onLogout }: 
         {/* Mobile Hamburger toggle */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="lg:hidden p-2 text-white hover:text-accent-gold transition-colors focus:outline-none"
+          className={`lg:hidden p-2 transition-colors focus:outline-none ${theme === 'light' ? 'text-charcoal hover:text-accent-gold' : 'text-white hover:text-accent-gold'}`}
           id="mobile-menu-toggle"
         >
           {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -180,14 +209,31 @@ export default function Navigation({ currentPath, onNavigate, user, onLogout }: 
 
       {/* Mobile Drawer Overlay */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-maroon-dark border-t border-accent-gold/10 animate-fade-in py-6 px-6 shadow-inner">
+        <div className={`lg:hidden border-t border-accent-gold/10 animate-fade-in py-6 px-6 shadow-inner ${
+          theme === 'light' ? 'bg-[#FCFBF9] text-charcoal' : 'bg-maroon-dark text-white'
+        }`}>
           <div className="flex flex-col gap-4">
+            <div className="flex justify-between items-center pb-2 border-b border-accent-gold/10">
+              <span className="font-mono text-[9px] uppercase tracking-widest text-accent-gold font-bold">Preferences</span>
+              <button
+                onClick={onToggleTheme}
+                className="flex items-center gap-2 px-3 py-1.5 border border-accent-gold/20 rounded-xs text-xs font-mono uppercase tracking-wider text-accent-gold"
+                id="mobile-theme-toggle"
+              >
+                {theme === 'dark' ? <Sun className="w-3.5 h-3.5" /> : <Moon className="w-3.5 h-3.5" />}
+                <span>{theme === 'dark' ? 'Classy Light' : 'Classic Dark'}</span>
+              </button>
+            </div>
             {navItems.map((item) => (
               <button
                 key={item.name}
                 onClick={() => handleNav(item.path)}
-                className={`py-3 text-left text-sm uppercase tracking-widest border-b border-white/5 transition-colors ${
-                  isActive(item.path) ? 'text-accent-gold font-bold' : 'text-white/80'
+                className={`py-3 text-left text-sm uppercase tracking-widest border-b border-accent-gold/10 transition-colors ${
+                  isActive(item.path) 
+                    ? 'text-accent-gold font-bold' 
+                    : theme === 'light' 
+                      ? 'text-charcoal hover:text-accent-gold' 
+                      : 'text-white/80 hover:text-accent-gold'
                 }`}
               >
                 {item.name}
@@ -196,7 +242,7 @@ export default function Navigation({ currentPath, onNavigate, user, onLogout }: 
 
             {user.isLoggedIn ? (
               <div className="flex flex-col gap-3 pt-4">
-                <div className="text-white/60 text-xs font-sans">
+                <div className={`text-xs font-sans ${theme === 'light' ? 'text-charcoal' : 'text-white/60'}`}>
                   Authenticated: <span className="text-accent-gold font-semibold">{user.name}</span> ({user.role})
                 </div>
                 <div className="grid grid-cols-2 gap-3">
@@ -209,7 +255,11 @@ export default function Navigation({ currentPath, onNavigate, user, onLogout }: 
                   </button>
                   <button
                     onClick={onLogout}
-                    className="bg-red-950/40 border border-red-500/20 text-red-400 py-3 text-xs uppercase tracking-wider"
+                    className={`border text-xs uppercase tracking-wider py-3 ${
+                      theme === 'light' 
+                        ? 'bg-neutral-100 border-charcoal/10 text-charcoal' 
+                        : 'bg-red-950/40 border-red-500/20 text-red-100'
+                    }`}
                   >
                     Logout
                   </button>
@@ -219,7 +269,9 @@ export default function Navigation({ currentPath, onNavigate, user, onLogout }: 
               <div className="flex flex-col gap-3 pt-4">
                 <button
                   onClick={() => handleNav("#/login?mode=login")}
-                  className="border border-white/30 text-white hover:border-white py-3 text-xs uppercase tracking-widest text-center"
+                  className={`border py-3 text-xs uppercase tracking-widest text-center ${
+                    theme === 'light' ? 'border-charcoal/20 text-charcoal' : 'border-white/30 text-white'
+                  }`}
                 >
                   Scholar Login
                 </button>

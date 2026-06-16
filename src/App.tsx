@@ -60,6 +60,27 @@ export default function App() {
   });
 
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    const saved = localStorage.getItem('ritechs_theme');
+    return (saved === 'light' || saved === 'dark') ? saved : 'dark';
+  });
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (theme === 'light') {
+      root.classList.add('theme-light');
+      root.classList.remove('theme-dark');
+    } else {
+      root.classList.add('theme-dark');
+      root.classList.remove('theme-light');
+    }
+  }, [theme]);
+
+  const toggleTheme = () => {
+    const nextTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(nextTheme);
+    localStorage.setItem('ritechs_theme', nextTheme);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -248,7 +269,9 @@ export default function App() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen font-sans bg-neutral-warm">
+    <div className={`flex flex-col min-h-screen font-sans transition-colors duration-300 ${
+      theme === 'light' ? 'bg-[#FCFBF9]' : 'bg-neutral-warm'
+    }`}>
       {/* Subtle top-of-page high-end scroll bar */}
       <div 
         className="fixed top-0 left-0 h-[3px] bg-accent-gold z-[9999] transition-all duration-100 ease-out" 
@@ -262,15 +285,21 @@ export default function App() {
         onNavigate={handleNavigate} 
         user={user} 
         onLogout={handleLogout} 
+        theme={theme}
+        onToggleTheme={toggleTheme}
       />
 
       {/* Subtle, elegant breadcrumb navigation bar */}
       {breadcrumbs && (
         <div 
-          className="bg-[#030a17] border-b border-accent-gold/20 pt-18 sm:pt-20 pb-3.5 px-6 select-none relative z-25" 
+          className={`border-b border-accent-gold/20 pt-18 sm:pt-20 pb-3.5 px-6 select-none relative z-25 transition-colors duration-300 ${
+            theme === 'light' ? 'bg-[#F4F1E8]' : 'bg-[#030a17]'
+          }`} 
           id="ritechs-breadcrumbs"
         >
-          <div className="max-w-6xl mx-auto flex items-center gap-2.5 text-[10px] font-mono tracking-wide text-white/50">
+          <div className={`max-w-6xl mx-auto flex items-center gap-2.5 text-[10px] font-mono tracking-wide ${
+            theme === 'light' ? 'text-charcoal/60' : 'text-white/50'
+          }`}>
             {breadcrumbs.map((crumb, idx) => {
               const isLast = idx === breadcrumbs.length - 1;
               return (
@@ -281,7 +310,9 @@ export default function App() {
                   ) : (
                     <button 
                       onClick={() => handleNavigate(crumb.path)}
-                      className="hover:text-accent-gold transition-colors focus:outline-none cursor-pointer uppercase"
+                      className={`hover:text-accent-gold transition-colors focus:outline-none cursor-pointer uppercase ${
+                        theme === 'light' ? 'text-charcoal/80' : 'text-white/80'
+                      }`}
                     >
                       {crumb.label}
                     </button>
