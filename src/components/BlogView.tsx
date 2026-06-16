@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { BlogPost } from '../types';
 import { Calendar, User, Clock, ArrowRight, X, Heart, MessageSquare, BookMarked, Search } from 'lucide-react';
 import { FadeUpSection } from './FadeUpSection';
+import { SafeImageWithSkeleton } from './SafeImageWithSkeleton';
 
 interface BlogViewProps {
   blogs: BlogPost[];
@@ -34,10 +35,10 @@ export default function BlogView({ blogs }: BlogViewProps) {
       <section className="bg-gradient-to-b from-maroon-dark to-primary-maroon text-white py-20 px-6 text-center relative premium-noise">
         <div className="max-w-4xl mx-auto">
           <h3 className="text-xs font-mono tracking-widest text-accent-gold uppercase mb-4">Litterae & Gazette</h3>
-          <h1 className="font-serif-display text-4xl sm:text-6xl font-bold tracking-tight mb-8">
+          <h1 className="font-serif-display text-3xl sm:text-4xl md:text-5.5xl lg:text-6xl font-bold tracking-tight mb-8">
             RiTECHS Editorial
           </h1>
-          <p className="font-serif-accent text-lg sm:text-xl italic text-white/80 max-w-2xl mx-auto leading-relaxed font-light">
+          <p className="font-serif-accent text-base sm:text-lg lg:text-xl italic text-white/80 max-w-2xl mx-auto leading-relaxed font-light">
             Insights on peer-rebuttals, abstract positioning hooks, and research methodology advances in emerging security, IoT smart cities, and AI-energy nodes.
           </p>
         </div>
@@ -88,11 +89,11 @@ export default function BlogView({ blogs }: BlogViewProps) {
             >
               {/* The 16:9 Image */}
               <div className="lg:col-span-7 aspect-[16/9] overflow-hidden border border-accent-gold/25 bg-charcoal/10 relative">
-                <img 
+                <SafeImageWithSkeleton 
                   src={featuredPost.image} 
                   alt={featuredPost.title}
-                  referrerPolicy="no-referrer"
                   className="w-full h-full object-cover group-hover:scale-[1.02] transition-all duration-[800ms]"
+                  skeletonClassName="bg-primary-maroon-light/60"
                 />
                 <div className="absolute top-4 left-4 bg-maroon-dark/95 border border-accent-gold/45 text-accent-gold text-[9px] font-mono px-3 py-1 tracking-widest font-semibold uppercase">
                   FEATURED CRITIQUE
@@ -107,13 +108,13 @@ export default function BlogView({ blogs }: BlogViewProps) {
                 </div>
 
                 {/* Gold underline animation on headline */}
-                <h2 className="font-serif-display text-2.5xl sm:text-3.5xl lg:text-4xl text-white font-bold leading-tight mb-4 relative inline-block text-left">
+                <h2 className="font-serif-display text-xl sm:text-2xl md:text-3xl lg:text-4xl text-white font-bold leading-tight mb-4 relative inline-block text-left">
                   <span className="bg-left-bottom bg-gradient-to-r from-accent-gold to-accent-gold bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 pb-1">
                     {featuredPost.title}
                   </span>
                 </h2>
 
-                <p className="text-sm text-neutral-300 leading-relaxed font-light mb-6 line-clamp-3 text-left">
+                <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed font-light mb-6 line-clamp-3 text-left">
                   {featuredPost.excerpt}
                 </p>
 
@@ -130,26 +131,26 @@ export default function BlogView({ blogs }: BlogViewProps) {
 
           {/* 2. Secondary Magazine Grid: 3 columns */}
           <div className="flex flex-col gap-10">
-            <h3 className="font-serif-display text-xl sm:text-2xl text-white font-bold border-b border-accent-gold/20 pb-3 text-left">
+            <h3 className="font-serif-display text-lg sm:text-xl lg:text-2xl text-white font-bold border-b border-accent-gold/20 pb-3 text-left">
               {activeTab === 'All' ? 'Latest Scholarly Essays' : `${activeTab} Columns`}
             </h3>
 
             {filteredBlogs.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredBlogs.map(post => (
                   <div 
                     key={post.id}
                     onClick={() => handleOpenPost(post)}
-                    className="flex flex-col h-full cursor-pointer group text-left"
+                    className="flex flex-col h-full cursor-pointer group text-left bg-primary-maroon/20 border border-accent-gold/15 p-5 rounded-xs hover:border-accent-gold/35 hover:shadow-lg transition-all duration-300"
                     id={`article-${post.id}`}
                   >
                     {/* Portrait 4:3 images */}
-                    <div className="aspect-[4/3] overflow-hidden border border-accent-gold/20 bg-charcoal/10 shrink-0 mb-6 relative">
-                      <img 
+                    <div className="aspect-[4/3] overflow-hidden border border-accent-gold/20 bg-charcoal/10 shrink-0 mb-4 relative">
+                      <SafeImageWithSkeleton 
                         src={post.image} 
                         alt={post.title}
-                        referrerPolicy="no-referrer"
                         className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700"
+                        skeletonClassName="bg-primary-maroon-dark/60"
                       />
                       <div className="absolute top-3 left-3 bg-maroon-dark/95 backdrop-blur-xs border border-accent-gold/30 text-accent-gold text-[8px] font-mono px-2 py-0.5 tracking-wider font-semibold uppercase">
                         {post.category}
@@ -163,7 +164,7 @@ export default function BlogView({ blogs }: BlogViewProps) {
                         <span>{post.readTime}</span>
                       </div>
 
-                      <h4 className="font-serif-display text-lg text-white font-bold leading-snug mb-3">
+                      <h4 className="font-serif-display text-sm sm:text-base lg:text-lg text-white font-bold leading-snug mb-3">
                         <span className="bg-left-bottom bg-gradient-to-r from-accent-gold to-accent-gold bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 pb-0.5">
                           {post.title}
                         </span>
@@ -228,7 +229,7 @@ export default function BlogView({ blogs }: BlogViewProps) {
                 <span>{selectedPost.readTime}</span>
               </div>
 
-              <h1 className="font-serif-display text-2xl sm:text-3xl text-white font-bold leading-tight">
+              <h1 className="font-serif-display text-xl sm:text-2xl lg:text-3xl text-white font-bold leading-tight">
                 {selectedPost.title}
               </h1>
 
@@ -240,10 +241,11 @@ export default function BlogView({ blogs }: BlogViewProps) {
 
               {/* Article Hero Banner */}
               <div className="aspect-[16/9] overflow-hidden border border-accent-gold/15 bg-charcoal/5 select-none shrink-0">
-                <img 
+                <SafeImageWithSkeleton 
                   src={selectedPost.image} 
                   alt={selectedPost.title} 
                   className="w-full h-full object-cover"
+                  skeletonClassName="bg-primary-maroon-dark/60"
                 />
               </div>
 

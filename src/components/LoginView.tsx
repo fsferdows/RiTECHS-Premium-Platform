@@ -44,15 +44,16 @@ export default function LoginView({ currentPath, onLoginSuccess, onNavigate }: L
         const dummyEmail = email || 'academic@wolverhampton.ac.uk';
         const dummyName = dummyEmail.split('@')[0].replace('.', ' ').replace(/\b\w/g, c => c.toUpperCase());
         
+        const isAdmin = dummyEmail.toLowerCase().includes('admin');
         const loggedUser: UserState = {
           isLoggedIn: true,
-          role: roleType,
-          name: dummyName,
+          role: isAdmin ? 'admin' : roleType,
+          name: isAdmin ? 'Platform Administrator' : dummyName,
           email: dummyEmail
         };
 
         onLoginSuccess(loggedUser);
-        onNavigate('#/dashboard');
+        onNavigate(isAdmin ? '#/admin' : '#/dashboard');
       } else {
         // Register simulator
         if (!name || !email) {
@@ -79,6 +80,21 @@ export default function LoginView({ currentPath, onLoginSuccess, onNavigate }: L
         }, 1500);
       }
     }, 1200);
+  };
+
+  const handleAdminBypass = () => {
+    setSubmitting(true);
+    setTimeout(() => {
+      setSubmitting(false);
+      const adminUser: UserState = {
+        isLoggedIn: true,
+        role: 'admin',
+        name: 'Platform Administrator',
+        email: 'admin@ritechs.org'
+      };
+      onLoginSuccess(adminUser);
+      onNavigate('#/admin');
+    }, 800);
   };
 
   return (
@@ -375,6 +391,25 @@ export default function LoginView({ currentPath, onLoginSuccess, onNavigate }: L
                 </>
               )}
             </motion.button>
+
+            {formMode === 'login' && (
+              <div className="mt-4 flex flex-col gap-2">
+                <div className="flex items-center gap-2">
+                  <div className="h-px bg-accent-gold/25 flex-grow" />
+                  <span className="text-[8px] font-mono tracking-widest text-[#9D8F7B] uppercase font-bold">Or Demo Roles</span>
+                  <div className="h-px bg-accent-gold/25 flex-grow" />
+                </div>
+                <button
+                  type="button"
+                  onClick={handleAdminBypass}
+                  className="w-full bg-white hover:bg-neutral-100 text-[#AA2330] border border-[#AA2330]/30 hover:border-[#AA2330] py-3.5 font-mono font-bold uppercase tracking-widest text-[9.5px] transition-all duration-300 flex items-center justify-center gap-2 rounded-xs cursor-pointer shadow-sm"
+                  id="admin-bypass-login-btn"
+                >
+                  <Sparkles className="w-4 h-4 text-accent-gold fill-accent-gold/20 animate-pulse" />
+                  <span>Access Secretariat Admin Panel</span>
+                </button>
+              </div>
+            )}
 
             {/* Quick help notice */}
             <p className="text-center text-[10.5px] text-neutral-500 font-sans font-light leading-relaxed mt-2 border-t border-accent-gold/10 pt-4">

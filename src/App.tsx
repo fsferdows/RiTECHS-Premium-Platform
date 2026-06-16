@@ -5,9 +5,11 @@
 
 import { useState, useEffect } from 'react';
 import { 
-  INITIAL_CONFERENCES, INITIAL_BLOGS, INITIAL_MANUSCRIPTS, UserState, Manuscript 
+  INITIAL_CONFERENCES, INITIAL_BLOGS, INITIAL_MANUSCRIPTS, UserState, Manuscript,
+  BlogPost, Conference, Mentor
 } from './types';
 import { INITIAL_MENTORS } from './data';
+import AdminDashboardView from './components/AdminDashboardView';
 
 // Importing beautiful modular pages
 import Navigation from './components/Navigation';
@@ -58,6 +60,51 @@ export default function App() {
   const [currentPath, setCurrentPath] = useState<string>(() => {
     return window.location.hash || '#/';
   });
+
+  const [blogs, setBlogs] = useState<BlogPost[]>(() => {
+    const saved = localStorage.getItem('ritechs_blogs');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {}
+    }
+    return INITIAL_BLOGS;
+  });
+
+  const [conferences, setConferences] = useState<Conference[]>(() => {
+    const saved = localStorage.getItem('ritechs_conferences');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {}
+    }
+    return INITIAL_CONFERENCES;
+  });
+
+  const [mentors, setMentors] = useState<Mentor[]>(() => {
+    const saved = localStorage.getItem('ritechs_mentors');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {}
+    }
+    return INITIAL_MENTORS;
+  });
+
+  const handleUpdateBlogs = (nextBlogs: BlogPost[]) => {
+    setBlogs(nextBlogs);
+    localStorage.setItem('ritechs_blogs', JSON.stringify(nextBlogs));
+  };
+
+  const handleUpdateConferences = (nextConferences: Conference[]) => {
+    setConferences(nextConferences);
+    localStorage.setItem('ritechs_conferences', JSON.stringify(nextConferences));
+  };
+
+  const handleUpdateMentors = (nextMentors: Mentor[]) => {
+    setMentors(nextMentors);
+    localStorage.setItem('ritechs_mentors', JSON.stringify(nextMentors));
+  };
 
   const [scrollProgress, setScrollProgress] = useState(0);
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
@@ -123,6 +170,8 @@ export default function App() {
       crumbs.push({ label: 'Scholar Login', path: '#/login' });
     } else if (normalized === '#/dashboard') {
       crumbs.push({ label: 'Student Dashboard', path: '#/dashboard' });
+    } else if (normalized === '#/admin') {
+      crumbs.push({ label: 'Secretariat Admin Panel', path: '#/admin' });
     } else {
       crumbs.push({ label: 'Academic Ecosystem', path: normalized });
     }
@@ -179,9 +228,9 @@ export default function App() {
       return (
         <HomeView 
           onNavigate={handleNavigate} 
-          conferences={INITIAL_CONFERENCES} 
-          mentors={INITIAL_MENTORS} 
-          blogs={INITIAL_BLOGS} 
+          conferences={conferences} 
+          mentors={mentors} 
+          blogs={blogs} 
         />
       );
     }
@@ -194,7 +243,7 @@ export default function App() {
       return (
         <ConferencesView 
           currentPath={currentPath} 
-          conferences={INITIAL_CONFERENCES} 
+          conferences={conferences} 
           onNavigate={handleNavigate} 
         />
       );
@@ -203,7 +252,7 @@ export default function App() {
     if (normalized === '#/mentors') {
       return (
         <MentorsView 
-          mentors={INITIAL_MENTORS} 
+          mentors={mentors} 
           onNavigate={handleNavigate} 
         />
       );
@@ -219,7 +268,7 @@ export default function App() {
     }
 
     if (normalized === '#/blog') {
-      return <BlogView blogs={INITIAL_BLOGS} />;
+      return <BlogView blogs={blogs} />;
     }
 
     if (normalized === '#/contact') {
@@ -232,6 +281,30 @@ export default function App() {
           currentPath={currentPath} 
           onLoginSuccess={handleLoginSuccess} 
           onNavigate={handleNavigate} 
+        />
+      );
+    }
+
+    if (normalized === '#/admin') {
+      if (!user.isLoggedIn || user.role !== 'admin') {
+        return (
+          <LoginView 
+            currentPath="#/login?mode=login" 
+            onLoginSuccess={handleLoginSuccess} 
+            onNavigate={handleNavigate} 
+          />
+        );
+      }
+      return (
+        <AdminDashboardView 
+          conferences={conferences}
+          blogs={blogs}
+          mentors={mentors}
+          onUpdateConferences={handleUpdateConferences}
+          onUpdateBlogs={handleUpdateBlogs}
+          onUpdateMentors={handleUpdateMentors}
+          onNavigate={handleNavigate}
+          onLogout={handleLogout}
         />
       );
     }
@@ -261,9 +334,9 @@ export default function App() {
     return (
       <HomeView 
         onNavigate={handleNavigate} 
-        conferences={INITIAL_CONFERENCES} 
-        mentors={INITIAL_MENTORS} 
-        blogs={INITIAL_BLOGS} 
+        conferences={conferences} 
+        mentors={mentors} 
+        blogs={blogs} 
       />
     );
   };

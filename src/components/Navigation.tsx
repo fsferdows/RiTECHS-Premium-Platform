@@ -147,18 +147,35 @@ export default function Navigation({ currentPath, onNavigate, user, onLogout, th
           <div className="flex items-center gap-4">
             {user.isLoggedIn ? (
               <>
-                <button
-                  onClick={() => handleNav("#/dashboard")}
-                  className={`flex items-center gap-2 px-4 py-2 border border-accent-gold/30 rounded-xs text-xs font-sans uppercase tracking-widest transition-all duration-300 ${
-                    currentPath === "#/dashboard"
-                      ? 'bg-accent-gold text-primary-maroon font-bold'
-                      : 'text-accent-gold hover:bg-accent-gold/10'
-                  }`}
-                  id="nav-btn-dashboard"
-                >
-                  <LayoutDashboard className="w-3.5 h-3.5" />
-                  Dashboard
-                </button>
+                {user.role === 'admin' ? (
+                  <button
+                    onClick={() => handleNav("#/admin")}
+                    className={`flex items-center gap-2 px-4 py-2 border border-accent-gold rounded-xs text-xs font-sans uppercase tracking-widest transition-all duration-300 ${
+                      currentPath === "#/admin"
+                        ? 'bg-accent-gold text-primary-maroon font-bold'
+                        : theme === 'light'
+                          ? 'text-primary-maroon border-primary-maroon/50 hover:bg-primary-maroon/5'
+                          : 'text-accent-gold hover:bg-accent-gold/10'
+                    }`}
+                    id="nav-btn-admin"
+                  >
+                    <Award className="w-3.5 h-3.5" />
+                    Admin CMS Panel
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handleNav("#/dashboard")}
+                    className={`flex items-center gap-2 px-4 py-2 border border-accent-gold/30 rounded-xs text-xs font-sans uppercase tracking-widest transition-all duration-300 ${
+                      currentPath === "#/dashboard"
+                        ? 'bg-accent-gold text-primary-maroon font-bold'
+                        : 'text-accent-gold hover:bg-accent-gold/10'
+                    }`}
+                    id="nav-btn-dashboard"
+                  >
+                    <LayoutDashboard className="w-3.5 h-3.5" />
+                    Dashboard
+                  </button>
+                )}
                 <div className="hidden xl:flex flex-col text-right">
                   <span className={`text-[10px] leading-tight ${theme === 'light' ? 'text-charcoal/60' : 'text-white/50'}`}>Logged as</span>
                   <span className="text-[11px] text-accent-gold font-medium leading-none max-w-[100px] truncate">
@@ -246,13 +263,23 @@ export default function Navigation({ currentPath, onNavigate, user, onLogout, th
                   Authenticated: <span className="text-accent-gold font-semibold">{user.name}</span> ({user.role})
                 </div>
                 <div className="grid grid-cols-2 gap-3">
-                  <button
-                    onClick={() => handleNav("#/dashboard")}
-                    className="flex items-center justify-center gap-2 bg-accent-gold/10 border border-accent-gold text-accent-gold py-3 text-xs uppercase tracking-wider font-semibold"
-                  >
-                    <LayoutDashboard className="w-4 h-4" />
-                    Dashboard
-                  </button>
+                  {user.role === 'admin' ? (
+                    <button
+                      onClick={() => handleNav("#/admin")}
+                      className="flex items-center justify-center gap-2 bg-accent-gold text-primary-maroon py-3 text-xs uppercase tracking-wider font-semibold"
+                    >
+                      <Award className="w-4 h-4" />
+                      Admin CMS
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleNav("#/dashboard")}
+                      className="flex items-center justify-center gap-2 bg-accent-gold/10 border border-accent-gold text-accent-gold py-3 text-xs uppercase tracking-wider font-semibold"
+                    >
+                      <LayoutDashboard className="w-4 h-4" />
+                      Dashboard
+                    </button>
+                  )}
                   <button
                     onClick={onLogout}
                     className={`border text-xs uppercase tracking-wider py-3 ${

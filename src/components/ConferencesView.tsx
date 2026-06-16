@@ -5,11 +5,12 @@ import {
   MapPinIcon, Sparkles, Building, CreditCard, ChevronLeft, Check, Ticket,
   Shield, Globe, FileText, Users, Download, ExternalLink, Cpu, BookOpen, 
   Layers, Network, CheckCircle, ChevronDown, ListFilter, AlertTriangle, 
-  FileCheck, HelpCircle, ArrowRight, User
+  FileCheck, HelpCircle, ArrowRight, User, FolderOpen
 } from 'lucide-react';
 import { TiltCard } from './TiltCard';
 import { FadeUpSection } from './FadeUpSection';
 import { ConferenceCard } from './ConferenceCard';
+import { SafeImageWithSkeleton } from './SafeImageWithSkeleton';
 
 // Comprehensive static dataset for ICETCS 2026 to make the UI detailed and advance
 const ICETCS_TPC_MEMBERS = [
@@ -483,6 +484,57 @@ export default function ConferencesView({ currentPath, conferences, onNavigate }
                   </div>
                 </div>
 
+                {/* Official Documents & Files */}
+                <div className="border border-divider-gold/45 p-6 rounded-xs bg-white text-left shadow-xs mb-6">
+                  <h3 className="font-sans text-xs text-[#6B7280] font-bold uppercase tracking-wider mb-4 flex items-center gap-1.5">
+                    <FileCheck className="w-4 h-4 text-accent-gold shrink-0" /> Conference Files & Assets
+                  </h3>
+                  
+                  {/* RiTECHS logo or school logo inside resource sidebar */}
+                  <div className="flex items-center gap-4 p-3 bg-neutral-warm/40 border border-divider-gold/20 rounded-xs mb-4">
+                    <img 
+                      src={activeConference.logoUrl || "/logo.png"} 
+                      alt="Institution Logo" 
+                      className="w-12 h-12 object-contain bg-primary-maroon p-1 border border-accent-gold/30 rounded-xs shrink-0" 
+                      onError={(e) => {
+                        e.currentTarget.src = "/logo.png";
+                      }}
+                    />
+                    <div>
+                      <h4 className="text-[11px] font-mono uppercase font-bold text-primary-navy">Official Logo Badge</h4>
+                      <p className="text-[9px] text-[#6B7280] leading-tight font-light">Official publication and affiliation seal of RiTECHS.</p>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col gap-3">
+                    <a 
+                      href={activeConference.cfpPdfUrl || "https://ritechs.org/uploads/1779448778.pdf"} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="bg-accent-gold/10 hover:bg-accent-gold/20 p-3.5 rounded-xs border border-[#C9A961]/40 flex justify-between items-center transition-all duration-300 text-xs text-primary-navy font-medium group/link"
+                    >
+                      <span className="font-sans font-semibold flex items-center gap-2">
+                        <Download className="w-4 h-4 text-accent-gold shrink-0" />
+                        Download CFP PDF
+                      </span>
+                      <ExternalLink className="w-3.5 h-3.5 text-[#6B7280] group-hover/link:text-accent-gold transition-colors shrink-0" />
+                    </a>
+
+                    <a 
+                      href={activeConference.uploadsFolderUrl || "https://ritechs.org/uploads"} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="bg-neutral-warm hover:bg-neutral-warm/80 p-3.5 rounded-xs border border-divider-gold/30 flex justify-between items-center transition-all duration-300 text-xs text-primary-navy font-medium group/link"
+                    >
+                      <span className="font-sans font-semibold flex items-center gap-2">
+                        <FolderOpen className="w-4 h-4 text-accent-gold shrink-0" />
+                        Web Uploads Folder
+                      </span>
+                      <ExternalLink className="w-3.5 h-3.5 text-[#6B7280] group-hover/link:text-accent-gold transition-colors shrink-0" />
+                    </a>
+                  </div>
+                </div>
+
                 {/* Organizer Associated Links & Logos */}
                 <div className="border border-divider-gold/40 p-6 rounded-xs bg-white text-left shadow-xs">
                   <h3 className="font-sans text-xs text-[#6B7280] font-bold uppercase tracking-wider mb-4">
@@ -900,18 +952,12 @@ export default function ConferencesView({ currentPath, conferences, onNavigate }
                       className="bg-white border border-divider-gold/45 p-6 flex flex-col sm:flex-row gap-6 shadow-xs hover:shadow-md transition-all duration-300 rounded-xs group text-left align-middle"
                     >
                       <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-xs overflow-hidden shrink-0 bg-charcoal/10 border border-divider-gold/35 relative">
-                        <img 
+                        <SafeImageWithSkeleton 
                           src={prof.image} 
                           alt={prof.name}
                           className="w-full h-full object-cover transition-all duration-[850ms] ease-out group-hover:scale-105"
-                          referrerPolicy="no-referrer"
-                          onError={(e) => {
-                            const errEl = e.currentTarget;
-                            const samplePfx = "https://images.unsplash.com/photo-";
-                            if (!errEl.src.startsWith(samplePfx)) {
-                              errEl.src = "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=400";
-                            }
-                          }}
+                          fallbackSrc="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=400"
+                          skeletonClassName="bg-primary-maroon-dark/60"
                         />
                       </div>
 
@@ -937,12 +983,13 @@ export default function ConferencesView({ currentPath, conferences, onNavigate }
                 ) : (
                   activeConference.speakers && activeConference.speakers.map((speaker, index) => (
                     <div key={index} className="flex flex-col sm:flex-row gap-6 items-center border border-divider-gold/30 p-6 bg-neutral-warm/40 group">
-                      <div className="w-32 h-32 rounded-sm overflow-hidden shrink-0 bg-charcoal/10 border border-divider-gold">
-                        <img 
+                      <div className="w-32 h-32 rounded-sm overflow-hidden shrink-0 bg-charcoal/10 border border-divider-gold relative">
+                        <SafeImageWithSkeleton 
                           src={speaker.image} 
                           alt={speaker.name}
-                          referrerPolicy="no-referrer"
                           className="w-full h-full object-cover group-hover:scale-105 transition-all duration-[700ms]"
+                          fallbackSrc="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=400"
+                          skeletonClassName="bg-primary-maroon-dark/60"
                         />
                       </div>
                       <div className="text-center sm:text-left">
@@ -1324,21 +1371,12 @@ export default function ConferencesView({ currentPath, conferences, onNavigate }
 
           {/* Right Column: Clear, unobstructed PNG background/banner image */}
           <div className="lg:col-span-5 w-full h-48 sm:h-64 lg:h-80 overflow-hidden relative border border-accent-gold/30 rounded-xs shadow-xl group">
-            <img 
+            <SafeImageWithSkeleton 
               src="/banner 3.png" 
               alt="Scholastic Campus Backdrop" 
-              referrerPolicy="no-referrer"
               className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500"
-              onError={(e) => {
-                const el = e.currentTarget;
-                const bkp = "https://images.unsplash.com/photo-1491841573176-0aa59e4b67ad?auto=format&fit=crop&q=80&w=1600";
-                if (el.src !== bkp) {
-                  el.src = bkp;
-                } else {
-                  el.onerror = null;
-                  el.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3Crect width='100%25' height='100%25' fill='%23000'/%3E%3C/svg%3E";
-                }
-              }}
+              fallbackSrc="https://images.unsplash.com/photo-1491841573176-0aa59e4b67ad?auto=format&fit=crop&q=80&w=1600"
+              skeletonClassName="bg-primary-maroon-dark/60"
             />
             {/* Subtle elegant gold overlay/plaque line */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />

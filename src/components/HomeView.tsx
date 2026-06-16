@@ -726,7 +726,18 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
         </div>
 
         <div className="relative z-10 max-w-3xl mx-auto px-6">
-          <GraduationCap className="w-10 h-10 text-accent-gold mx-auto mb-4" />
+          <div className="flex justify-center mb-6">
+            <div className="relative group p-1 bg-[#102447]/90 border-2 border-accent-gold/45 rounded-sm shadow-xl transition-transform duration-300 hover:scale-105">
+              <img 
+                src="/logo.png" 
+                alt="RiTECHS Logo" 
+                className="w-16 h-16 object-contain"
+                onError={(e) => {
+                  // If space or path issue causes fallback, display block nicely or use text
+                }}
+              />
+            </div>
+          </div>
           <h2 className="font-serif-display text-2.5xl sm:text-4xl font-bold mb-4">
             Begin Your Journey to Excellence
           </h2>
@@ -748,6 +759,27 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
             >
               Verify RiTECHS Status & Governance
             </button>
+          </div>
+
+          <div className="mt-8 pt-6 border-t border-white/10 flex flex-wrap gap-4 justify-center items-center text-[10px] font-mono tracking-wider">
+            <span className="text-white/40">OFFICIAL DOCUMENTS //</span>
+            <a 
+              href="https://ritechs.org/uploads/1779448778.pdf" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-accent-gold hover:text-white transition-colors flex items-center gap-1.5 font-bold"
+            >
+              Download CFP PDF
+            </a>
+            <span className="text-white/20">|</span>
+            <a 
+              href="https://ritechs.org/uploads" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-accent-gold hover:text-white transition-colors flex items-center gap-1.5 font-bold"
+            >
+              Explore Uploads Directory
+            </a>
           </div>
         </div>
       </FadeUpSection>

@@ -2,7 +2,7 @@
 
 export interface UserState {
   isLoggedIn: boolean;
-  role: "mentee" | "mentor" | null;
+  role: "mentee" | "mentor" | "admin" | null;
   name: string | null;
   email: string | null;
 }
@@ -91,6 +91,9 @@ export interface Conference {
     benefits: string[];
     isFeatured?: boolean;
   }[];
+  cfpPdfUrl?: string;
+  uploadsFolderUrl?: string;
+  logoUrl?: string;
 }
 
 export const INITIAL_CONFERENCES: Conference[] = [
@@ -104,6 +107,8 @@ export const INITIAL_CONFERENCES: Conference[] = [
     location: "University of Genoa, Italy",
     dates: "12-Oct-26 to 13-Oct-26",
     format: "Hybrid",
+    cfpPdfUrl: "https://ritechs.org/uploads/1779448778.pdf",
+    uploadsFolderUrl: "https://ritechs.org/uploads",
     description: "The primary objective of the International Conference on Emerging Trends in Cybersecurity (ICETCS 2026) is to provide a global platform for researchers, academicians, and industry professionals to discuss innovations, discuss cyber threats, and discover advanced security solutions.",
     tracks: [
       "Quantum-Resistant Cryptography & Public Key Frameworks",

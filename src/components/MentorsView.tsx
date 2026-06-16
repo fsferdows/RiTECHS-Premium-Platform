@@ -237,7 +237,7 @@ export default function MentorsView({ mentors, onNavigate }: MentorsViewProps) {
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-16">
             <h3 className="text-xs font-mono tracking-widest text-accent-gold uppercase mb-2">Operational Framework</h3>
-            <h2 className="font-serif-display text-3xl sm:text-4.5xl text-white font-bold leading-tight">
+            <h2 className="font-serif-display text-2xl sm:text-3xl md:text-4xl text-white font-bold leading-tight">
               Our Matchmaker Procedure
             </h2>
             <p className="text-xs text-neutral-300 max-w-xl mx-auto leading-relaxed mt-2 font-light">
@@ -257,7 +257,7 @@ export default function MentorsView({ mentors, onNavigate }: MentorsViewProps) {
               { num: "07", title: "Feedback & Assessment", desc: "Conduct strict peer auditing rounds, providing metric review density assessments." },
               { num: "08", title: "Strengthen Connections", desc: "Consolidate persistent alumni relations, solidifying worldwide peer networks." }
             ].map((step, idx) => (
-              <div key={idx} className="bg-primary-maroon border border-accent-gold/15 p-6 flex flex-col justify-between hover:border-accent-gold/40 transition-colors duration-300 rounded-xs">
+              <div key={idx} className="bg-primary-maroon border border-accent-gold/15 p-5 flex flex-col justify-between hover:border-accent-gold/40 transition-colors duration-300 rounded-xs">
                 <span className="font-mono text-xs font-bold text-accent-gold">{step.num} // PROCESS_STAGE</span>
                 <div className="mt-4">
                   <h4 className="font-serif-display text-sm font-bold text-white mb-1.5 uppercase tracking-wide">
@@ -273,7 +273,7 @@ export default function MentorsView({ mentors, onNavigate }: MentorsViewProps) {
 
           {/* Output Goals Double Column */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 border-t border-accent-gold/10 pt-16">
-            <div className="bg-primary-maroon border border-accent-gold/15 p-10 rounded-sm relative overflow-hidden">
+            <div className="bg-primary-maroon border border-accent-gold/15 p-5 md:p-6 rounded-sm relative overflow-hidden">
               <div className="absolute top-0 right-0 w-16 h-16 bg-accent-gold/5 flex items-center justify-center font-mono text-[9px] font-bold text-accent-gold uppercase tracking-wider">
                 Advisors
               </div>
@@ -299,7 +299,7 @@ export default function MentorsView({ mentors, onNavigate }: MentorsViewProps) {
               </ul>
             </div>
 
-            <div className="bg-primary-maroon border border-accent-gold/15 p-10 rounded-sm relative overflow-hidden">
+            <div className="bg-primary-maroon border border-accent-gold/15 p-5 md:p-6 rounded-sm relative overflow-hidden">
               <div className="absolute top-0 right-0 w-16 h-16 bg-accent-gold/5 flex items-center justify-center font-mono text-[9px] font-bold text-accent-gold uppercase tracking-wider">
                 Scholars
               </div>

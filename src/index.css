@@ -234,7 +234,11 @@ input:focus, select:focus, textarea:focus {
   box-shadow: 0 20px 50px rgba(3, 10, 23, 0.8);
 }
 
-/* CLASSY WHITE / LIGHT GROUND THEMATIC OVERRIDES */
+/* CLASSY WHITE / LIGHT GROUND THEMATIC OVERRIDES & THEME SHIFT TRANSITIONS */
+html, body, #root, #app, main, section, nav, footer, .glass-card, h1, h2, h3, h4, p, span, button, input, select, textarea, .bg-primary-maroon, .bg-maroon-dark, .bg-neutral-warm, .bg-[#030a17], .bg-primary-maroon/20, .bg-primary-maroon/40 {
+  transition: background-color 500ms ease-in-out, color 500ms ease-in-out, border-color 500ms ease-in-out, box-shadow 500ms ease-in-out, filter 500ms ease-in-out !important;
+}
+
 .theme-light {
   /* Guard the primary maroon variable from being bleached so that logo texts and highlights remain rich burgundy */
   --color-neutral-warm: #FCFBF9;

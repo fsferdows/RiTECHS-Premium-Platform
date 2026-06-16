@@ -21,8 +21,17 @@ export default function ServicesView({ onNavigate, isLoggedIn }: ServicesViewPro
   const [tierOption, setTierOption] = useState<'Standard' | 'Premium_Peer'>('Premium_Peer');
   const [includeFigures, setIncludeFigures] = useState(false);
 
-  // Dynamic cost computations
-  const baseRatePerWord = tierOption === 'Premium_Peer' ? 0.045 : 0.025;
+  // Dynamic cost computations based on custom admin settings or original benchmarks
+  const getRate = () => {
+    if (tierOption === 'Premium_Peer') {
+      const savedPremium = localStorage.getItem('ritechs_calc_premium_rate');
+      return savedPremium ? parseFloat(savedPremium) : 0.045;
+    } else {
+      const savedStandard = localStorage.getItem('ritechs_calc_standard_rate');
+      return savedStandard ? parseFloat(savedStandard) : 0.025;
+    }
+  };
+  const baseRatePerWord = getRate();
   const rawCost = Math.round(wordCount * baseRatePerWord);
   const formattingAddon = academicFormat === 'IEEE' ? 45 : academicFormat === 'Elsevier' ? 60 : academicFormat === 'ICETS' ? 40 : 50;
   const illustrationAddon = includeFigures ? 90 : 0;
@@ -79,7 +88,7 @@ export default function ServicesView({ onNavigate, isLoggedIn }: ServicesViewPro
       <FadeUpSection className="py-20 max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-3 gap-12 border-b border-accent-gold/15">
         
         {/* Pillar 1 */}
-        <div className="bg-primary-maroon border border-accent-gold/25 p-8 flex flex-col justify-between h-full hover:shadow-lg transition-all duration-300 rounded-xs text-left">
+        <div className="bg-primary-maroon border border-accent-gold/25 p-5 md:p-6 flex flex-col justify-between h-full hover:shadow-lg transition-all duration-300 rounded-xs text-left">
           <div>
             <GraduationCap className="w-10 h-10 text-accent-gold mb-6" />
             <span className="text-[9px] font-mono tracking-widest uppercase text-accent-gold mb-1 block">Courseware</span>
@@ -97,7 +106,7 @@ export default function ServicesView({ onNavigate, isLoggedIn }: ServicesViewPro
         </div>
 
         {/* Pillar 2 */}
-        <div className="bg-primary-maroon border border-accent-gold/25 p-8 flex flex-col justify-between h-full hover:shadow-lg transition-all duration-300 rounded-xs text-left">
+        <div className="bg-primary-maroon border border-accent-gold/25 p-5 md:p-6 flex flex-col justify-between h-full hover:shadow-lg transition-all duration-300 rounded-xs text-left">
           <div>
             <FileCheck className="w-10 h-10 text-accent-gold mb-6" />
             <span className="text-[9px] font-mono tracking-widest uppercase text-accent-gold mb-1 block">Proofreading</span>
@@ -115,7 +124,7 @@ export default function ServicesView({ onNavigate, isLoggedIn }: ServicesViewPro
         </div>
 
         {/* Pillar 3 */}
-        <div className="bg-primary-maroon border border-accent-gold/25 p-8 flex flex-col justify-between h-full hover:shadow-lg transition-all duration-300 rounded-xs text-left">
+        <div className="bg-primary-maroon border border-accent-gold/25 p-5 md:p-6 flex flex-col justify-between h-full hover:shadow-lg transition-all duration-300 rounded-xs text-left">
           <div>
             <Settings className="w-10 h-10 text-accent-gold mb-6" />
             <span className="text-[9px] font-mono tracking-widest uppercase text-accent-gold mb-1 block">Formatting</span>
@@ -143,7 +152,7 @@ export default function ServicesView({ onNavigate, isLoggedIn }: ServicesViewPro
           <div className="text-center mb-16">
             <Calculator className="w-10 h-10 text-accent-gold/60 mx-auto mb-4" />
             <h3 className="text-xs font-mono tracking-widest text-accent-gold uppercase mb-2">QUICK ESTIMATIONS</h3>
-            <h2 className="font-serif-display text-3xl font-bold text-white">
+            <h2 className="font-serif-display text-2xl sm:text-3xl font-bold text-white">
               Academic Language Polishing Calculator
             </h2>
             <p className="text-xs sm:text-sm text-neutral-300 font-light mt-1 max-w-lg mx-auto">
@@ -151,7 +160,7 @@ export default function ServicesView({ onNavigate, isLoggedIn }: ServicesViewPro
             </p>
           </div>
 
-          <div className="bg-primary-maroon border border-accent-gold/25 p-8 grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative shadow-xl rounded-xs text-left">
+          <div className="bg-primary-maroon border border-accent-gold/25 p-5 md:p-6 grid grid-cols-1 md:grid-cols-2 gap-6 items-center relative shadow-xl rounded-xs text-left">
             
             {/* Input sliders */}
             <div className="flex flex-col gap-6 select-none">
@@ -299,15 +308,15 @@ export default function ServicesView({ onNavigate, isLoggedIn }: ServicesViewPro
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-16">
             <h3 className="text-xs font-mono tracking-widest text-accent-gold uppercase mb-2">SCHOLARLY ATMOSPHERE</h3>
-            <h2 className="font-serif-display text-3xl sm:text-4.5xl text-white font-bold">Research Forums & Facilities</h2>
+            <h2 className="font-serif-display text-2xl sm:text-3xl md:text-4xl text-white font-bold">Research Forums & Facilities</h2>
             <p className="text-xs text-neutral-300 max-w-lg mx-auto leading-relaxed mt-2 font-light">
               We offer comprehensive publication support alongside peer seminars, intense boot camps, and brainstorming lounges designed to nurture scientific breakthrough.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">
             {/* Publication Support Card */}
-            <div className="bg-primary-maroon border border-accent-gold/25 p-8 rounded-xs hover:border-accent-gold transition-colors duration-300 text-left">
+            <div className="bg-primary-maroon border border-accent-gold/25 p-5 md:p-6 rounded-xs hover:border-accent-gold transition-colors duration-300 text-left">
               <span className="font-mono text-[10px] text-accent-gold font-bold">01 // INTERNATIONAL JOURNAL PREP</span>
               <h3 className="font-serif-display text-xl text-white font-bold mt-2 mb-4">Publication Support & Areas</h3>
               <p className="text-xs text-neutral-300 leading-relaxed font-light mb-6">
@@ -322,7 +331,7 @@ export default function ServicesView({ onNavigate, isLoggedIn }: ServicesViewPro
             </div>
 
             {/* Seminar Forums Card */}
-            <div className="bg-primary-maroon border border-accent-gold/25 p-8 rounded-xs hover:border-accent-gold transition-colors duration-300 flex flex-col justify-between text-left">
+            <div className="bg-primary-maroon border border-accent-gold/25 p-5 md:p-6 rounded-xs hover:border-accent-gold transition-colors duration-300 flex flex-col justify-between text-left">
               <div>
                 <span className="font-mono text-[10px] text-accent-gold font-bold">02 // ACADEMIC DIALOGUES</span>
                 <h3 className="font-serif-display text-xl text-white font-bold mt-2 mb-4">Educational Seminars</h3>
@@ -340,7 +349,7 @@ export default function ServicesView({ onNavigate, isLoggedIn }: ServicesViewPro
             </div>
 
             {/* Boot Camp Card */}
-            <div className="bg-primary-maroon border border-accent-gold/25 p-8 rounded-xs hover:border-accent-gold transition-colors duration-300 flex flex-col justify-between text-left">
+            <div className="bg-primary-maroon border border-accent-gold/25 p-5 md:p-6 rounded-xs hover:border-accent-gold transition-colors duration-300 flex flex-col justify-between text-left">
               <div>
                 <span className="font-mono text-[10px] text-accent-gold font-bold">03 // DRAFT POLISHING HACKATHONS</span>
                 <h3 className="font-serif-display text-xl text-white font-bold mt-2 mb-4">Scholarly Boot Camps</h3>
@@ -355,7 +364,7 @@ export default function ServicesView({ onNavigate, isLoggedIn }: ServicesViewPro
             </div>
 
             {/* Research Adda Lounge Card */}
-            <div className="bg-primary-maroon border border-accent-gold/25 p-8 rounded-xs hover:border-accent-gold transition-colors duration-300 flex flex-col justify-between text-left">
+            <div className="bg-primary-maroon border border-accent-gold/25 p-5 md:p-6 rounded-xs hover:border-accent-gold transition-colors duration-300 flex flex-col justify-between text-left">
               <div>
                 <span className="font-mono text-[10px] text-accent-gold font-bold">04 // INTERACTIVE DISCOVERY LOUNGES</span>
                 <h3 className="font-serif-display text-xl text-white font-bold mt-2 mb-4">Research Adda</h3>
@@ -371,7 +380,7 @@ export default function ServicesView({ onNavigate, isLoggedIn }: ServicesViewPro
           </div>
 
           {/* Introduce Cyber4Me Initiative */}
-          <div className="bg-primary-maroon border border-accent-gold/25 text-white p-10 relative overflow-hidden premium-noise shadow-2xl rounded-xs">
+          <div className="bg-primary-maroon border border-accent-gold/25 text-white p-5 md:p-8 relative overflow-hidden premium-noise shadow-2xl rounded-xs">
             {/* Grid overlay */}
             <div className="absolute inset-x-0 bottom-0 top-1/2 bg-[linear-gradient(to_right,#C9A96103_1px,transparent_1px),linear-gradient(to_bottom,#C9A96103_1px,transparent_1px)] bg-[size:2rem_2rem] opacity-35" />
             
@@ -379,7 +388,7 @@ export default function ServicesView({ onNavigate, isLoggedIn }: ServicesViewPro
               <span className="text-[9px] font-mono tracking-widest text-accent-gold uppercase font-bold bg-accent-gold/15 px-3 py-1 border border-accent-gold/25 rounded-full inline-block">
                 STUDENT-LED SECURITY CHAMPIONSHIP
               </span>
-              <h3 className="font-serif-display text-3xl sm:text-4.5xl font-extrabold mt-3 mb-4">
+              <h3 className="font-serif-display text-2xl sm:text-3xl lg:text-4xl font-extrabold mt-3 mb-4">
                 Introducing 'Cyber4Me'
               </h3>
               <p className="text-white/80 text-xs sm:text-sm font-light max-w-2xl mx-auto leading-relaxed">
