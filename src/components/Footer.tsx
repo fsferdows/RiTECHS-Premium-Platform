@@ -28,12 +28,12 @@ export default function Footer({ onNavigate }: FooterProps) {
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xs border border-accent-gold flex items-center justify-center bg-primary-maroon overflow-hidden">
                 {!logoError ? (
-                  <img 
-                    src="/logo.png" 
-                    alt="RiTECHS Brand Logo" 
-                    onError={() => setLogoError(true)}
-                    className="w-full h-full object-cover"
-                  />
+                   <img 
+                    src={localStorage.getItem('ritechs_logo') ?? '/logo.png'} 
+                     alt="RiTECHS Brand Logo" 
+                     onError={() => setLogoError(true)}
+                     className="w-full h-full object-cover"
+                   />
                 ) : (
                   <GraduationCap className="w-6 h-6 text-accent-gold" />
                 )}

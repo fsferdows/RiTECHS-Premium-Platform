@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Plus, Edit, Trash2, Save, FileText, Calendar, Users, DollarSign, 
-  Settings, Check, X, Shield, RefreshCw, RefreshCcw, LogOut, Info, BookOpen
+  Settings, Check, X, Shield, RefreshCw, RefreshCcw, LogOut, Info, BookOpen,
+  Image as ImageIcon, Globe, History, Sparkles, AlertTriangle
 } from 'lucide-react';
 import { BlogPost, Conference, Mentor } from '../types';
 
@@ -26,7 +27,7 @@ export default function AdminDashboardView({
   onNavigate,
   onLogout,
 }: AdminDashboardViewProps) {
-  const [activeTab, setActiveTab] = useState<'blogs' | 'conferences' | 'mentors' | 'services'>('blogs');
+  const [activeTab, setActiveTab] = useState<'blogs' | 'conferences' | 'mentors' | 'services' | 'assets' | 'seo' | 'history'>('blogs');
 
   // Inline forms state
   const [editingBlogId, setEditingBlogId] = useState<string | number | null>(null);
@@ -79,6 +80,105 @@ export default function AdminDashboardView({
   });
   const [savedRateSuccess, setSavedRateSuccess] = useState(false);
 
+  // --- AUDIT SYSTEM SCHEMA ---
+  interface AuditLog {
+    id: string;
+    timestamp: string;
+    category: 'conference' | 'mentor' | 'blog' | 'assets' | 'seo';
+    action: string;
+    details: string;
+  }
+
+  const [logs, setLogs] = useState<AuditLog[]>(() => {
+    const stored = localStorage.getItem('ritechs_audit_logs');
+    if (stored) {
+      try {
+        return JSON.parse(stored);
+      } catch {
+        return [];
+      }
+    }
+    const initLogs: AuditLog[] = [
+      {
+        id: 'log-init-1',
+        timestamp: new Date(Date.now() - 3600000 * 24 * 3).toISOString(),
+        category: 'seo',
+        action: 'SEO Metadata Initialized',
+        details: 'Pristine security descriptions matching academic parameters indexed by crawlers.'
+      },
+      {
+        id: 'log-init-2',
+        timestamp: new Date(Date.now() - 3600000 * 12).toISOString(),
+        category: 'conference',
+        action: 'Database Catalog Active',
+        details: 'Loaded 2 active conferences into Oxford and Genoa system memory.'
+      }
+    ];
+    localStorage.setItem('ritechs_audit_logs', JSON.stringify(initLogs));
+    return initLogs;
+  });
+
+  const logAction = (category: 'conference' | 'mentor' | 'blog' | 'assets' | 'seo', action: string, details: string) => {
+    const newLog: AuditLog = {
+      id: `log-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+      timestamp: new Date().toISOString(),
+      category,
+      action,
+      details
+    };
+    setLogs(prev => {
+      const u = [newLog, ...prev];
+      localStorage.setItem('ritechs_audit_logs', JSON.stringify(u));
+      return u;
+    });
+  };
+
+  // --- REGIONAL BRAND SETTINGS ---
+  const [logoSetting, setLogoSetting] = useState(() => localStorage.getItem('ritechs_logo') || '/logo.png');
+  const [featuredSectionSetting, setFeaturedSectionSetting] = useState(() => localStorage.getItem('ritechs_featured_banner') || '/banner 5.png');
+  const [assetSavedSuccess, setAssetSavedSuccess] = useState(false);
+
+  // --- LIVE SEO DOCUMENT CONTROLLER ---
+  const [docTitle, setDocTitle] = useState(() => localStorage.getItem('ritechs_seo_title') || 'RiTECHS Platform — Global Academic Excellence');
+  const [metaDesc, setMetaDesc] = useState(() => localStorage.getItem('ritechs_seo_description') || 'An elite global hub nurturing cybersecurity, IoT excellence, and energy sustainability scholarship. Aligning researchers with world-renowned peer systems.');
+  const [seoSavedSuccess, setSeoSavedSuccess] = useState(false);
+
+  // Sync to DOM header elements dynamically
+  useEffect(() => {
+    if (docTitle) {
+      document.title = docTitle;
+    }
+    let metaTag = document.querySelector('meta[name="description"]');
+    if (!metaTag) {
+      metaTag = document.createElement('meta');
+      metaTag.setAttribute('name', 'description');
+      document.head.appendChild(metaTag);
+    }
+    if (metaDesc) {
+      metaTag.setAttribute('content', metaDesc);
+    }
+    localStorage.setItem('ritechs_seo_title', docTitle);
+    localStorage.setItem('ritechs_seo_description', metaDesc);
+  }, [docTitle, metaDesc]);
+
+  const handleSaveAssets = (e: React.FormEvent) => {
+    e.preventDefault();
+    localStorage.setItem('ritechs_logo', logoSetting);
+    localStorage.setItem('ritechs_featured_banner', featuredSectionSetting);
+    setAssetSavedSuccess(true);
+    logAction('assets', 'Brand Assets Configured', 'Realigned corporate logo image and core banner sliders.');
+    // Broadcast storage event to force local state reload
+    window.dispatchEvent(new Event('storage'));
+    setTimeout(() => setAssetSavedSuccess(false), 3000);
+  };
+
+  const handleSaveSEO = (e: React.FormEvent) => {
+    e.preventDefault();
+    logAction('seo', 'SEO Metadata Synchronized', `Modified doc title tag: "${docTitle}".`);
+    setSeoSavedSuccess(true);
+    setTimeout(() => setSeoSavedSuccess(false), 3000);
+  };
+
   // --- BLOG ACTIONS ---
   const handleAddBlog = (e: React.FormEvent) => {
     e.preventDefault();
@@ -97,6 +197,7 @@ export default function AdminDashboardView({
 
     const updated = [newBlog, ...blogs];
     onUpdateBlogs(updated);
+    logAction('blog', 'Editorial Blog Appended', `Published new publication editorial draft: "${newBlog.title}".`);
     
     // reset
     setBlogTitle('');
@@ -133,12 +234,15 @@ export default function AdminDashboardView({
     } : b);
     onUpdateBlogs(updated);
     setEditingBlogId(null);
+    logAction('blog', 'Editorial Blog Edited', `Amended narrative structure for blog: "${blogTitle}".`);
   };
 
   const handleDeleteBlog = (id: string | number) => {
     if (confirm('Are you sure you want to permanently delete this blog post? This takes effect instantly.')) {
+      const target = blogs.find(b => b.id === id);
       const updated = blogs.filter(b => b.id !== id);
       onUpdateBlogs(updated);
+      logAction('blog', 'Editorial Blog Removed', `Permanently deleted editorial post "${target?.title || id}".`);
     }
   };
 
@@ -168,6 +272,7 @@ export default function AdminDashboardView({
 
     const updated = [...conferences, newConf];
     onUpdateConferences(updated);
+    logAction('conference', 'Academic Conference Appended', `Published track metrics for: "${newConf.name}".`);
 
     // reset
     setConfName('');
@@ -217,13 +322,16 @@ export default function AdminDashboardView({
     } : c);
     onUpdateConferences(updated);
     setEditingConfId(null);
+    logAction('conference', 'Academic Conference Edited', `Updated credentials and tracks for: "${confName}".`);
   };
 
   const handleDeleteConf = (id: string | undefined) => {
     if (!id) return;
     if (confirm('Are you sure you want to delete this conference? It will instantly disappear from all navigation maps.')) {
+      const target = conferences.find(c => c.id === id || c.slug === id);
       const updated = conferences.filter(c => c.id !== id && c.slug !== id);
       onUpdateConferences(updated);
+      logAction('conference', 'Academic Conference Terminated', `De-registered conference context: "${target?.name || id}".`);
     }
   };
 
@@ -245,6 +353,7 @@ export default function AdminDashboardView({
 
     const updated = [...mentors, newMentor];
     onUpdateMentors(updated);
+    logAction('mentor', 'Research Advisor Appended', `Listed mentor expert: "${newMentor.name}".`);
 
     // reset
     setMentorName('');
@@ -284,12 +393,15 @@ export default function AdminDashboardView({
     } : m);
     onUpdateMentors(updated);
     setEditingMentorId(null);
+    logAction('mentor', 'Research Advisor Edited', `Amended coordinates/affiliation of advisor: "${mentorName}".`);
   };
 
   const handleDeleteMentor = (id: string | number) => {
     if (confirm('Are you sure you want to delete this mentor advisor? This takes effect instantly across all search rosters.')) {
+      const target = mentors.find(m => m.id === id);
       const updated = mentors.filter(m => m.id !== id);
       onUpdateMentors(updated);
+      logAction('mentor', 'Research Advisor Dismissed', `De-enlisted advisory record for Prof: "${target?.name || id}".`);
     }
   };
 
@@ -374,46 +486,83 @@ export default function AdminDashboardView({
         </div>
 
         {/* Dashboard Section Selection Grid */}
-        <div className="flex flex-wrap gap-2 mb-8 border-b border-accent-gold/10 pb-4 select-none">
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 mb-8 border-b border-accent-gold/10 pb-4 select-none">
           <button
             onClick={() => setActiveTab('blogs')}
-            className={`px-5 py-2.5 text-xs font-mono uppercase tracking-wider rounded-xs transition-colors cursor-pointer border ${
+            className={`px-3 py-2.5 text-[11px] font-mono uppercase tracking-wider rounded-xs transition-colors cursor-pointer border flex items-center justify-center gap-1.5 ${
               activeTab === 'blogs' 
-                ? 'bg-accent-gold text-primary-maroon border-accent-gold font-bold' 
-                : 'bg-primary-maroon/40 text-neutral-300 border-accent-gold/10 hover:border-accent-gold/30 hover:text-white'
+                ? 'bg-accent-gold text-primary-maroon border-accent-gold font-bold shadow-[0_4px_12px_rgba(201,169,97,0.2)]' 
+                : 'bg-primary-maroon/20 text-neutral-300 border-accent-gold/10 hover:border-accent-gold/40 hover:text-white hover:bg-primary-maroon/40'
             }`}
           >
-            Manage Editorial Blogs
+            <BookOpen className="w-3.5 h-3.5 shrink-0 text-accent-gold" />
+            Blogs
           </button>
           <button
             onClick={() => setActiveTab('conferences')}
-            className={`px-5 py-2.5 text-xs font-mono uppercase tracking-wider rounded-xs transition-colors cursor-pointer border ${
+            className={`px-3 py-2.5 text-[11px] font-mono uppercase tracking-wider rounded-xs transition-colors cursor-pointer border flex items-center justify-center gap-1.5 ${
               activeTab === 'conferences' 
-                ? 'bg-accent-gold text-primary-maroon border-accent-gold font-bold' 
-                : 'bg-primary-maroon/40 text-neutral-300 border-accent-gold/10 hover:border-accent-gold/30 hover:text-white'
+                ? 'bg-accent-gold text-primary-maroon border-accent-gold font-bold shadow-[0_4px_12px_rgba(201,169,97,0.2)]' 
+                : 'bg-primary-maroon/20 text-neutral-300 border-accent-gold/10 hover:border-accent-gold/40 hover:text-white hover:bg-primary-maroon/40'
             }`}
           >
-            Manage Conferences
+            <Calendar className="w-3.5 h-3.5 shrink-0 text-accent-gold" />
+            Confs
           </button>
           <button
             onClick={() => setActiveTab('mentors')}
-            className={`px-5 py-2.5 text-xs font-mono uppercase tracking-wider rounded-xs transition-colors cursor-pointer border ${
+            className={`px-3 py-2.5 text-[11px] font-mono uppercase tracking-wider rounded-xs transition-colors cursor-pointer border flex items-center justify-center gap-1.5 ${
               activeTab === 'mentors' 
-                ? 'bg-accent-gold text-primary-maroon border-accent-gold font-bold' 
-                : 'bg-primary-maroon/40 text-neutral-300 border-accent-gold/10 hover:border-accent-gold/30 hover:text-white'
+                ? 'bg-accent-gold text-primary-maroon border-accent-gold font-bold shadow-[0_4px_12px_rgba(201,169,97,0.2)]' 
+                : 'bg-primary-maroon/20 text-neutral-300 border-accent-gold/10 hover:border-accent-gold/40 hover:text-white hover:bg-primary-maroon/40'
             }`}
           >
-            Manage Mentors
+            <Users className="w-3.5 h-3.5 shrink-0 text-accent-gold" />
+            Mentors
           </button>
           <button
             onClick={() => setActiveTab('services')}
-            className={`px-5 py-2.5 text-xs font-mono uppercase tracking-wider rounded-xs transition-colors cursor-pointer border ${
+            className={`px-3 py-2.5 text-[11px] font-mono uppercase tracking-wider rounded-xs transition-colors cursor-pointer border flex items-center justify-center gap-1.5 ${
               activeTab === 'services' 
-                ? 'bg-accent-gold text-primary-maroon border-accent-gold font-bold' 
-                : 'bg-primary-maroon/40 text-neutral-300 border-accent-gold/10 hover:border-accent-gold/30 hover:text-white'
+                ? 'bg-accent-gold text-primary-maroon border-accent-gold font-bold shadow-[0_4px_12px_rgba(201,169,97,0.2)]' 
+                : 'bg-primary-maroon/20 text-neutral-300 border-accent-gold/10 hover:border-accent-gold/40 hover:text-white hover:bg-primary-maroon/40'
             }`}
           >
-            Pricing Config
+            <DollarSign className="w-3.5 h-3.5 shrink-0 text-accent-gold" />
+            Pricing
+          </button>
+          <button
+            onClick={() => setActiveTab('assets')}
+            className={`px-3 py-2.5 text-[11px] font-mono uppercase tracking-wider rounded-xs transition-colors cursor-pointer border flex items-center justify-center gap-1.5 ${
+              activeTab === 'assets' 
+                ? 'bg-accent-gold text-primary-maroon border-accent-gold font-bold shadow-[0_4px_12px_rgba(201,169,97,0.2)]' 
+                : 'bg-primary-maroon/20 text-neutral-300 border-accent-gold/10 hover:border-accent-gold/40 hover:text-white hover:bg-primary-maroon/40'
+            }`}
+          >
+            <ImageIcon className="w-3.5 h-3.5 shrink-0 text-accent-gold" />
+            Assets
+          </button>
+          <button
+            onClick={() => setActiveTab('seo')}
+            className={`px-3 py-2.5 text-[11px] font-mono uppercase tracking-wider rounded-xs transition-colors cursor-pointer border flex items-center justify-center gap-1.5 ${
+              activeTab === 'seo' 
+                ? 'bg-accent-gold text-primary-maroon border-accent-gold font-bold shadow-[0_4px_12px_rgba(201,169,97,0.2)]' 
+                : 'bg-primary-maroon/20 text-neutral-300 border-accent-gold/10 hover:border-accent-gold/40 hover:text-white hover:bg-primary-maroon/40'
+            }`}
+          >
+            <Globe className="w-3.5 h-3.5 shrink-0 text-accent-gold" />
+            SEO
+          </button>
+          <button
+            onClick={() => setActiveTab('history')}
+            className={`px-3 py-2.5 text-[11px] font-mono uppercase tracking-wider rounded-xs transition-colors cursor-pointer border flex items-center justify-center gap-1.5 ${
+              activeTab === 'history' 
+                ? 'bg-accent-gold text-primary-maroon border-accent-gold font-bold shadow-[0_4px_12px_rgba(201,169,97,0.2)]' 
+                : 'bg-primary-maroon/20 text-neutral-300 border-accent-gold/10 hover:border-accent-gold/40 hover:text-white hover:bg-primary-maroon/40'
+            }`}
+          >
+            <History className="w-3.5 h-3.5 shrink-0 text-accent-gold" />
+            Logs
           </button>
         </div>
 

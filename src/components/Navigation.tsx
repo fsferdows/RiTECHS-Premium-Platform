@@ -69,7 +69,7 @@ export default function Navigation({ currentPath, onNavigate, user, onLogout, th
           <div className="w-10 h-10 rounded-sm border border-accent-gold flex items-center justify-center bg-primary-maroon shadow-inner transition-transform duration-500 group-hover:rotate-12 overflow-hidden">
             {!logoError ? (
               <img 
-                src="/logo.png" 
+                src={localStorage.getItem('ritechs_logo') ?? '/logo.png'} 
                 alt="RiTECHS Logo" 
                 onError={() => setLogoError(true)} 
                 className="w-full h-full object-cover"
