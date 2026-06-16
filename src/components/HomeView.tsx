@@ -37,6 +37,7 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
   const [homeActiveVideo, setHomeActiveVideo] = useState<'vid1' | 'vid2'>('vid1');
   const [homeIsMuted, setHomeIsMuted] = useState(true);
   const [videoHasError, setVideoHasError] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     setVideoHasError(false);
@@ -701,6 +702,68 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
               ))}
             </div>
           </div>
+        </div>
+      </FadeUpSection>
+
+      {/* 8.5. Our Trusted Partners Directory Section */}
+      <FadeUpSection id="trusted-partners-directory" className="py-20 bg-neutral-warm border-t border-accent-gold/15 text-stone-900 select-none">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-10">
+            <h3 className="text-xs font-mono tracking-widest text-[#9c2535] uppercase mb-2">Academic Alliance</h3>
+            <h2 className="font-serif-display text-2.5xl sm:text-4.5xl text-primary-navy font-bold leading-tight tracking-tight mb-4">
+              Our Trusted Partners
+            </h2>
+            <p className="text-muted-gray text-xs sm:text-sm max-w-2xl mx-auto leading-relaxed font-light">
+              We collaborate with premier universities, publishing networks, and enterprise cybersecurity research groups around the world. These alliances validate, co-host, and index our peer-vetted papers.
+            </p>
+          </div>
+
+          {/* Interactive Search for Partners */}
+          <div className="max-w-md mx-auto mb-10 relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <Search className="w-4 h-4 text-[#9c2535] opacity-60 animate-pulse" />
+            </div>
+            <input 
+              type="text" 
+              placeholder="Filter partner institutions by name..." 
+              value={searchTerm} 
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-9 pr-4 py-3 bg-white text-stone-900 border border-accent-gold/40 focus:border-[#9c2535] focus:outline-none placeholder-stone-400 text-xs tracking-wide rounded-xs transition-all shadow-xs"
+            />
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {ALL_PARTNERS.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase())).map((partner, pIdx) => (
+              <a 
+                href={partner.url} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                key={`${partner.name}-${pIdx}`}
+                className="bg-white hover:bg-white text-stone-850 hover:text-primary-navy border border-stone-200 hover:border-accent-gold/70 p-5 rounded-xs transition-all duration-300 transform hover:-translate-y-1 hover:shadow-md flex flex-col justify-between group"
+              >
+                <div>
+                  <div className="w-8 h-8 rounded-full bg-primary-navy/5 flex items-center justify-center mb-4 group-hover:bg-[#9c2535]/10 transition-colors">
+                    <span className="font-serif-display text-xs font-black text-[#9c2535] group-hover:text-[#9c2535]">
+                      {partner.name.charAt(0)}
+                    </span>
+                  </div>
+                  <h4 className="text-xs font-bold leading-snug tracking-wider uppercase font-sans line-clamp-2">
+                    {partner.name}
+                  </h4>
+                </div>
+                <div className="mt-4 pt-3 border-t border-stone-100 flex items-center justify-between text-[9px] font-mono tracking-widest text-[#9c2535]/75 font-semibold group-hover:text-[#9c2535]">
+                  <span>VISIT PORTAL</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-[#9c2535] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </div>
+              </a>
+            ))}
+          </div>
+
+          {ALL_PARTNERS.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase())).length === 0 && (
+            <div className="text-center py-12 text-stone-400 text-xs font-mono select-none">
+              No coordinating partner found matching "{searchTerm}"
+            </div>
+          )}
         </div>
       </FadeUpSection>
 

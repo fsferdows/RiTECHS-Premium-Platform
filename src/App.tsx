@@ -63,20 +63,36 @@ export default function App() {
   });
 
   const [blogs, setBlogs] = useState<BlogPost[]>(() => {
+    const cached = sessionStorage.getItem('ritechs_cached_blogs');
+    if (cached) {
+      try {
+        return JSON.parse(cached);
+      } catch (e) {}
+    }
     const saved = localStorage.getItem('ritechs_blogs');
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        sessionStorage.setItem('ritechs_cached_blogs', JSON.stringify(parsed));
+        return parsed;
       } catch (e) {}
     }
     return INITIAL_BLOGS;
   });
 
   const [conferences, setConferences] = useState<Conference[]>(() => {
+    const cached = sessionStorage.getItem('ritechs_cached_conferences');
+    if (cached) {
+      try {
+        return JSON.parse(cached);
+      } catch (e) {}
+    }
     const saved = localStorage.getItem('ritechs_conferences');
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        sessionStorage.setItem('ritechs_cached_conferences', JSON.stringify(parsed));
+        return parsed;
       } catch (e) {}
     }
     return INITIAL_CONFERENCES;
@@ -92,14 +108,18 @@ export default function App() {
     return INITIAL_MENTORS;
   });
 
+  const [fetchingData, setFetchingData] = useState(false);
+
   const handleUpdateBlogs = (nextBlogs: BlogPost[]) => {
     setBlogs(nextBlogs);
     localStorage.setItem('ritechs_blogs', JSON.stringify(nextBlogs));
+    sessionStorage.setItem('ritechs_cached_blogs', JSON.stringify(nextBlogs));
   };
 
   const handleUpdateConferences = (nextConferences: Conference[]) => {
     setConferences(nextConferences);
     localStorage.setItem('ritechs_conferences', JSON.stringify(nextConferences));
+    sessionStorage.setItem('ritechs_cached_conferences', JSON.stringify(nextConferences));
   };
 
   const handleUpdateMentors = (nextMentors: Mentor[]) => {
@@ -113,6 +133,10 @@ export default function App() {
     return (saved === 'light' || saved === 'dark') ? saved : 'dark';
   });
 
+  const [timeThemeSync, setTimeThemeSync] = useState<boolean>(() => {
+    return localStorage.getItem('ritechs_time_theme_sync') === 'enabled';
+  });
+
   useEffect(() => {
     const root = document.documentElement;
     if (theme === 'light') {
@@ -124,10 +148,34 @@ export default function App() {
     }
   }, [theme]);
 
+  // Synchronize site theme with local system hour if enabled
+  useEffect(() => {
+    if (!timeThemeSync) return;
+
+    const alignThemeWithTime = () => {
+      const hours = new Date().getHours();
+      const isNight = hours < 6 || hours >= 18; // Night is 6 PM to 6 AM (18:00 - 05:59)
+      const targetTheme = isNight ? 'dark' : 'light';
+      if (theme !== targetTheme) {
+        setTheme(targetTheme);
+        localStorage.setItem('ritechs_theme', targetTheme);
+      }
+    };
+
+    alignThemeWithTime();
+    const interval = setInterval(alignThemeWithTime, 30000); // Poll clock state every 30s
+    return () => clearInterval(interval);
+  }, [timeThemeSync, theme]);
+
   const toggleTheme = () => {
     const nextTheme = theme === 'dark' ? 'light' : 'dark';
     setTheme(nextTheme);
     localStorage.setItem('ritechs_theme', nextTheme);
+    // Disable system clock theme overrides on manual override
+    if (timeThemeSync) {
+      setTimeThemeSync(false);
+      localStorage.setItem('ritechs_time_theme_sync', 'disabled');
+    }
   };
 
   useEffect(() => {
@@ -142,6 +190,80 @@ export default function App() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const [wordCount, setWordCount] = useState(1200);
+
+  useEffect(() => {
+    const calculateWords = () => {
+      const contentEl = document.getElementById('editorial-blog-view') || 
+                        document.getElementById('dashboard-portal-view') || 
+                        document.getElementById('conferences-directory-view') ||
+                        document.getElementById('conferences-detail-view') ||
+                        document.body;
+      if (contentEl) {
+        const text = contentEl.innerText || contentEl.textContent || '';
+        const count = text.split(/\s+/).filter(w => w.trim().length > 1).length;
+        if (count > 50) {
+          setWordCount(count);
+          return;
+        }
+      }
+      
+      let fallbackCount = 1000;
+      if (currentPath === '#/blog') {
+        fallbackCount = blogs.reduce((acc, b) => acc + b.title.split(' ').length + b.content.split(' ').length, 0);
+      } else if (currentPath === '#/dashboard') {
+        fallbackCount = manuscripts.reduce((acc, m) => acc + m.title.split(' ').length, 0) + 800;
+      } else if (currentPath.startsWith('#/conferences')) {
+        fallbackCount = conferences.reduce((acc, c) => acc + c.fullName.split(' ').length + (c.about?.split(' ').length || 0), 0);
+      }
+      setWordCount(fallbackCount);
+    };
+
+    calculateWords();
+    const timer = setTimeout(calculateWords, 400);
+    return () => clearTimeout(timer);
+  }, [currentPath, blogs, conferences, manuscripts]);
+
+  useEffect(() => {
+    const loadDataWithCache = async () => {
+      const normalized = currentPath.split('?')[0];
+      const isBlogPath = normalized === '#/blog';
+      const isConfsPath = normalized === '#/conferences' || normalized.startsWith('#/conferences/');
+      
+      if (isBlogPath) {
+        const cached = sessionStorage.getItem('ritechs_cached_blogs');
+        if (!cached) {
+          setFetchingData(true);
+          await new Promise(resolve => setTimeout(resolve, 550));
+          const saved = localStorage.getItem('ritechs_blogs');
+          const data = saved ? JSON.parse(saved) : INITIAL_BLOGS;
+          sessionStorage.setItem('ritechs_cached_blogs', JSON.stringify(data));
+          setBlogs(data);
+          setFetchingData(false);
+        } else {
+          setBlogs(JSON.parse(cached));
+        }
+      }
+
+      if (isConfsPath) {
+        const cached = sessionStorage.getItem('ritechs_cached_conferences');
+        if (!cached) {
+          setFetchingData(true);
+          await new Promise(resolve => setTimeout(resolve, 550));
+          const saved = localStorage.getItem('ritechs_conferences');
+          const data = saved ? JSON.parse(saved) : INITIAL_CONFERENCES;
+          sessionStorage.setItem('ritechs_cached_conferences', JSON.stringify(data));
+          setConferences(data);
+          setFetchingData(false);
+        } else {
+          setConferences(JSON.parse(cached));
+        }
+      }
+    };
+
+    loadDataWithCache();
+  }, [currentPath]);
 
   const getBreadcrumbs = () => {
     const normalized = currentPath.split('?')[0];
@@ -224,6 +346,16 @@ export default function App() {
   // Route mapping resolver
   const renderActiveView = () => {
     const normalized = currentPath.split('?')[0]; // strip query tags
+
+    if (fetchingData) {
+      return (
+        <div className="flex-grow pt-40 pb-20 flex flex-col items-center justify-center min-h-[60vh] text-center select-none">
+          <div className="w-8 h-8 border-2 border-accent-gold/20 border-t-accent-gold rounded-full animate-spin mb-4" />
+          <h3 className="text-xs font-mono tracking-widest text-accent-gold uppercase mb-1">Synchronizing Academic Desk</h3>
+          <p className="text-[10px] text-neutral-400 leading-relaxed font-light">Loading secure repository collections into persistent session memory...</p>
+        </div>
+      );
+    }
 
     if (normalized === '#/' || normalized === '#' || normalized === '') {
       return (
@@ -327,6 +459,11 @@ export default function App() {
           manuscripts={manuscripts} 
           onUpdateUser={handleUpdateUser} 
           onNavigate={handleNavigate} 
+          timeThemeSync={timeThemeSync}
+          onToggleTimeThemeSync={(enabled) => {
+            setTimeThemeSync(enabled);
+            localStorage.setItem('ritechs_time_theme_sync', enabled ? 'enabled' : 'disabled');
+          }}
         />
       );
     }
@@ -354,11 +491,11 @@ export default function App() {
       />
 
       {/* Real-time reading time overlay for scroll progression */}
-      {(currentPath === '#/blog' || currentPath.startsWith('#/conferences/') || currentPath === '#/dashboard') && (
+      {(currentPath === '#/blog' || currentPath.startsWith('#/conferences') || currentPath === '#/dashboard') && (
         <div className="fixed top-2.5 right-6 z-[9999] bg-primary-maroon/95 backdrop-blur-md text-accent-gold border border-accent-gold/45 text-[9px] font-mono font-semibold tracking-widest px-3 py-1 uppercase rounded-xs shadow-lg flex items-center gap-1.5 select-none print:hidden">
           <Clock className="w-3 h-3 text-accent-gold animate-pulse" />
           <span>
-            EST. READING: {Math.max(1, Math.ceil((currentPath === '#/blog' ? 5 : currentPath === '#/dashboard' ? 12 : 4) * (1 - scrollProgress / 100)))} MINS LEFT
+            EST. READING: {Math.max(1, Math.ceil(Math.max(1, Math.ceil(wordCount / 200)) * (1 - scrollProgress / 100)))} MINS LEFT ({wordCount} WORDS)
           </span>
         </div>
       )}

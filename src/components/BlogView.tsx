@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { BlogPost } from '../types';
-import { Calendar, User, Clock, ArrowRight, X, Heart, MessageSquare, BookMarked, Search } from 'lucide-react';
+import { Calendar, User, Clock, ArrowRight, X, Heart, MessageSquare, BookMarked, Search, Share2 } from 'lucide-react';
 import { FadeUpSection } from './FadeUpSection';
 import { SafeImageWithSkeleton } from './SafeImageWithSkeleton';
 
@@ -12,6 +12,15 @@ export default function BlogView({ blogs }: BlogViewProps) {
   const [activeTab, setActiveTab] = useState<'All' | 'Academic Craft' | 'Cybersecurity' | 'Renewable Energy' | 'IoT Excellence'>('All');
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [copiedBlogId, setCopiedBlogId] = useState<string | null>(null);
+
+  const handleCopyBlogLink = (postId: string) => {
+    const shareUrl = `${window.location.origin}/#/blog?post=${postId}`;
+    navigator.clipboard.writeText(shareUrl).then(() => {
+      setCopiedBlogId(postId);
+      setTimeout(() => setCopiedBlogId(null), 2000);
+    });
+  };
 
   // Extract featured and secondary lists
   const featuredPost = blogs.find(b => b.featured) || blogs[0];
@@ -267,7 +276,14 @@ export default function BlogView({ blogs }: BlogViewProps) {
             </div>
 
             {/* Footer action close dismiss */}
-            <div className="bg-primary-maroon py-4 px-8 border-t border-accent-gold/20 flex justify-end shrink-0 select-none">
+            <div className="bg-primary-maroon py-4 px-8 border-t border-accent-gold/20 flex justify-end gap-3 shrink-0 select-none">
+              <button
+                onClick={() => handleCopyBlogLink(selectedPost.id)}
+                className="bg-transparent border border-accent-gold/45 hover:bg-white/5 text-accent-gold font-bold text-[10px] tracking-widest uppercase font-mono px-5 py-2.5 transition-colors cursor-pointer rounded-xs flex items-center gap-1.5 shadow-md justify-center"
+              >
+                <Share2 className="w-3.5 h-3.5 text-accent-gold animate-pulse" />
+                {copiedBlogId === selectedPost.id ? 'Copied!' : 'Copy Link'}
+              </button>
               <button
                 onClick={() => setSelectedPost(null)}
                 className="bg-accent-gold hover:bg-[#B3934B] text-primary-maroon font-black text-[10px] tracking-widest uppercase font-mono px-6 py-2.5 transition-colors cursor-pointer rounded-xs shadow-md"

@@ -5,7 +5,7 @@ import {
   MapPinIcon, Sparkles, Building, CreditCard, ChevronLeft, Check, Ticket,
   Shield, Globe, FileText, Users, Download, ExternalLink, Cpu, BookOpen, 
   Layers, Network, CheckCircle, ChevronDown, ListFilter, AlertTriangle, 
-  FileCheck, HelpCircle, ArrowRight, User, FolderOpen
+  FileCheck, HelpCircle, ArrowRight, User, FolderOpen, BookMarked
 } from 'lucide-react';
 import { TiltCard } from './TiltCard';
 import { FadeUpSection } from './FadeUpSection';
@@ -223,6 +223,45 @@ export default function ConferencesView({ currentPath, conferences, onNavigate }
   const isDetailsPage = currentPath.startsWith('#/conferences/');
   const activeSlug = isDetailsPage ? currentPath.replace('#/conferences/', '') : null;
   const activeConference = conferences.find(c => c.slug === activeSlug);
+
+  const downloadFile = (filename: string, content: string, mimeType: string) => {
+    const blob = new Blob([content], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const exportConfBibTeX = (conf: Conference) => {
+    const year = conf.year || "2026";
+    const cleanId = conf.slug ? conf.slug.replace(/[^a-zA-Z0-9]/g, '') : 'icetcs';
+    const bib = `@proceedings{${cleanId}_${year},
+  title = {${conf.fullName || conf.name}},
+  year = {${year}},
+  publisher = {RiTECHS Publishing House},
+  address = {${conf.location}},
+  series = {RiTECHS Conference Proceedings Series},
+  url = {${window.location.origin}/#/conferences/${conf.slug}}
+}`;
+    downloadFile(`${conf.slug}_proceedings_citation.bib`, bib, 'application/x-bibtex');
+  };
+
+  const exportConfRIS = (conf: Conference) => {
+    const year = conf.year || "2026";
+    const ris = `TY  - CONF
+TI  - ${conf.fullName || conf.name}
+CY  - ${conf.location}
+PY  - ${year}
+PB  - RiTECHS Publishing House
+UR  - ${window.location.origin}/#/conferences/${conf.slug}
+N1  - Format: ${conf.format}
+ER  - `;
+    downloadFile(`${conf.slug}_proceedings_citation.ris`, ris, 'application/x-research-info-systems');
+  };
 
   const filteredConferences = conferences.filter(c => {
     const matchesSearch = c.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -538,6 +577,26 @@ export default function ConferencesView({ currentPath, conferences, onNavigate }
                       </span>
                       <ExternalLink className="w-3.5 h-3.5 text-[#6B7280] group-hover/link:text-accent-gold transition-colors shrink-0" />
                     </a>
+
+                    {/* Exporters */}
+                    <div className="grid grid-cols-2 gap-2 mt-2 pt-4 border-t border-divider-gold/25 select-none">
+                      <button 
+                        onClick={() => exportConfBibTeX(activeConference)}
+                        className="bg-[#102447] hover:bg-opacity-90 text-[#C9A961] hover:text-white font-sans font-bold uppercase tracking-widest text-[9px] py-3.5 px-2 flex items-center justify-center gap-1.5 border border-accent-gold/30 hover:border-accent-gold transition-all duration-200 cursor-pointer rounded-xs"
+                        title="Export conference proceeding reference in BibTeX format"
+                      >
+                        <BookMarked className="w-3.5 h-3.5 text-accent-gold shrink-0" />
+                        BIBTEX
+                      </button>
+                      <button 
+                        onClick={() => exportConfRIS(activeConference)}
+                        className="bg-[#102447] hover:bg-opacity-90 text-[#C9A961] hover:text-white font-sans font-bold uppercase tracking-widest text-[9px] py-3.5 px-2 flex items-center justify-center gap-1.5 border border-accent-gold/30 hover:border-accent-gold transition-all duration-200 cursor-pointer rounded-xs"
+                        title="Export conference proceeding reference in RIS format"
+                      >
+                        <BookMarked className="w-3.5 h-3.5 text-accent-gold shrink-0" />
+                        RIS
+                      </button>
+                    </div>
                   </div>
                 </div>
 

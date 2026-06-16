@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { 
   FolderIcon, FileText, Upload, GraduationCap, Video, CheckCircle2, 
   Settings, Clock, Award, ShieldCheck, Download, Play, Pause, ChevronRight, 
-  FileSpreadsheet, Sparkles, User, Mail, Globe, Printer, AlertCircle, LayoutDashboard
+  FileSpreadsheet, Sparkles, User, Mail, Globe, Printer, AlertCircle, LayoutDashboard,
+  Copy, Eye, X, BookMarked
 } from 'lucide-react';
 import { Manuscript, UserState } from '../types';
 
@@ -11,6 +12,8 @@ interface DashboardViewProps {
   manuscripts: Manuscript[];
   onUpdateUser: (updatedUser: Partial<UserState>) => void;
   onNavigate: (path: string) => void;
+  timeThemeSync?: boolean;
+  onToggleTimeThemeSync?: (enabled: boolean) => void;
 }
 
 interface CourseChapter {
@@ -21,8 +24,31 @@ interface CourseChapter {
   videoUrl: string;
 }
 
-export default function DashboardView({ user, manuscripts, onUpdateUser, onNavigate }: DashboardViewProps) {
+export default function DashboardView({ 
+  user, 
+  manuscripts, 
+  onUpdateUser, 
+  onNavigate,
+  timeThemeSync = false,
+  onToggleTimeThemeSync
+}: DashboardViewProps) {
   const [activeTab, setActiveTab] = useState<'overview' | 'elearning' | 'tracker' | 'settings'>('overview');
+
+  const AVAILABLE_INTERESTS = [
+    "Quantum Cryptography",
+    "TinyML Load Prediction",
+    "Autonomous Vehicles (CAVs)",
+    "Blockchain Protocols",
+    "Smart Energy Grids",
+    "IoT Cybersecurity",
+    "Hypervisor Security",
+    "Space Systems"
+  ];
+
+  const [selectedInterests, setSelectedInterests] = useState<string[]>(() => {
+    const saved = localStorage.getItem('ritechs_user_interests');
+    return saved ? JSON.parse(saved) : ["Quantum Cryptography", "IoT Cybersecurity"];
+  });
   
   // Manuscript tracking state
   const [localManuscripts, setLocalManuscripts] = useState<Manuscript[]>(manuscripts);
@@ -31,6 +57,8 @@ export default function DashboardView({ user, manuscripts, onUpdateUser, onNavig
   const [newTitle, setNewTitle] = useState('');
   const [uploadProgress, setUploadProgress] = useState<number | null>(null);
   const [activeManuscriptId, setActiveManuscriptId] = useState<string>('manuscript-01');
+  const [copiedManuscriptId, setCopiedManuscriptId] = useState<string | null>(null);
+  const [printPreviewOpen, setPrintPreviewOpen] = useState(false);
 
   // ELearning Video states
   const [chapters, setChapters] = useState<CourseChapter[]>([
@@ -186,6 +214,101 @@ export default function DashboardView({ user, manuscripts, onUpdateUser, onNavig
 
   const selectedManuscript = localManuscripts.find(m => m.id === activeManuscriptId) || localManuscripts[0];
 
+  const handleCopyLink = (manuscriptId: string) => {
+    const shareUrl = `${window.location.origin}/#/dashboard?manuscript=${manuscriptId}`;
+    navigator.clipboard.writeText(shareUrl).then(() => {
+      setCopiedManuscriptId(manuscriptId);
+      setTimeout(() => setCopiedManuscriptId(null), 2000);
+    });
+  };
+
+  const downloadFile = (filename: string, content: string, mimeType: string) => {
+    const blob = new Blob([content], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleExportBibTeX = (manuscript: Manuscript) => {
+    const author = "RiTECHS Affiliate Scholar";
+    const year = manuscript.date ? manuscript.date.split('-')[0] : '2026';
+    const cleanId = manuscript.id.replace(/[^a-zA-Z0-9]/g, '');
+    const bib = `@article{${cleanId}_${year},
+  author = {${author}},
+  title = {${manuscript.title}},
+  journal = {RiTECHS Scholarly Peer-Rebuttal Repository},
+  year = {${year}},
+  note = {Manuscript ID: ${manuscript.id}, Status: ${manuscript.status}, Size: ${manuscript.fileSize}}
+}`;
+    downloadFile(`${manuscript.id}_citation.bib`, bib, 'application/x-bibtex');
+  };
+
+  const handleExportRIS = (manuscript: Manuscript) => {
+    const author = "RiTECHS Affiliate Scholar";
+    const year = manuscript.date ? manuscript.date.split('-')[0] : '2026';
+    const ris = `TY  - JOUR
+AU  - ${author}
+TI  - ${manuscript.title}
+JO  - RiTECHS Scholarly Peer-Rebuttal Repository
+PY  - ${year}
+UR  - http://ritechs.org/submissions/${manuscript.id.toLowerCase()}
+N1  - Status: ${manuscript.status}
+N1  - Size: ${manuscript.fileSize}
+ER  - `;
+    downloadFile(`${manuscript.id}_citation.ris`, ris, 'application/x-research-info-systems');
+  };
+
+  const notifications = React.useMemo(() => {
+    const list: { id: string; type: 'manuscript' | 'conference'; title: string; subtitle: string; date: string; tag: string }[] = [];
+
+    localManuscripts.forEach((m) => {
+      const matches = selectedInterests.some(interest => {
+        const words = interest.toLowerCase().split(/\s+/).filter(w => w.length > 3);
+        return words.some(w => m.title.toLowerCase().includes(w) || m.serviceType.toLowerCase().includes(w));
+      });
+      if (matches) {
+        list.push({
+          id: `m-alert-${m.id}`,
+          type: 'manuscript',
+          title: `New Manuscript matching: ${m.title}`,
+          subtitle: `Uploaded on ${m.date}. Security pre-vetting validation complete.`,
+          date: m.date,
+          tag: m.serviceType
+        });
+      }
+    });
+
+    if (selectedInterests.length > 0) {
+      if (selectedInterests.some(i => i.includes("Cryptography") || i.includes("Cybersecurity"))) {
+        list.push({
+          id: 'conf-deadline-icetcs',
+          type: 'conference',
+          title: 'DEADLINE APPROACHING: ICETCS 2026 Camera-Ready Submission',
+          subtitle: 'The hard deadline is June 30, 2026. Submit formatted papers now to avoid late fee structures.',
+          date: '2026-06-30',
+          tag: 'ICETCS 2026'
+        });
+      }
+      if (selectedInterests.some(i => i.includes("IoT") || i.includes("Vehicles") || i.includes("Grids"))) {
+        list.push({
+          id: 'conf-deadline-itss',
+          type: 'conference',
+          title: 'DEADLINE APPROACHING: ITSS-IoE 2026 Draft Submission',
+          subtitle: 'Peer-review system closes in 18 days. Coordinate with your assigned mentor ASAP.',
+          date: '2026-07-04',
+          tag: 'ITSS-IoE 2026'
+        });
+      }
+    }
+
+    return list;
+  }, [selectedInterests, localManuscripts]);
+
   const sidebarItems = [
     { id: 'overview' as const, label: 'Portal Overview', icon: <LayoutDashboard className="w-4 h-4" /> },
     { id: 'elearning' as const, label: 'e-Learning Syllabi', icon: <GraduationCap className="w-4 h-4" /> },
@@ -300,6 +423,47 @@ export default function DashboardView({ user, manuscripts, onUpdateUser, onNavig
                 <Mail className="w-10 h-10 text-accent-gold/40" />
               </div>
             </div>
+
+            {/* Matching Interests & Deadline Alerts Center */}
+            {notifications.length > 0 && (
+              <div className="bg-[#102447] border border-accent-gold/45 p-6 text-white select-none relative overflow-hidden shadow-md">
+                <div className="absolute right-0 top-0 translate-x-12 -translate-y-12 w-48 h-48 bg-accent-gold/5 rounded-full pointer-events-none" />
+                <div className="flex items-center gap-2 mb-4">
+                  <AlertCircle className="w-5 h-5 text-accent-gold animate-pulse shrink-0" />
+                  <h3 className="font-serif-display font-semibold text-sm sm:text-base text-accent-gold tracking-wider uppercase">
+                    Scholarly Alerts: Matching Interests & Deadlines
+                  </h3>
+                  <span className="bg-[#9c2535] text-white text-[9px] font-mono font-black px-2.5 py-0.5 rounded-full tracking-normal">
+                    {notifications.length} NEW
+                  </span>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {notifications.map((notif) => (
+                    <div key={notif.id} className="bg-white/5 border border-white/10 hover:border-accent-gold/25 p-4 rounded-xs flex gap-3.5 items-start transition-all duration-300">
+                      <div className="p-2 bg-accent-gold/10 text-accent-gold rounded-full font-serif-display text-xs font-black shrink-0 w-8 h-8 flex items-center justify-center">
+                        {notif.type === 'manuscript' ? 'MS' : 'CF'}
+                      </div>
+                      <div className="flex-grow min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="text-[8px] font-mono bg-accent-gold/20 text-accent-gold px-1.5 py-0.5 font-bold uppercase tracking-wider">
+                            {notif.tag}
+                          </span>
+                          <span className="text-[8px] font-mono text-white/40">
+                            {notif.date}
+                          </span>
+                        </div>
+                        <h4 className="font-sans font-bold text-[11px] text-white mt-1.5 leading-snug truncate">
+                          {notif.title}
+                        </h4>
+                        <p className="text-[10px] text-white/70 font-light mt-0.5 leading-relaxed line-clamp-2">
+                          {notif.subtitle}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Upload Zone & active manuscript tracker tandem */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -813,29 +977,62 @@ export default function DashboardView({ user, manuscripts, onUpdateUser, onNavig
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap gap-3 mt-4 sm:mt-0 select-none">
+                  <div className="flex flex-wrap gap-2.5 mt-4 sm:mt-0 select-none">
+                    <button 
+                      onClick={() => handleCopyLink(selectedManuscript.id)}
+                      className="bg-primary-navy hover:bg-opacity-90 text-white font-sans uppercase font-bold text-[9px] tracking-widest px-4 py-3 flex items-center gap-1.5 shadow-sm border border-accent-gold/20 hover:border-accent-gold transition-colors cursor-pointer"
+                      title="Copy Shareable Academic Link to Clipboard"
+                    >
+                      <Copy className="w-3 h-3 text-accent-gold" /> 
+                      {copiedManuscriptId === selectedManuscript.id ? 'Copied!' : 'Copy Link'}
+                    </button>
+
+                    <button 
+                      onClick={() => handleExportBibTeX(selectedManuscript)}
+                      className="bg-primary-navy hover:bg-opacity-90 text-white font-sans uppercase font-bold text-[9px] tracking-widest px-4 py-3 flex items-center gap-1.5 shadow-sm border border-accent-gold/20 hover:border-accent-gold transition-colors cursor-pointer"
+                      title="Export manuscript reference in BibTeX format"
+                    >
+                      <BookMarked className="w-3 h-3 text-accent-gold" /> BIBTEX
+                    </button>
+
+                    <button 
+                      onClick={() => handleExportRIS(selectedManuscript)}
+                      className="bg-primary-navy hover:bg-opacity-90 text-white font-sans uppercase font-bold text-[9px] tracking-widest px-4 py-3 flex items-center gap-1.5 shadow-sm border border-accent-gold/20 hover:border-accent-gold transition-colors cursor-pointer"
+                      title="Export manuscript reference in RIS format"
+                    >
+                      <BookMarked className="w-3 h-3 text-accent-gold" /> RIS
+                    </button>
+
+                    <button 
+                      onClick={() => setPrintPreviewOpen(true)}
+                      className="bg-primary-navy hover:bg-opacity-90 text-white font-sans uppercase font-bold text-[9px] tracking-widest px-4 py-3 flex items-center gap-1.5 shadow-sm border border-accent-gold/20 hover:border-accent-gold transition-colors cursor-pointer"
+                      title="Open scholastic high-fidelity document layout before printing"
+                    >
+                      <Eye className="w-3 h-3 text-accent-gold" /> Print Preview
+                    </button>
+
                     <button 
                       onClick={() => window.print()}
-                      className="bg-primary-navy hover:bg-opacity-90 text-white font-sans uppercase font-bold text-[10px] tracking-widest px-5 py-3 flex items-center gap-1.5 shadow-sm border border-accent-gold/30 hover:border-accent-gold transition-colors cursor-pointer"
+                      className="bg-primary-navy hover:bg-opacity-90 text-white font-sans uppercase font-bold text-[9px] tracking-widest px-4 py-3 flex items-center gap-1.5 shadow-sm border border-accent-gold/30 hover:border-accent-gold transition-colors cursor-pointer"
                       title="Generate high-fidelity research PDF"
                     >
-                      <Printer className="w-3.5 h-3.5 text-accent-gold" /> Download as PDF
+                      <Printer className="w-3 h-3 text-accent-gold" /> Download as PDF
                     </button>
 
                     {selectedManuscript.status === 'Delivered' ? (
                       <a 
                         href="#download-camera-ready" 
                         onClick={(e) => { e.preventDefault(); alert('Signed cryptographic URL activated. Beginning download of: camera_ready_' + selectedManuscript.fileName); }}
-                        className="bg-accent-gold hover:bg-[#B3934B] text-primary-maroon font-sans uppercase font-bold text-[10px] tracking-widest px-5 py-3 flex items-center gap-1.5 shadow-sm transition-colors"
+                        className="bg-accent-gold hover:bg-[#B3934B] text-primary-maroon font-sans uppercase font-bold text-[9px] tracking-widest px-4 py-3 flex items-center gap-1.5 shadow-sm transition-colors"
                       >
-                        <Download className="w-3.5 h-3.5" /> Download Camera-Ready
+                        <Download className="w-3 h-3" /> Camera-Ready
                       </a>
                     ) : (
                       <button 
                         disabled
-                        className="bg-neutral-200 text-stone-400 border border-stone-200 cursor-not-allowed font-sans uppercase font-bold text-[10px] tracking-widest px-5 py-3"
+                        className="bg-neutral-200 text-stone-400 border border-stone-200 cursor-not-allowed font-sans uppercase font-bold text-[9px] tracking-widest px-4 py-3"
                       >
-                        Awaiting Vetting Completion
+                        Awaiting Review
                       </button>
                     )}
                   </div>
@@ -904,6 +1101,72 @@ export default function DashboardView({ user, manuscripts, onUpdateUser, onNavig
                   <span className="bg-primary-navy text-accent-gold border border-accent-gold/40 px-3 py-1 font-bold uppercase">
                     VETTED ACTIVE
                   </span>
+                </div>
+              </div>
+
+              {/* Research Interests Alerts Settings */}
+              <div className="flex flex-col gap-2 border-t border-divider-gold/25 pt-6 select-none">
+                <label className="font-mono text-[10px] text-primary-navy font-bold uppercase">Listed Research Interests (Alerts & Deadlines)</label>
+                <p className="text-[10px] text-muted-gray leading-tight">
+                  Choose your research themes. Newly uploaded manuscripts matching these keywords, or relevant conference deadlines, will trigger custom security and review alerts.
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
+                  {AVAILABLE_INTERESTS.map((interest) => {
+                    const isSelected = selectedInterests.includes(interest);
+                    return (
+                      <button
+                        type="button"
+                        key={interest}
+                        onClick={() => {
+                          const next = isSelected 
+                            ? selectedInterests.filter(i => i !== interest)
+                            : [...selectedInterests, interest];
+                          setSelectedInterests(next);
+                          localStorage.setItem('ritechs_user_interests', JSON.stringify(next));
+                        }}
+                        className={`p-3 text-left border flex items-center justify-between transition-all rounded-xs text-[11px] ${
+                          isSelected 
+                            ? 'bg-[#102447]/5 border-accent-gold text-primary-navy font-bold' 
+                            : 'border-[#E5E7EB] text-stone-600 hover:bg-stone-50'
+                        }`}
+                      >
+                        <span>{interest}</span>
+                        {isSelected ? (
+                          <span className="text-accent-gold text-[10px] font-bold">● SELECTED</span>
+                        ) : (
+                          <span className="text-stone-300 text-[10px]">○ ADD</span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* System Time-Based Theme Toggling Setting */}
+              <div className="flex flex-col gap-2 border-t border-divider-gold/25 pt-6 select-none">
+                <label className="font-mono text-[10px] text-primary-navy font-bold uppercase">Dynamic Chrono-Theme System</label>
+                <div className="flex items-center justify-between p-4 bg-neutral-warm/40 border border-divider-gold/20 rounded-xs">
+                  <div className="max-w-[80%]">
+                    <span className="font-sans font-bold text-[#102447] text-xs block">
+                      Local System Time Sync
+                    </span>
+                    <p className="text-[10px] text-[#6B7280] leading-normal mt-1">
+                      Enabling this feature automatically switches the platform theme between <strong>Classic Light</strong> (6:00 AM - 6:00 PM) and <strong>Luxurious Dark</strong> (6:00 PM - 6:00 AM) in real time using your system clock.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => onToggleTimeThemeSync?.(!timeThemeSync)}
+                    className={`w-14 h-7 rounded-full transition-colors relative duration-300 focus:outline-none cursor-pointer ${
+                      timeThemeSync ? 'bg-[#C9A961]' : 'bg-[#D1D5DB]'
+                    }`}
+                  >
+                    <div
+                      className={`w-5 h-5 rounded-full bg-white absolute top-1 transition-all duration-300 shadow-md ${
+                        timeThemeSync ? 'left-8' : 'left-1'
+                      }`}
+                    />
+                  </button>
                 </div>
               </div>
 
@@ -1075,6 +1338,138 @@ export default function DashboardView({ user, manuscripts, onUpdateUser, onNavig
           <div className="border-t border-dashed border-black pt-6 text-center mt-12">
             <p className="text-[9px] font-mono text-neutral-500">Official Peer Reprint logged at: http://ritechs.org/submissions/{selectedManuscript.id.toLowerCase()}</p>
             <p className="text-[8px] text-neutral-400 font-sans mt-0.5">Verified by RiTECHS Secretariat. Export compiled dynamically in June 2026.</p>
+          </div>
+        </div>
+      )}
+
+      {/* Visual Print Preview Modal */}
+      {printPreviewOpen && selectedManuscript && (
+        <div className="fixed inset-0 bg-[#030a17]/90 z-[100] flex items-center justify-center p-4 sm:p-6 backdrop-blur-md print:hidden">
+          {/* Backdrop Dismiss */}
+          <div className="absolute inset-0 cursor-pointer" onClick={() => setPrintPreviewOpen(false)} />
+          
+          <div className="bg-[#1c2331] text-white border border-[#C9A961]/30 w-full max-w-4xl h-[90vh] overflow-hidden relative z-10 shadow-2xl flex flex-col rounded-xs">
+            {/* Action Bar Header */}
+            <div className="bg-[#0b111e] px-6 py-4 border-b border-[#C9A961]/20 flex justify-between items-center shrink-0">
+              <div className="flex items-center gap-2">
+                <Eye className="w-4 h-4 text-accent-gold" />
+                <span className="font-serif-display text-xs uppercase tracking-widest font-bold text-accent-gold">High-Fidelity Scholarly Print Preview</span>
+              </div>
+              <button 
+                onClick={() => setPrintPreviewOpen(false)}
+                className="w-8 h-8 rounded-full border border-white/10 hover:bg-white/10 flex items-center justify-center transition-colors cursor-pointer"
+              >
+                <X className="w-4 h-4 text-white" />
+              </button>
+            </div>
+
+            {/* Document preview container */}
+            <div className="flex-grow p-6 overflow-y-auto bg-stone-105 flex justify-center items-start">
+              {/* Paper Layout */}
+              <div className="bg-white text-stone-900 border border-stone-200 p-10 sm:p-14 max-w-[21cm] w-full shadow-lg font-serif relative" style={{ minHeight: '29.7cm' }}>
+                <div className="text-center mb-8 border-b-2 border-black pb-6">
+                  <span className="text-[9px] uppercase tracking-widest font-mono text-neutral-600 block mb-2">
+                    RiTECHS High-Security Peer-Rebuttal Scholarly Repository
+                  </span>
+                  <h1 className="text-lg sm:text-xl font-bold font-serif leading-tight mb-3 text-black">
+                    {selectedManuscript.title}
+                  </h1>
+                  <p className="text-xs italic mb-2 font-serif text-neutral-600">Original Research Document Pre-publication Version — ID: {selectedManuscript.id}</p>
+                  <div className="text-[9px] text-neutral-600 font-sans flex justify-center gap-4 mt-3 uppercase tracking-wider font-semibold">
+                    <span><strong>Category:</strong> {selectedManuscript.serviceType}</span>
+                    <span>·</span>
+                    <span><strong>Size:</strong> {selectedManuscript.fileSize}</span>
+                    <span>·</span>
+                    <span><strong>Indexed:</strong> {selectedManuscript.date}</span>
+                  </div>
+                </div>
+
+                <div className="mb-6 text-left">
+                  <h2 className="text-xs font-bold uppercase mb-2 font-serif border-b border-black/35 pb-1 text-black">Abstract</h2>
+                  <p className="text-[11px] leading-relaxed text-justify indent-6 mb-4 text-neutral-850">
+                    This research study presents the formal verification, parameter optimizations, and secure peer-vetting bounds for mission-critical technology frameworks under the direction of the RiTECHS Board of Directors. In high-density settings, traditional protection schemes scale sub-optimally. We present a low-resource cryptographic methodology that ensures quantum-resistant security bounds. Experimental captures show robust performance resilience across academic networks.
+                  </p>
+                </div>
+
+                <div className="mb-6 text-left">
+                  <h2 className="text-xs font-bold uppercase mb-2 font-serif border-b border-black/35 pb-1 text-black">1. Introduction</h2>
+                  <p className="text-[11px] leading-relaxed text-justify indent-6 mb-3 text-neutral-850">
+                    The paradigm shift towards distributed intelligent services requires persistent coordination between localized edge architectures and central verification databases. As grid complexity increases, physical and digital vulnerability indexes scale dramatically, necessitating real-time threat hunting patterns.
+                  </p>
+                  <p className="text-[11px] leading-relaxed text-justify indent-6 mb-3 text-neutral-850">
+                    Earlier scholarly works focused primarily on centralized, high-overhead consensus loops. Although resilient, these structures trigger heavy transmission overhead, rendering agricultural telemetries and municipal energy smart-grids sub-optimal. This work provides an elegant, lightweight alternative.
+                  </p>
+                </div>
+
+                <div className="mb-6 text-left">
+                  <h2 className="text-xs font-bold uppercase mb-2 font-serif border-[#666]/35 border-b pb-1 text-black">2. Computational Parameters & Benchmarking Table</h2>
+                  <p className="text-[11px] leading-relaxed text-justify indent-6 mb-3 text-neutral-850">
+                    We captured and logged throughput and latency values across our experimental topology under varying standard conditions. These statistics confirm our sovereign protection constraints without degrading standard signal quality.
+                  </p>
+                  <table className="w-full border-collapse border border-neutral-850 my-3 text-[9px] font-sans">
+                    <thead>
+                      <tr className="bg-neutral-100">
+                        <th className="border border-neutral-700 p-1.5 font-bold text-left">Topology Reference Code</th>
+                        <th className="border border-neutral-700 p-1.5 font-bold text-left">Throughput (Mpps)</th>
+                        <th className="border border-neutral-700 p-1.5 font-bold text-left">Latency Margin (ms)</th>
+                        <th className="border border-neutral-700 p-1.5 font-bold text-left">Peer Security Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td className="border border-neutral-700 p-1.5 text-stone-900">Standard IoT Agri-Telemetry</td>
+                        <td className="border border-neutral-700 p-1.5 text-stone-900">142.5</td>
+                        <td className="border border-neutral-700 p-1.5 text-stone-900">1.22</td>
+                        <td className="border border-neutral-700 p-1.5 text-stone-900">Standard Encryption</td>
+                      </tr>
+                      <tr>
+                        <td className="border border-neutral-700 p-1.5 text-stone-900">Quantum-Resistant Edge-Shield</td>
+                        <td className="border border-neutral-700 p-1.5 text-stone-900">498.1</td>
+                        <td className="border border-neutral-700 p-1.5 text-stone-900">0.05</td>
+                        <td className="border border-neutral-700 p-1.5 text-stone-900">Validated Secure Bounds</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="mb-6 text-left animate-fadeIn">
+                  <h2 className="text-xs font-bold uppercase mb-2 font-serif border-[#666]/35 border-b pb-1 text-black">3. Concluding Remarks & Board Recommendation</h2>
+                  <p className="text-[11px] leading-relaxed text-justify indent-6 mb-3 text-neutral-850">
+                    In conclusion, the proposed cryptographic pattern satisfies security targets and is fully calibrated to fit standard Springer Nature and IEEE format templates. Development is recommended for immediate industrial pilot rollout.
+                  </p>
+                </div>
+
+                <div className="border-t border-dashed border-stone-400 pt-5 text-center mt-10">
+                  <p className="text-[8px] font-mono text-neutral-500">Official Peer Reprint logged at: http://ritechs.org/submissions/{selectedManuscript.id.toLowerCase()}</p>
+                  <p className="text-[7px] text-neutral-400 font-sans mt-0.5">Verified by RiTECHS Secretariat. Export compiled dynamically in June 2026.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Print trigger footer bar */}
+            <div className="bg-[#0b111e] py-4 px-6 border-t border-[#C9A961]/20 flex justify-between items-center shrink-0">
+              <span className="text-[9px] font-mono text-neutral-400">
+                Uses native @media print stylesheets to auto-reformat
+              </span>
+              <div className="flex gap-2.5">
+                <button
+                  onClick={() => setPrintPreviewOpen(false)}
+                  className="border border-[#C9A961]/30 hover:border-[#C9A961] text-accent-gold font-sans uppercase font-bold text-[9px] tracking-widest px-4 py-2 bg-transparent hover:bg-white/5 transition-all cursor-pointer"
+                >
+                  Close Preview
+                </button>
+                <button
+                  onClick={() => {
+                    setPrintPreviewOpen(false);
+                    // trigger actual browser print dialog
+                    setTimeout(() => window.print(), 150);
+                  }}
+                  className="bg-accent-gold hover:bg-[#B3934B] text-[#3d0d14] font-sans uppercase font-black text-[9px] tracking-widest px-5 py-2 transition-all cursor-pointer shadow-md flex items-center gap-1.5"
+                >
+                  <Printer className="w-3.5 h-3.5 text-[#3d0d14]" /> Trigger System Print
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}
