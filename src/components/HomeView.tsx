@@ -1,6 +1,6 @@
 import { ArrowRight, Globe, Shield, Zap, Users, GraduationCap, ArrowUpRight, Award, MessageSquare, BookOpen, ChevronLeft, ChevronRight, Search, Play, Pause, Video, Volume2, VolumeX } from 'lucide-react';
 import { Conference, Mentor, BlogPost } from '../types';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ALL_PARTNERS } from '../data';
 import { motion, AnimatePresence } from 'motion/react';
 import { TiltCard } from './TiltCard';
@@ -17,6 +17,21 @@ interface HomeViewProps {
 }
 
 export default function HomeView({ onNavigate, conferences, mentors, blogs }: HomeViewProps) {
+  const conferencesRef = useRef<HTMLDivElement>(null);
+  const mentorsRef = useRef<HTMLDivElement>(null);
+
+  const slideLeft = (ref: { current: HTMLDivElement | null }) => {
+    if (ref.current) {
+      ref.current.scrollBy({ left: -360, behavior: 'smooth' });
+    }
+  };
+
+  const slideRight = (ref: { current: HTMLDivElement | null }) => {
+    if (ref.current) {
+      ref.current.scrollBy({ left: 360, behavior: 'smooth' });
+    }
+  };
+
   const [activeTestimony, setActiveTestimony] = useState(0);
   const [homeIsPlaying, setHomeIsPlaying] = useState(false);
   const [homeActiveVideo, setHomeActiveVideo] = useState<'vid1' | 'vid2'>('vid1');
@@ -105,11 +120,11 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
       </FadeUpSection>
 
       {/* 3. Global Impact Stats Grid */}
-      <FadeUpSection id="impact-stats" className="py-16 bg-white border-b border-divider-gold/60">
+      <FadeUpSection id="impact-stats" className="py-20 bg-maroon-dark premium-noise border-b border-accent-gold/15 text-white">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-10">
             <h3 className="text-xs font-mono tracking-widest text-accent-gold uppercase mb-2">Scale & Network</h3>
-            <h2 className="font-serif-display text-2.5xl sm:text-3.5xl text-primary-navy font-bold">Rigorous Global Engagement</h2>
+            <h2 className="font-serif-display text-2.5xl sm:text-4.5xl text-white font-bold leading-tight tracking-tight">Rigorous Global Engagement</h2>
           </div>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
@@ -119,11 +134,11 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
               { value: "15,000+", label: "Researchers Served" },
               { value: "98%", label: "Satisfaction Rate" }
             ].map((stat, idx) => (
-              <TiltCard key={idx} className="bg-neutral-warm p-6 text-center border border-divider-gold/40 hover:border-accent-gold/40 transition-colors group">
-                <div className="font-serif-display text-4.5xl sm:text-5xl font-extrabold text-primary-navy mb-2 group-hover:text-accent-gold transition-colors">
+              <TiltCard key={idx} className="bg-primary-maroon/40 p-6 text-center border border-accent-gold/20 hover:border-accent-gold/5s0 transition-all duration-300 group">
+                <div className="font-serif-display text-4.5xl sm:text-5xl font-extrabold text-white mb-2 group-hover:text-accent-gold transition-colors">
                   {stat.value}
                 </div>
-                <div className="text-xs uppercase tracking-widest text-muted-gray font-sans font-medium">
+                <div className="text-[10px] uppercase tracking-widest text-[#C9A961]/90 font-sans font-medium">
                   {stat.label}
                 </div>
               </TiltCard>
@@ -133,73 +148,121 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
       </FadeUpSection>
 
       {/* 4. Featured Conferences */}
-      <FadeUpSection id="featured-conferences" className="py-20 bg-[#FAFAF7] premium-noise">
+      <FadeUpSection id="featured-conferences" className="py-20 bg-maroon-light premium-noise border-b border-accent-gold/15">
         <div className="max-w-6xl mx-auto px-6">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-10">
             <div>
-              <h3 className="text-xs font-mono tracking-widest text-accent-gold uppercase mb-2">Academic Forums</h3>
-              <h2 className="font-serif-display text-2.5xl sm:text-4xl text-primary-navy font-bold leading-tight">Featured Conferences</h2>
+              <span className="text-[10px] font-mono tracking-[0.2em] text-accent-gold uppercase font-bold bg-[#C9A961]/10 px-3 py-1 border border-accent-gold/25 rounded-full inline-block mb-3 select-none">
+                ACADEMIC FORUMS & SCHOLAR PLACEMENTS
+              </span>
+              <h2 className="font-serif-display text-2.5xl sm:text-4.5xl text-white font-bold leading-tight tracking-tight">
+                Featured Conferences
+              </h2>
             </div>
-            <button
-              onClick={() => onNavigate("#/conferences")}
-              className="mt-4 md:mt-0 text-xs font-sans uppercase tracking-widest font-semibold text-accent-gold hover:text-primary-navy flex items-center gap-2 group transition-colors cursor-pointer"
-            >
-              View Conference Hub <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-            </button>
+            <div className="flex items-center gap-3 mt-4 md:mt-0">
+              <div className="flex items-center gap-1.5 mr-1">
+                <button
+                  onClick={() => slideLeft(conferencesRef)}
+                  className="w-8 h-8 rounded-full border border-accent-gold/25 hover:border-accent-gold hover:bg-maroon-dark/80 flex items-center justify-center transition-all bg-maroon-dark/30 text-white shadow-xs cursor-pointer"
+                  title="Slide Left"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => slideRight(conferencesRef)}
+                  className="w-8 h-8 rounded-full border border-accent-gold/25 hover:border-accent-gold hover:bg-maroon-dark/80 flex items-center justify-center transition-all bg-maroon-dark/30 text-white shadow-xs cursor-pointer"
+                  title="Slide Right"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+              <button
+                onClick={() => onNavigate("#/conferences")}
+                className="text-xs font-sans uppercase tracking-widest font-semibold text-accent-gold hover:text-white flex items-center gap-1.5 group transition-colors cursor-pointer bg-maroon-dark/40 hover:bg-maroon-dark/80 border border-accent-gold/20 px-3 py-1.5 rounded-xs"
+              >
+                View Hub <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+              </button>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {conferences.map((conf) => (
-              <ConferenceCard 
-                key={conf.slug}
-                conf={conf}
-                onNavigate={onNavigate}
-              />
-            ))}
+          <div className="relative">
+            <div 
+              ref={conferencesRef}
+              className="flex gap-6 overflow-x-auto scroll-smooth no-scrollbar py-2 -mx-6 px-6 md:mx-0 md:px-0"
+              style={{ scrollSnapType: 'x mandatory' }}
+            >
+              {conferences.map((conf) => (
+                <div 
+                  key={conf.slug} 
+                  className="w-[285px] sm:w-[335px] shrink-0 scroll-snap-align-start"
+                >
+                  <ConferenceCard 
+                    conf={conf}
+                    onNavigate={onNavigate}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </FadeUpSection>
 
       {/* 5. Mentor Spotlight */}
-      <FadeUpSection id="mentor-spotlight" className="py-16 bg-white border-y border-divider-gold/60">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10">
+      <FadeUpSection id="mentor-spotlight" className="py-20 bg-primary-maroon relative border-y border-accent-gold/15 overflow-hidden premium-noise">
+        <div className="max-w-6xl mx-auto px-6 mb-10">
+          <div className="flex flex-col md:flex-row md:items-end justify-between">
             <div>
-              <h3 className="text-xs font-mono tracking-widest text-accent-gold uppercase mb-2">Peer Guidance</h3>
-              <h2 className="font-serif-display text-2.5xl sm:text-3.5xl text-primary-navy font-bold leading-tight">Advisor Spotlight</h2>
+              <span className="text-[10px] font-mono tracking-[0.2em] text-accent-gold uppercase font-bold bg-[#C9A961]/10 px-3 py-1 border border-accent-gold/25 rounded-full inline-block mb-3 select-none">
+                PEER GUIDANCE DIRECTORY // ESTABLISHED FACULTY
+              </span>
+              <h2 className="font-serif-display text-2.5xl sm:text-4.5xl text-white font-bold leading-tight tracking-tight">
+                Popular Mentor Spotlight
+              </h2>
             </div>
-            <button
-              onClick={() => onNavigate("#/mentors")}
-              className="mt-4 md:mt-0 text-xs font-sans uppercase tracking-widest font-semibold text-accent-gold hover:text-primary-navy flex items-center gap-2 group transition-colors cursor-pointer"
-            >
-              Matchmaker Directory <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-            </button>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {mentors.slice(0, 3).map((mentor) => (
-              <MentorCard 
-                key={mentor.id}
-                mentor={mentor}
+            <div className="mt-4 md:mt-0">
+              <button
                 onClick={() => onNavigate("#/mentors")}
-              />
+                className="text-xs font-sans uppercase tracking-widest font-semibold text-accent-gold hover:text-white flex items-center gap-1.5 group transition-all duration-300 bg-white/5 hover:bg-white/10 border border-accent-gold/30 px-4 py-2 rounded-xs cursor-pointer"
+              >
+                View Directory <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Sliding Marquee Track */}
+        <div className="relative w-full overflow-hidden select-none py-3 bg-maroon-dark/60 border-y border-accent-gold/10">
+          <div className="flex gap-6 animate-carousel-scroll hover:[animation-play-state:paused] w-max select-none cursor-grab active:cursor-grabbing">
+            {/* Duplicating the list to provide a seamless loop */}
+            {[...mentors.slice(0, 8), ...mentors.slice(0, 8)].map((mentor, index) => (
+              <div 
+                key={`${mentor.id}-${index}`} 
+                className="w-[250px] sm:w-[290px] shrink-0 transform hover:scale-[1.02] transition-transform duration-300"
+              >
+                <MentorCard 
+                  mentor={mentor}
+                  isDark={true}
+                  className="border-accent-gold/20"
+                  onClick={() => onNavigate("#/mentors")}
+                />
+              </div>
             ))}
           </div>
         </div>
       </FadeUpSection>
 
       {/* Interactive Academic Broadcast Lectures Showcase */}
-      <FadeUpSection id="academic-transmissions" className="py-20 bg-neutral-warm border-y border-divider-gold/60 w-full text-left">
+      <FadeUpSection id="academic-transmissions" className="py-20 bg-maroon-dark premium-noise border-y border-accent-gold/15 w-full text-left">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-12">
             <h3 className="text-xs font-mono tracking-widest text-accent-gold uppercase mb-2">SCHOLASTIC BROADCASTS</h3>
-            <h2 className="font-serif-display text-2.5xl sm:text-4xl text-primary-navy font-bold leading-tight">Virtual Symposium & Lecture Screenings</h2>
-            <p className="text-muted-gray text-xs sm:text-sm font-light max-w-2xl mx-auto mt-2">
+            <h2 className="font-serif-display text-2.5xl sm:text-4xl text-white font-bold leading-tight">Virtual Symposium & Lecture Screenings</h2>
+            <p className="text-neutral-300 text-xs sm:text-sm font-light max-w-2xl mx-auto mt-2">
               Preview our premium digital curricula and recorded keynotes. Click any lecture on the sidebar to load the real-time scholar feed from our active peer training chapters.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 bg-white border border-divider-gold/60 p-4 sm:p-6 shadow-[0_15px_40px_rgba(3,10,23,0.06)] relative overflow-hidden">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 bg-primary-maroon border border-accent-gold/25 p-4 sm:p-6 shadow-[0_15px_40px_rgba(3,10,23,0.25)] relative overflow-hidden text-white">
             {/* Corner styling lines */}
             <div className="absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 border-accent-gold/40" />
             <div className="absolute top-0 right-0 w-2 h-2 border-t-2 border-r-2 border-accent-gold/40" />
@@ -344,7 +407,7 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
                 {!homeIsPlaying && (
                   <button
                     onClick={() => setHomeIsPlaying(true)}
-                    className="w-16 h-16 rounded-full bg-accent-gold text-primary-navy flex items-center justify-center shadow-2xl z-10 transition-transform duration-300 hover:scale-108 focus:outline-none cursor-pointer"
+                    className="w-16 h-16 rounded-full bg-accent-gold text-primary-maroon flex items-center justify-center shadow-2xl z-10 transition-transform duration-300 hover:scale-108 focus:outline-none cursor-pointer"
                     title="Click to Stream Lecture"
                     id="home-play-video-trigger"
                   >
@@ -388,8 +451,8 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
               </div>
 
               {/* Status footer with metadata */}
-              <div className="flex flex-wrap items-center justify-between gap-3 text-[10px] font-mono text-muted-gray uppercase bg-neutral-warm/80 p-3 border border-divider-gold/30 rounded-xs select-none">
-                <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center justify-between gap-3 text-[10px] font-mono text-neutral-300 uppercase bg-maroon-dark/60 p-3 border border-accent-gold/20 rounded-xs select-none">
+                <div className="flex items-center gap-2 text-white">
                   <Video className="w-4 h-4 text-accent-gold" />
                   <span>PREVIEW: {homeActiveVideo === 'vid1' ? 'POST-QUANTUM READY CRYPTO' : 'TINYML LOAD PREDICTION FOR 6G'}</span>
                 </div>
@@ -401,7 +464,7 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
 
             {/* Sidebar list */}
             <div className="lg:col-span-4 flex flex-col gap-3">
-              <div className="text-xs font-mono font-bold uppercase tracking-widest text-primary-navy border-b border-divider-gold pb-2 select-none">
+              <div className="text-xs font-mono font-bold uppercase tracking-widest text-accent-gold border-b border-accent-gold/20 pb-2 select-none">
                 Transmitted Lessons ({homeLectures.length})
               </div>
 
@@ -415,27 +478,27 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
                         setHomeActiveVideo(lecture.id);
                         setHomeIsPlaying(true);
                       }}
-                      className={`text-left p-4 border transition-all duration-300 flex flex-col gap-1.5 relative group ${
+                      className={`text-left p-4 border transition-all duration-300 flex flex-col gap-1.5 relative group cursor-pointer ${
                         isActive 
-                          ? 'bg-primary-navy border-accent-gold text-white' 
-                          : 'bg-neutral-warm/30 border-divider-gold/60 hover:bg-neutral-warm/60 hover:border-divider-gold text-charcoal'
+                          ? 'bg-maroon-dark border-accent-gold text-white' 
+                          : 'bg-primary-maroon/40 border-accent-gold/15 hover:bg-[#601421]/45 hover:border-accent-gold/30 text-neutral-200'
                       }`}
                       id={`home-video-btn-${lecture.id}`}
                     >
                       {isActive && (
                         <div className="absolute top-0 right-0 w-1.5 h-1.5 bg-accent-gold rounded-bl-sm" />
                       )}
-                      <div className={`text-[9px] font-mono uppercase tracking-[0.15em] ${isActive ? 'text-accent-gold' : 'text-accent-gold/80'}`}>
+                      <div className={`text-[9px] font-mono uppercase tracking-[0.15em] ${isActive ? 'text-accent-gold font-bold' : 'text-accent-gold/80'}`}>
                         {lecture.category}
                       </div>
                       <div className="text-[11px] font-bold leading-snug font-serif-display font-medium">
                         {lecture.title}
                       </div>
-                      <div className="flex items-center justify-between text-[9px] font-mono text-muted-gray group-hover:text-primary-navy/70 transition-colors mt-2">
+                      <div className="flex items-center justify-between text-[9px] font-mono text-neutral-400 group-hover:text-amber-300 transition-colors mt-2">
                         <span>Duration: {lecture.duration}</span>
                         {isActive && homeIsPlaying ? (
-                          <span className="text-green-500 font-bold uppercase animate-pulse flex items-center gap-1">
-                            <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block" /> PLAYING
+                          <span className="text-green-400 font-bold uppercase animate-pulse flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-green-400 inline-block" /> PLAYING
                           </span>
                         ) : (
                           <span className="text-accent-gold font-sans font-semibold">Preview ➔</span>
@@ -448,7 +511,7 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
 
               <button
                 onClick={() => onNavigate('#/dashboard')}
-                className="mt-4 w-full bg-primary-navy hover:bg-accent-gold text-white hover:text-primary-navy py-3 px-4 font-sans font-bold uppercase tracking-widest text-[9px] border border-primary-navy/10 transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                className="mt-4 w-full bg-maroon-dark hover:bg-accent-gold text-white hover:text-primary-maroon py-3 px-4 font-sans font-bold uppercase tracking-widest text-[9px] border border-accent-gold/25 transition-all duration-300 flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 Enter Student Dashboard <ArrowRight className="w-3.5 h-3.5" />
               </button>
@@ -458,7 +521,7 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
       </FadeUpSection>
 
       {/* 6. Service Overviews */}
-      <FadeUpSection id="services-overview" className="py-16 bg-primary-navy text-white premium-noise relative w-full">
+      <FadeUpSection id="services-overview" className="py-16 bg-primary-maroon text-white premium-noise relative w-full border-t border-accent-gold/15">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto mb-12 animate-fade-in">
             <h3 className="text-xs font-mono tracking-widest text-accent-gold uppercase mb-2">Solutions & Support</h3>
@@ -512,7 +575,7 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
       </FadeUpSection>
 
       {/* 7. Comprehensive Testimonial Carousel */}
-      <FadeUpSection id="testimonials" className="py-20 bg-[#FAFAF7] border-y border-divider-gold/60 w-full overflow-hidden">
+      <FadeUpSection id="testimonials" className="py-20 bg-primary-maroon relative border-y border-accent-gold/15 w-full overflow-hidden premium-noise text-white">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <MessageSquare className="w-8 h-8 text-accent-gold/40 mx-auto mb-4" />
           
@@ -526,7 +589,7 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
                 transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                 className="w-full flex flex-col items-center"
               >
-                <p className="font-serif-accent text-lg sm:text-2xl italic text-primary-navy leading-relaxed font-normal mb-8 max-w-3xl">
+                <p className="font-serif-accent text-lg sm:text-2xl italic text-neutral-100 leading-relaxed font-normal mb-8 max-w-3xl">
                   "{testimonials[activeTestimony].quote}"
                 </p>
 
@@ -539,10 +602,10 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <h4 className="font-serif-display text-base font-bold text-primary-navy leading-tight">
+                  <h4 className="font-serif-display text-base font-bold text-accent-gold leading-tight">
                     {testimonials[activeTestimony].author}
                   </h4>
-                  <p className="text-[10px] uppercase tracking-widest font-mono text-muted-gray mt-1.5 font-medium">
+                  <p className="text-[10px] uppercase tracking-widest font-mono text-neutral-300 mt-1.5 font-medium">
                     {testimonials[activeTestimony].title}
                   </p>
                 </div>
@@ -557,7 +620,7 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
                 key={idx}
                 onClick={() => setActiveTestimony(idx)}
                 className={`w-1.5 h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-                  activeTestimony === idx ? 'bg-accent-gold w-5' : 'bg-divider-gold'
+                  activeTestimony === idx ? 'bg-accent-gold w-5' : 'bg-white/20'
                 }`}
               />
             ))}

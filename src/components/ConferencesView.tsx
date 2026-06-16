@@ -283,10 +283,10 @@ export default function ConferencesView({ currentPath, conferences, onNavigate }
     const isIcetcs = activeConference.slug === 'icetcs';
 
     return (
-      <div id="conference-detail-view" className="pt-20 animate-fade-in text-charcoal bg-[#fcfcfd]">
+      <div id="conference-detail-view" className="pt-20 animate-fade-in text-white bg-maroon-dark min-h-screen">
         {/* Dynamic Editorial Hero Header with high contrast */}
-        <section className="bg-gradient-to-b from-[#061021] to-primary-navy text-white py-16 px-6 relative premium-noise overflow-hidden border-b border-accent-gold/25 shadow-lg">
-          <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
+        <section className="bg-gradient-to-b from-maroon-dark to-primary-maroon text-white py-16 px-6 relative premium-noise overflow-hidden border-b border-accent-gold/25 shadow-lg">
+          <div className="absolute inset-0 z-0 opacity-10 pointer-events-none bg-[#030a17]">
             <div className="absolute top-1/2 left-1/4 w-96 h-96 rounded-full bg-accent-gold/5 blur-[120px]" />
             <div className="absolute top-0 right-1/4 w-80 h-80 rounded-full bg-blue-500/5 blur-[100px]" />
           </div>
@@ -313,7 +313,7 @@ export default function ConferencesView({ currentPath, conferences, onNavigate }
               )}
             </div>
 
-            <h1 className="font-serif-display text-3xl sm:text-4.5xl lg:text-5.5xl font-bold tracking-tight mb-4 leading-tight text-white">
+            <h1 className="font-serif-display text-3xl sm:text-4.5xl lg:text-5.5xl font-bold tracking-tight mb-4 leading-tight text-white drop-shadow-sm">
               {activeConference.fullName || activeConference.name}
             </h1>
             <p className="text-accent-gold font-mono text-sm uppercase tracking-wider mb-6 flex items-center gap-2">
@@ -334,7 +334,7 @@ export default function ConferencesView({ currentPath, conferences, onNavigate }
         </section>
 
         {/* 1000x Luxury Interactive Tab Selector Deck */}
-        <section className="bg-white border-b border-divider-gold/45 sticky top-16 z-20 shadow-xs">
+        <section className="bg-maroon-dark/95 border-b border-accent-gold/15 sticky top-16 z-20 shadow-xl backdrop-blur-md text-white">
           <div className="max-w-5xl mx-auto px-6">
             <div className="flex overflow-x-auto scrollbar-none gap-2 sm:gap-4 py-2 text-xs font-mono tracking-wider uppercase">
               {[
@@ -352,8 +352,8 @@ export default function ConferencesView({ currentPath, conferences, onNavigate }
                     onClick={() => setActiveTab(tab.id === 'speakers2' ? 'speakers' : tab.id as any)}
                     className={`flex items-center gap-2 py-3 px-4 shrink-0 border-b-2 font-bold cursor-pointer transition-all duration-300 ${
                       isSelected
-                        ? 'border-accent-gold text-primary-navy bg-accent-gold/5 font-semibold'
-                        : 'border-transparent text-[#6B7280] hover:text-primary-navy hover:border-divider-gold'
+                        ? 'border-accent-gold text-accent-gold bg-accent-gold/5 font-semibold'
+                        : 'border-transparent text-neutral-400 hover:text-white hover:border-accent-gold/30'
                     }`}
                   >
                     {tab.icon}
@@ -1305,42 +1305,52 @@ export default function ConferencesView({ currentPath, conferences, onNavigate }
   // CONFERENCES PORTAL HUB MAIN VIEW
   // ----------------------------------------
   return (
-    <div id="conferences-hub-view" className="pt-16 animate-fade-in-up text-charcoal">
+    <div id="conferences-hub-view" className="pt-16 animate-fade-in-up text-white bg-maroon-dark min-h-screen">
       {/* Editorial Header */}
-      <section className="bg-gradient-to-b from-primary-navy to-[#0F2954] text-white py-24 px-6 text-center relative premium-noise overflow-hidden border-b border-accent-gold/20">
-        <div className="absolute inset-0 z-0 select-none pointer-events-none overflow-hidden opacity-100">
-          <img 
-            src="/banner 3.png" 
-            alt="Scholastic Campus Backdrop" 
-            referrerPolicy="no-referrer"
-            onError={(e) => {
-              const el = e.currentTarget;
-              const bkp = "https://images.unsplash.com/photo-1491841573176-0aa59e4b67ad?auto=format&fit=crop&q=80&w=1600";
-              if (el.src !== bkp) {
-                el.src = bkp;
-              } else {
-                el.onerror = null;
-                el.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3Crect width='100%25' height='100%25' fill='%23000'/%3E%3C/svg%3E";
-              }
-            }}
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-black/15" />
-        </div>
+      <section className="bg-gradient-to-b from-maroon-dark to-primary-maroon text-white py-12 lg:py-16 px-6 relative premium-noise overflow-hidden border-b border-accent-gold/25">
+        <div className="max-w-6xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center text-left">
+          {/* Left Column: Clear premium academic headings */}
+          <div className="lg:col-span-7 flex flex-col justify-center">
+            <span className="text-[10px] font-mono tracking-widest text-accent-gold uppercase font-bold bg-accent-gold/10 px-3 py-1.5 border border-accent-gold/20 rounded-full mb-4 inline-block self-start">
+              Scientific Symposiums
+            </span>
+            <h1 className="font-serif-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-4 mt-2 text-white leading-tight animate-fade-in">
+              The Conference Hub
+            </h1>
+            <p className="font-serif-accent text-sm sm:text-base lg:text-lg italic text-white/80 max-w-2xl leading-relaxed font-light">
+              Providing index-linked platforms where cyber defense, advanced IoT grids, and sustainable energy methodologies meet peer recognition.
+            </p>
+          </div>
 
-        <div className="max-w-4xl mx-auto relative z-10">
-          <h3 className="text-xs font-mono tracking-widest text-accent-gold uppercase mb-4">Scientific Symposiums</h3>
-          <h1 className="font-serif-display text-4xl sm:text-6xl font-bold tracking-tight mb-8">
-            The Conference Hub
-          </h1>
-          <p className="font-serif-accent text-lg sm:text-xl italic text-white/80 max-w-2xl mx-auto leading-relaxed font-light">
-            Providing index-linked platforms where cyber defense, advanced IoT grids, and sustainable energy methodologies meet peer recognition.
-          </p>
+          {/* Right Column: Clear, unobstructed PNG background/banner image */}
+          <div className="lg:col-span-5 w-full h-48 sm:h-64 lg:h-80 overflow-hidden relative border border-accent-gold/30 rounded-xs shadow-xl group">
+            <img 
+              src="/banner 3.png" 
+              alt="Scholastic Campus Backdrop" 
+              referrerPolicy="no-referrer"
+              className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500"
+              onError={(e) => {
+                const el = e.currentTarget;
+                const bkp = "https://images.unsplash.com/photo-1491841573176-0aa59e4b67ad?auto=format&fit=crop&q=80&w=1600";
+                if (el.src !== bkp) {
+                  el.src = bkp;
+                } else {
+                  el.onerror = null;
+                  el.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3Crect width='100%25' height='100%25' fill='%23000'/%3E%3C/svg%3E";
+                }
+              }}
+            />
+            {/* Subtle elegant gold overlay/plaque line */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+            <div className="absolute bottom-3 right-3 px-2 py-1 bg-[#030a17]/85 border border-accent-gold/30 text-accent-gold font-mono text-[8px] uppercase tracking-widest font-semibold rounded-xs">
+              SYMPOSIUM DIRECTORY
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Filters & Search Toolbar */}
-      <section className="py-8 bg-white border-b border-divider-gold/50">
+      <section className="py-8 bg-maroon-dark/95 border-b border-accent-gold/15 sticky top-16 z-20 shadow-xl backdrop-blur-md text-white">
         <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row gap-6 items-center justify-between">
           
           <div className="relative w-full md:w-96">
@@ -1350,7 +1360,7 @@ export default function ConferencesView({ currentPath, conferences, onNavigate }
               placeholder="Search by city, name, or keywords..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-neutral-warm/40 border border-divider-gold/60 focus:border-accent-gold outline-none text-xs transition-colors"
+              className="w-full pl-10 pr-4 py-3 bg-primary-maroon/60 border border-accent-gold/25 focus:border-accent-gold outline-none text-xs text-white placeholder-neutral-400 font-mono transition-colors rounded-xs"
             />
           </div>
 
@@ -1359,10 +1369,10 @@ export default function ConferencesView({ currentPath, conferences, onNavigate }
               <button
                 key={format}
                 onClick={() => setFormatFilter(format)}
-                className={`flex-grow md:flex-grow-0 px-4 py-2 border text-xs tracking-widest font-mono uppercase transition-colors ${
+                className={`flex-grow md:flex-grow-0 px-4 py-2 border text-xs tracking-widest font-mono uppercase transition-colors cursor-pointer ${
                   formatFilter === format 
-                    ? 'bg-primary-navy border-primary-navy text-accent-gold' 
-                    : 'border-divider-gold bg-transparent text-primary-navy/80 hover:bg-neutral-warm'
+                    ? 'bg-accent-gold border-accent-gold text-primary-maroon font-bold shadow-md' 
+                    : 'border-accent-gold/25 bg-transparent text-white/80 hover:bg-primary-maroon hover:border-accent-gold/45'
                 }`}
               >
                 {format}
@@ -1386,10 +1396,10 @@ export default function ConferencesView({ currentPath, conferences, onNavigate }
             ))}
           </div>
         ) : (
-          <div className="text-center py-20 bg-[#FAFAF7] border border-dashed border-divider-gold/65">
+          <div className="text-center py-20 bg-primary-maroon/40 border border-dashed border-accent-gold/20 rounded-sm">
             <Info className="w-8 h-8 text-accent-gold/60 mx-auto mb-4" />
-            <h3 className="font-serif-display text-lg text-primary-navy font-bold">No conferences match criteria</h3>
-            <p className="text-xs text-muted-gray mt-1 max-w-sm mx-auto font-light leading-relaxed">
+            <h3 className="font-serif-display text-lg text-white font-bold">No conferences match criteria</h3>
+            <p className="text-xs text-neutral-300 mt-1 max-w-sm mx-auto font-light leading-relaxed">
               Adjust filters or clear your search term to explore our upcoming index-linked editions.
             </p>
           </div>

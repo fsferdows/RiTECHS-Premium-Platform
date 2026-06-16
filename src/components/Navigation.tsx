@@ -51,7 +51,7 @@ export default function Navigation({ currentPath, onNavigate, user, onLogout }: 
       id="main-nav"
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled || currentPath !== "#/"
-          ? 'bg-primary-navy/95 backdrop-blur-md shadow-lg border-b border-accent-gold/10'
+          ? 'bg-maroon-dark/95 backdrop-blur-md shadow-lg border-b border-accent-gold/10'
           : 'bg-transparent'
       }`}
     >
@@ -62,7 +62,7 @@ export default function Navigation({ currentPath, onNavigate, user, onLogout }: 
           className="flex items-center gap-3 cursor-pointer group"
           id="brand-logo"
         >
-          <div className="w-10 h-10 rounded-sm border border-accent-gold flex items-center justify-center bg-primary-navy shadow-inner transition-transform duration-500 group-hover:rotate-12 overflow-hidden">
+          <div className="w-10 h-10 rounded-sm border border-accent-gold flex items-center justify-center bg-primary-maroon shadow-inner transition-transform duration-500 group-hover:rotate-12 overflow-hidden">
             {!logoError ? (
               <img 
                 src="/logo.png" 
@@ -124,7 +124,7 @@ export default function Navigation({ currentPath, onNavigate, user, onLogout }: 
                   onClick={() => handleNav("#/dashboard")}
                   className={`flex items-center gap-2 px-4 py-2 border border-accent-gold/30 rounded-xs text-xs font-sans uppercase tracking-widest transition-all duration-300 ${
                     currentPath === "#/dashboard"
-                      ? 'bg-accent-gold text-primary-navy'
+                      ? 'bg-accent-gold text-primary-maroon font-bold'
                       : 'text-accent-gold hover:bg-accent-gold/10'
                   }`}
                   id="nav-btn-dashboard"
@@ -158,7 +158,7 @@ export default function Navigation({ currentPath, onNavigate, user, onLogout }: 
                 </button>
                 <button
                   onClick={() => handleNav("#/login?mode=register")}
-                  className="bg-accent-gold hover:bg-[#B3934B] text-primary-navy px-5 py-2.5 rounded-sm text-xs font-sans uppercase tracking-widest font-semibold transition-all duration-300 shadow-sm"
+                  className="bg-accent-gold hover:bg-[#B3934B] text-primary-maroon px-5 py-2.5 rounded-sm text-xs font-sans uppercase tracking-widest font-semibold transition-all duration-300 shadow-sm cursor-pointer"
                   id="nav-btn-register"
                 >
                   Register
@@ -180,7 +180,7 @@ export default function Navigation({ currentPath, onNavigate, user, onLogout }: 
 
       {/* Mobile Drawer Overlay */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-primary-navy border-t border-accent-gold/10 animate-fade-in py-6 px-6 shadow-inner">
+        <div className="lg:hidden bg-maroon-dark border-t border-accent-gold/10 animate-fade-in py-6 px-6 shadow-inner">
           <div className="flex flex-col gap-4">
             {navItems.map((item) => (
               <button
@@ -225,7 +225,7 @@ export default function Navigation({ currentPath, onNavigate, user, onLogout }: 
                 </button>
                 <button
                   onClick={() => handleNav("#/login?mode=register")}
-                  className="bg-accent-gold text-primary-navy py-3 text-xs uppercase tracking-widest text-center font-bold"
+                  className="bg-accent-gold text-primary-maroon py-3 text-xs uppercase tracking-widest text-center font-bold"
                 >
                   Register Account
                 </button>

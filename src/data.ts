@@ -293,7 +293,7 @@ export function buildMentorsDatabase(): Mentor[] {
 
     // Dynamic rotation params based on Numeric ID
     const imgId = HEADSHOT_IDS[m.id % HEADSHOT_IDS.length];
-    const image = `https://images.unsplash.com/${imgId}?auto=format&fit=crop&q=80&w=400`;
+    const image = `https://images.unsplash.com/${imgId}?auto=format,compress&fit=crop&q=70&w=280`;
     
     const bioTemplate = DEFAULT_BIO_TEMPLATES[m.id % DEFAULT_BIO_TEMPLATES.length];
     const affiliation = (!m.affiliation || m.affiliation === '—') ? 'RiTECHS Academic Secretariat' : m.affiliation;
@@ -346,7 +346,7 @@ export function buildMentorsDatabase(): Mentor[] {
       country: "Malaysia",
       fields: ["Machine Learning", "IoT Architectures", "Autonomous Networks"],
       rating: 5.0,
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format,compress&fit=crop&q=70&w=280",
       bio: "Dr. Bayuaji operates as an Assistant Professor in Pahang. His focus includes predictive neural grids, distributed database synchronization, and solar power array optimization.",
       email: "luhur@ump.edu.my",
       publications: [
@@ -362,7 +362,7 @@ export function buildMentorsDatabase(): Mentor[] {
       country: "United Kingdom",
       fields: ["Cognitive Radio Networks", "IoT Protocols", "Machine Learning", "Wireless Networks"],
       rating: 5.0,
-      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=400",
+      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format,compress&fit=crop&q=70&w=280",
       bio: "Assistant Professor Rahman specialized in multi-frequency satellite and cognitive IoT integrations. He publishes extensively on sub-ambient telemetry under IEEE framework guidelines.",
       email: "a.rahman@wolverhampton.ac.uk",
       publications: [
@@ -378,7 +378,7 @@ export function buildMentorsDatabase(): Mentor[] {
       country: "Gombak, Malaysia",
       fields: ["Renewable Energy", "IoT Sensors", "Piezoelectric Harvesters"],
       rating: 4.9,
-      image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=400",
+      image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format,compress&fit=crop&q=70&w=280",
       bio: "Prof. Dr. Rafiqul Islam operates in Gombak, Malaysia. He publishes heavily on piezo-electric harvesting models, ultra-low power signal modulations, and smart communication circuits.",
       email: "rafiqul@iiu.edu.my",
       publications: [

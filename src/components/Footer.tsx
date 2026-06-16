@@ -20,13 +20,13 @@ export default function Footer({ onNavigate }: FooterProps) {
   };
 
   return (
-    <footer id="premium-footer" className="bg-primary-navy text-white py-12 border-t border-accent-gold/20 premium-noise">
+    <footer id="premium-footer" className="bg-maroon-dark text-white py-16 border-t border-accent-gold/20 premium-noise">
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           {/* Column 1: Brand Info */}
           <div className="flex flex-col gap-6">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xs border border-accent-gold flex items-center justify-center bg-primary-navy overflow-hidden">
+              <div className="w-10 h-10 rounded-xs border border-accent-gold flex items-center justify-center bg-primary-maroon overflow-hidden">
                 {!logoError ? (
                   <img 
                     src="/logo.png" 
@@ -137,7 +137,7 @@ export default function Footer({ onNavigate }: FooterProps) {
                 />
                 <button
                   type="submit"
-                  className="bg-accent-gold hover:bg-white text-primary-navy font-bold py-1 px-3 text-[10px] sm:text-xs font-mono uppercase tracking-widest transition-all duration-300 shadow-md group-hover/input:scale-102 flex items-center gap-1 cursor-pointer select-none"
+                  className="bg-accent-gold hover:bg-white text-primary-maroon font-bold py-1 px-3 text-[10px] sm:text-xs font-mono uppercase tracking-widest transition-all duration-300 shadow-md group-hover/input:scale-102 flex items-center gap-1 cursor-pointer select-none"
                   id="btn-subscribe-insights"
                 >
                   <Send className="w-3 h-3" />
