@@ -16,6 +16,7 @@ export interface Manuscript {
   status: "Submitted" | "Assigned" | "In Editing" | "QA Review" | "Delivered";
   date: string;
   timeline: { title: string; date: string; done: boolean }[];
+  author?: string;
 }
 
 export interface Mentor {
@@ -473,7 +474,8 @@ export const INITIAL_MANUSCRIPTS: Manuscript[] = [
       { title: "In Editing", date: "June 14, 2026", done: true },
       { title: "QA Peer Review Review", date: "June 16, 2026", done: false },
       { title: "Delivered to Scholar", date: "June 18, 2026", done: false }
-    ]
+    ],
+    author: "Prof. Kenneth Sterling"
   },
   {
     id: "manuscript-02",
@@ -489,6 +491,91 @@ export const INITIAL_MANUSCRIPTS: Manuscript[] = [
       { title: "In Editing", date: "June 03, 2026", done: true },
       { title: "QA Peer Review Review", date: "June 04, 2026", done: true },
       { title: "Delivered to Scholar", date: "June 05, 2026", done: true }
+    ],
+    author: "Dr. LUHUR BAYUAJI"
+  }
+];
+
+export interface Author {
+  id: string;
+  name: string;
+  image: string;
+  credentials: string;
+  bio: string;
+  publishedWorks: { title: string; url?: string }[];
+  links: { label: string; url: string }[];
+}
+
+export const INITIAL_AUTHORS: Author[] = [
+  {
+    id: "alistair-evans",
+    name: "Dr. Alistair J. Evans",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format,compress&fit=crop&q=70&w=280",
+    credentials: "Ph.D. in Cybernetic Autonomy, University of Wolverhampton",
+    bio: "Dr. Alistair J. Evans is a leading expert in secure Controller Area Networks (CAN) and vehicular telematics security. He advises numerous international automotive consortiums.",
+    publishedWorks: [
+      { title: "Defending Controller Area Networks against Frame-Injections (IEEE Transactions on Intelligence 2024)" },
+      { title: "Anomaly Detections in High-Mobility Vehicular Units (Springer Lecture Notes 2025)" }
+    ],
+    links: [
+      { label: "ORCID", url: "https://orcid.org" },
+      { label: "Google Scholar", url: "https://scholar.google.com" }
+    ]
+  },
+  {
+    id: "kenneth-sterling",
+    name: "Prof. Kenneth Sterling",
+    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format,compress&fit=crop&q=70&w=280",
+    credentials: "Ph.D. in Mathematical Cryptology, University of Oxford",
+    bio: "Prof. Kenneth Sterling acts as the Chair for sovereign cryptology research. He advises governments on transitioning computing systems to secure post-quantum architectures.",
+    publishedWorks: [
+      { title: "A Sovereign Zero-Trust Framework for Post-Quantum Fog Networks (Q1 Journal of Cybersecurity 2026)" },
+      { title: "NIST's Selected Standard Algorithms: A Comparative Power Study on Microcontrollers (IEEE Security 2025)" }
+    ],
+    links: [
+      { label: "ResearchGate", url: "https://researchgate.net" },
+      { label: "Google Scholar", url: "https://scholar.google.com" }
+    ]
+  },
+  {
+    id: "luhur-bayuaji",
+    name: "Dr. LUHUR BAYUAJI",
+    image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format,compress&fit=crop&q=70&w=280",
+    credentials: "Ph.D. in Embedded Systems, Universiti Malaysia Pahang",
+    bio: "Dr. Luhur Bayuaji conducts cutting-edge research in TinyML neural simulations and power load-prediction. His research optimizes clean energy grids across Southeast Asia.",
+    publishedWorks: [
+      { title: "LSTM-based Photovoltaic Power Estimation on Low-Resource Fog Nodes (IEEE IoT Journal 2024)" },
+      { title: "Predictors for Solar Battery Storages under Meteorological Disparities (Elsevier 2025)" }
+    ],
+    links: [
+      { label: "University Profile", url: "https://ritechs.org" },
+      { label: "Google Scholar", url: "https://scholar.google.com" }
+    ]
+  },
+  {
+    id: "maria-santos",
+    name: "Prof. Maria Santos & Editorial Team",
+    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format,compress&fit=crop&q=70&w=280",
+    credentials: "Editorial Directorate, RiTECHS Scientific Publishing House",
+    bio: "The RiTECHS Scientific Publishing Team, coordinated by Prof. Maria Santos, produces comprehensive literature guidelines and methodologies to aid scholars worldwide.",
+    publishedWorks: [
+      { title: "Critical Literature Gap Auditing Methods in Modern Computing: A Systematic Survey (ScienceDirect 2025)" }
+    ],
+    links: [
+      { label: "RiTECHS Publishing House", url: "https://ritechs.org" }
+    ]
+  },
+  {
+    id: "ritechs-board",
+    name: "RiTECHS Scientific Board",
+    image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format,compress&fit=crop&q=70&w=280",
+    credentials: "Board of Editors, RiTECHS Conferences Series",
+    bio: "The central RiTECHS Scientific Board oversees review board approvals, paper formatting guidelines, and publisher vetting standards for all series conferences.",
+    publishedWorks: [
+      { title: "Guidelines to Academic Literature Review Structures and Statistically Grounded Sample Sizing (IEEE 2026)" }
+    ],
+    links: [
+      { label: "Editorial Standards", url: "https://ritechs.org" }
     ]
   }
 ];

@@ -1518,6 +1518,7 @@ ER  - `;
                 key={conf.slug}
                 conf={conf}
                 onNavigate={onNavigate}
+                searchTerm={searchTerm}
               />
             ))}
           </div>

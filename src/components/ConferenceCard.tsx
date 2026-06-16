@@ -7,9 +7,30 @@ interface ConferenceCardProps {
   conf: Conference;
   onNavigate: (path: string) => void;
   className?: string;
+  searchTerm?: string;
 }
 
-export function ConferenceCard({ conf, onNavigate, className = "" }: ConferenceCardProps) {
+function HighlightText({ text, highlight }: { text: string; highlight?: string }) {
+  if (!text) return null;
+  if (!highlight || !highlight.trim()) return <span>{text}</span>;
+  const regex = new RegExp(`(${highlight.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi');
+  const parts = text.split(regex);
+  return (
+    <span>
+      {parts.map((part, i) => 
+        regex.test(part) ? (
+          <mark key={i} className="bg-[#C9A961]/40 text-white px-0.5 rounded-xs font-serif italic font-bold">
+            {part}
+          </mark>
+        ) : (
+          part
+        )
+      )}
+    </span>
+  );
+}
+
+export function ConferenceCard({ conf, onNavigate, className = "", searchTerm = "" }: ConferenceCardProps) {
   return (
     <TiltCard 
       id={`conf-card-${conf.slug}`}
@@ -28,11 +49,11 @@ export function ConferenceCard({ conf, onNavigate, className = "" }: ConferenceC
         </div>
 
         <h3 className="font-serif-display text-base text-white font-bold mb-2 group-hover:text-accent-gold transition-colors duration-300 leading-snug">
-          {conf.fullName}
+          <HighlightText text={conf.fullName || ""} highlight={searchTerm} />
         </h3>
 
         <p className="text-[11px] text-neutral-300 leading-relaxed font-light mb-4 line-clamp-3">
-          {conf.description}
+          <HighlightText text={conf.description || ""} highlight={searchTerm} />
         </p>
 
         <div className="flex flex-col gap-1.5 mt-auto text-[9px] font-mono text-neutral-200 border-t border-accent-gold/10 pt-3">

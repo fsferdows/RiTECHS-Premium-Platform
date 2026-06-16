@@ -1,8 +1,28 @@
 import { useState } from 'react';
-import { BlogPost } from '../types';
+import { BlogPost, INITIAL_AUTHORS } from '../types';
 import { Calendar, User, Clock, ArrowRight, X, Heart, MessageSquare, BookMarked, Search, Share2 } from 'lucide-react';
 import { FadeUpSection } from './FadeUpSection';
 import { SafeImageWithSkeleton } from './SafeImageWithSkeleton';
+
+function HighlightText({ text, highlight }: { text: string; highlight?: string }) {
+  if (!text) return null;
+  if (!highlight || !highlight.trim()) return <span>{text}</span>;
+  const regex = new RegExp(`(${highlight.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi');
+  const parts = text.split(regex);
+  return (
+    <span>
+      {parts.map((part, i) => 
+        regex.test(part) ? (
+          <mark key={i} className="bg-[#C9A961]/40 text-white px-0.5 rounded-xs font-serif italic font-bold">
+            {part}
+          </mark>
+        ) : (
+          part
+        )
+      )}
+    </span>
+  );
+}
 
 interface BlogViewProps {
   blogs: BlogPost[];
@@ -173,15 +193,15 @@ export default function BlogView({ blogs }: BlogViewProps) {
                         <span>{post.readTime}</span>
                       </div>
 
-                      <h4 className="font-serif-display text-sm sm:text-base lg:text-lg text-white font-bold leading-snug mb-3">
+                      <h4 className="font-serif-display text-sm sm:text-base lg:text-lg text-white font-bold leading-snug mb-3 text-left">
                         <span className="bg-left-bottom bg-gradient-to-r from-accent-gold to-accent-gold bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 pb-0.5">
-                          {post.title}
+                          <HighlightText text={post.title} highlight={searchTerm} />
                         </span>
                       </h4>
 
                       {/* 2-line excerpt clamp */}
-                      <p className="text-xs text-neutral-300 leading-relaxed font-light mb-4 line-clamp-2">
-                        {post.excerpt}
+                      <p className="text-xs text-neutral-300 leading-relaxed font-light mb-4 line-clamp-2 text-left">
+                        <HighlightText text={post.excerpt} highlight={searchTerm} />
                       </p>
 
                       <button
@@ -262,6 +282,72 @@ export default function BlogView({ blogs }: BlogViewProps) {
               <div className="text-xs sm:text-sm text-neutral-200 leading-relaxed font-light font-sans whitespace-pre-wrap flex flex-col gap-4">
                 {selectedPost.content}
               </div>
+
+              {/* Premium Author Bio Card */}
+              {(() => {
+                const authorObj = INITIAL_AUTHORS.find(a => 
+                  a.name === selectedPost.author || 
+                  selectedPost.author?.includes(a.name) ||
+                  a.name.includes(selectedPost.author || "---")
+                );
+                if (!authorObj) return null;
+                return (
+                  <div className="bg-[#1f090d] border border-accent-gold/25 p-5 mt-4 text-left shadow-lg rounded-xs relative overflow-hidden group">
+                    <div className="absolute right-0 top-0 w-24 h-24 bg-accent-gold/5 rounded-full blur-xl pointer-events-none" />
+                    <h4 className="text-[10px] uppercase font-mono tracking-widest text-accent-gold mb-4 border-b border-accent-gold/15 pb-2 font-bold select-none">
+                      About the Author & Academic Credentials
+                    </h4>
+                    <div className="flex flex-col sm:flex-row gap-4 items-start">
+                      <img 
+                        src={authorObj.image} 
+                        alt={authorObj.name} 
+                        className="w-12 h-12 rounded-full object-cover border border-accent-gold/45 shrink-0 shadow-sm"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <h5 className="font-serif-display font-bold text-sm text-white">{authorObj.name}</h5>
+                        <p className="text-[10px] font-mono text-accent-gold mt-1 leading-normal italic font-medium">
+                          {authorObj.credentials}
+                        </p>
+                        <p className="text-xs text-neutral-300 mt-2.5 leading-relaxed font-light font-sans">
+                          {authorObj.bio}
+                        </p>
+                        
+                        {authorObj.publishedWorks && authorObj.publishedWorks.length > 0 && (
+                          <div className="mt-4">
+                            <span className="text-[9px] uppercase font-mono tracking-widest text-[#B3934B] font-bold select-none block mb-1.5">
+                              Selected peer-reviewed works:
+                            </span>
+                            <ul className="space-y-1.5 text-[10px] font-sans font-light text-neutral-300 pl-1.5 border-l border-accent-gold/20">
+                              {authorObj.publishedWorks.map((work, wIdx) => (
+                                <li key={wIdx} className="flex gap-1.5">
+                                  <span className="text-[#C9A961] select-none">▪</span>
+                                  <span className="leading-snug">{work.title}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+
+                        {authorObj.links && authorObj.links.length > 0 && (
+                          <div className="flex gap-3 mt-4">
+                            {authorObj.links.map((ln, lnIdx) => (
+                              <a 
+                                key={lnIdx} 
+                                href={ln.url} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="text-[9px] uppercase tracking-wider font-mono text-accent-gold hover:text-white underline font-semibold transition-colors flex items-center gap-1"
+                              >
+                                {ln.label} →
+                              </a>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
 
               {/* Academic citations footer box */}
               <div className="border border-accent-gold/20 bg-primary-maroon p-4 font-mono text-[9px] text-neutral-300 mt-6 select-all">

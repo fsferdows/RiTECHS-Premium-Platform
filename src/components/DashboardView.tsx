@@ -5,7 +5,7 @@ import {
   FileSpreadsheet, Sparkles, User, Mail, Globe, Printer, AlertCircle, LayoutDashboard,
   Copy, Eye, X, BookMarked
 } from 'lucide-react';
-import { Manuscript, UserState } from '../types';
+import { Manuscript, UserState, INITIAL_AUTHORS } from '../types';
 
 interface DashboardViewProps {
   user: UserState;
@@ -1037,6 +1037,72 @@ ER  - `;
                     )}
                   </div>
                 </div>
+
+                {/* Academic credibility author bio card */}
+                {(() => {
+                  const authorObj = INITIAL_AUTHORS.find(a => 
+                    a.name === selectedManuscript.author || 
+                    selectedManuscript.author?.includes(a.name) ||
+                    a.name.includes(selectedManuscript.author || "---")
+                  );
+                  if (!authorObj) return null;
+                  return (
+                    <div className="bg-neutral-warm border border-divider-gold p-6 text-left relative overflow-hidden group shadow-xs">
+                      <div className="absolute right-0 top-0 w-24 h-24 bg-accent-gold/5 rounded-full blur-xl pointer-events-none" />
+                      <h4 className="text-[10px] uppercase font-mono tracking-widest text-[#B3934B] mb-4 border-b border-divider-gold/30 pb-2 font-bold select-none">
+                        Author Profile & Academic Credentials
+                      </h4>
+                      <div className="flex flex-col sm:flex-row gap-4 items-start animate-fade-in">
+                        <img 
+                          src={authorObj.image} 
+                          alt={authorObj.name} 
+                          className="w-12 h-12 rounded-full object-cover border border-accent-gold/40 shrink-0 shadow-sm"
+                        />
+                        <div className="flex-1 min-w-0">
+                          <h5 className="font-serif-display font-bold text-sm text-primary-navy leading-none">{authorObj.name}</h5>
+                          <p className="text-[9px] font-mono text-[#B3934B] mt-1 leading-normal italic">
+                            {authorObj.credentials}
+                          </p>
+                          <p className="text-xs text-muted-gray mt-2.5 leading-relaxed font-light font-sans">
+                            {authorObj.bio}
+                          </p>
+                          
+                          {authorObj.publishedWorks && authorObj.publishedWorks.length > 0 && (
+                            <div className="mt-4">
+                              <span className="text-[9px] uppercase font-mono tracking-widest text-primary-navy font-bold select-none block mb-1.5">
+                                Published scholastic works:
+                              </span>
+                              <ul className="space-y-1 text-[10px] font-sans font-light text-muted-gray pl-1 border-l border-divider-gold">
+                                {authorObj.publishedWorks.map((work, wIdx) => (
+                                  <li key={wIdx} className="flex gap-1.5 leading-normal">
+                                    <span className="text-accent-gold select-none">▪</span>
+                                    <span>{work.title}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+
+                          {authorObj.links && authorObj.links.length > 0 && (
+                            <div className="flex gap-3 mt-4 select-none">
+                              {authorObj.links.map((ln, lnIdx) => (
+                                <a 
+                                  key={lnIdx} 
+                                  href={ln.url} 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="text-[9px] uppercase tracking-wider font-mono text-[#C9A961] hover:text-primary-navy underline font-bold transition-colors"
+                                >
+                                  {ln.label} →
+                                </a>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })()}
 
               </div>
 
