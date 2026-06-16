@@ -91,7 +91,7 @@ export default function BlogView({ blogs }: BlogViewProps) {
                 src={featuredPost.image} 
                 alt={featuredPost.title}
                 referrerPolicy="no-referrer"
-                className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-[1.02] transition-all duration-[800ms]"
+                className="w-full h-full object-cover group-hover:scale-[1.02] transition-all duration-[800ms]"
               />
               <div className="absolute top-4 left-4 bg-primary-navy/90 border border-accent-gold/40 text-accent-gold text-[9px] font-mono px-3 py-1 tracking-widest font-semibold uppercase">
                 FEATURED CRITIQUE
@@ -148,7 +148,7 @@ export default function BlogView({ blogs }: BlogViewProps) {
                       src={post.image} 
                       alt={post.title}
                       referrerPolicy="no-referrer"
-                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700"
                     />
                     <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-xs border border-divider-gold text-primary-navy text-[8px] font-mono px-2 py-0.5 tracking-wider font-semibold uppercase">
                       {post.category}

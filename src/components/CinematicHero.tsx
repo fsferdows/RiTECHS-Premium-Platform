@@ -242,12 +242,16 @@ export function CinematicHero({ onNavigate, conferences, mentors }: CinematicHer
         </div>
 
         {/* Premium Glass-Card container for high text legibility & elegant presentation */}
-        <div className="bg-[#050e21]/60 border border-accent-gold/15 p-6 sm:p-8 mb-6 max-w-3xl backdrop-blur-lg relative rounded-xs shadow-[0_20px_50px_rgba(3,10,23,0.8)]">
+        <div 
+          onClick={() => onNavigate('#/conferences/icetcs')}
+          className="bg-[#050e21]/60 border border-accent-gold/15 p-6 sm:p-8 mb-6 max-w-3xl backdrop-blur-lg relative rounded-xs shadow-[0_20px_50px_rgba(3,10,23,0.8)] cursor-pointer hover:border-accent-gold/40 hover:bg-[#050e21]/80 transition-all duration-300 group/card"
+          title="Click to view ICETCS 2026 Conference Details"
+        >
           {/* Subtle corner elements */}
-          <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-accent-gold/50" />
-          <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-accent-gold/50" />
-          <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-accent-gold/50" />
-          <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-accent-gold/50" />
+          <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-accent-gold/50 group-hover/card:border-accent-gold transition-colors duration-300" />
+          <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-accent-gold/50 group-hover/card:border-accent-gold transition-colors duration-300" />
+          <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-accent-gold/50 group-hover/card:border-accent-gold transition-colors duration-300" />
+          <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-accent-gold/50 group-hover/card:border-accent-gold transition-colors duration-300" />
 
           <h1 className="font-serif-display text-3xl sm:text-4.5xl lg:text-5.5xl font-semibold tracking-tight mb-4 leading-tight text-white">
             Research. Innovation. <br className="hidden sm:inline" />

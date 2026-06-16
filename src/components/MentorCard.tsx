@@ -23,11 +23,8 @@ export function MentorCard({ mentor, onClick, className = "" }: MentorCardProps)
           alt={mentor.name}
           referrerPolicy="no-referrer"
           loading="lazy"
-          className="w-full h-full object-cover grayscale brightness-95 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-[600ms]"
+          className="w-full h-full object-cover group-hover:scale-105 transition-all duration-[600ms]"
         />
-        
-        {/* Subtle luxurious color sheen block */}
-        <div className="absolute inset-0 bg-primary-navy/10 group-hover:bg-transparent transition-colors duration-500" />
 
         {/* Rating Badge */}
         <div className="absolute top-3 right-3 bg-primary-navy/90 border border-accent-gold/30 text-accent-gold text-[8px] font-mono px-2 py-1 tracking-widest font-semibold uppercase flex items-center gap-1 shadow-md">

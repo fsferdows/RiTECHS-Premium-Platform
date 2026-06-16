@@ -139,7 +139,7 @@ export default function ITSSIoEGallerySection() {
                   src={item.imgUrl}
                   alt={item.title}
                   loading="lazy"
-                  className="w-full h-full object-cover select-none transition-transform duration-700 ease-[0.16,1,0.3,1] group-hover:scale-110 grayscale group-hover:grayscale-0 group-hover:brightness-95"
+                  className="w-full h-full object-cover select-none transition-transform duration-700 ease-[0.16,1,0.3,1] group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-primary-navy/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                   <div className="w-10 h-10 rounded-full bg-white/20 border border-white/40 flex items-center justify-center text-white backdrop-blur-xs">
