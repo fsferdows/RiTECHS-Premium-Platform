@@ -64,7 +64,7 @@ export default function AboutView() {
     <div id="about-view" className="pt-16 animate-fade-in-up text-charcoal">
       {/* Editorial Header */}
       <section className="bg-gradient-to-b from-primary-navy to-[#0F2954] text-white py-24 px-6 text-center relative premium-noise overflow-hidden border-b border-accent-gold/20">
-        <div className="absolute inset-0 z-0 select-none pointer-events-none overflow-hidden opacity-55">
+        <div className="absolute inset-0 z-0 select-none pointer-events-none overflow-hidden opacity-100">
           <img 
             src="/banner 1.0.png" 
             alt="Scholastic Heritage Backdrop" 
@@ -79,9 +79,9 @@ export default function AboutView() {
                 el.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3Crect width='100%25' height='100%25' fill='%23000'/%3E%3C/svg%3E";
               }
             }}
-            className="w-full h-full object-cover filter brightness-[55%] contrast-[110%]"
+            className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-primary-navy/40 via-primary-navy/70 to-[#0F2954] mix-blend-multiply" />
+          <div className="absolute inset-0 bg-black/15" />
         </div>
 
         <div className="max-w-4xl mx-auto relative z-10">

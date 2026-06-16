@@ -148,20 +148,20 @@ export function CinematicHero({ onNavigate, conferences, mentors }: CinematicHer
               enter: (direction: number) => ({
                 opacity: 0,
                 scale: 1.05,
-                filter: "blur(4px) brightness(30%)",
+                filter: "blur(0px) brightness(100%)",
                 x: direction > 0 ? 50 : -50,
               }),
               center: {
-                opacity: 0.65,
+                opacity: 1.0,
                 scale: 1,
-                filter: "blur(0px) brightness(65%)",
+                filter: "blur(0px) brightness(100%)",
                 x: 0,
                 transition: { duration: 1.6, ease: [0.16, 1, 0.3, 1] }
               },
               exit: (direction: number) => ({
                 opacity: 0,
                 scale: 0.96,
-                filter: "blur(4px) brightness(30%)",
+                filter: "blur(0px) brightness(100%)",
                 x: direction < 0 ? 50 : -50,
                 transition: { duration: 1.6, ease: [0.16, 1, 0.3, 1] }
               })
@@ -191,7 +191,7 @@ export function CinematicHero({ onNavigate, conferences, mentors }: CinematicHer
         </AnimatePresence>
 
         {/* Shimmer / Color overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#030a17]/95 via-primary-navy/90 to-[#030a17] z-10" />
+        <div className="absolute inset-0 bg-black/10 z-10" />
         
         {/* Subtle architectural grid */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#C9A96105_1px,transparent_1px),linear-gradient(to_bottom,#C9A96105_1px,transparent_1px)] bg-[size:4rem_4rem] z-10" />

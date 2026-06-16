@@ -648,7 +648,7 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
           <img 
             src="/banner 5.png" 
             alt="Corporate Banner 5" 
-            className="w-full h-full object-cover opacity-20 filter brightness-[30%] contrast-[110%]"
+            className="w-full h-full object-cover opacity-100"
             onError={(e) => {
               const el = e.currentTarget;
               const bkp = "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=1600";
@@ -659,7 +659,7 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
               }
             }}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#030a17]/95 via-primary-navy/90 to-[#030a17] mix-blend-multiply" />
+          <div className="absolute inset-0 bg-black/15" />
         </div>
 
         <div className="relative z-10 max-w-3xl mx-auto px-6">
