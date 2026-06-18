@@ -4,6 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RiTECHS</title>
+    <!-- Preload critical images for immediate visual display -->
+    <link rel="preload" href="/logo.png" as="image" type="image/png" />
+    <link rel="preload" href="/banner%201.0.png" as="image" type="image/png" />
+    
+    <!-- Prefetch subsequent carousel slides to prevent slide flashing -->
+    <link rel="prefetch" href="/banner%201.png" as="image" />
+    <link rel="prefetch" href="/banner%203.png" as="image" />
+    <link rel="prefetch" href="/banner%204.png" as="image" />
+    <link rel="prefetch" href="/banner%205.png" as="image" />
   </head>
   <body>
     <div id="root"></div>

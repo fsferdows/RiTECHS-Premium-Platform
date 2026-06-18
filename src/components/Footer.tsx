@@ -20,7 +20,7 @@ export default function Footer({ onNavigate }: FooterProps) {
   };
 
   return (
-    <footer id="premium-footer" className="bg-maroon-dark text-white py-16 border-t border-accent-gold/20 premium-noise">
+    <footer id="premium-footer" className="bg-maroon-dark text-white py-16 border-t border-accent-gold/20 premium-noise print:hidden">
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           {/* Column 1: Brand Info */}
@@ -69,6 +69,8 @@ export default function Footer({ onNavigate }: FooterProps) {
             <div className="flex flex-col gap-3 text-sm">
               {[
                 { name: "About RiTECHS", path: "#/about" },
+                { name: "Conferences Search", path: "#/con_search" },
+                { name: "Plans & Sponsorship", path: "#/conference_plans" },
                 { name: "Mentorship Hub", path: "#/mentors" },
                 { name: "Academic Services", path: "#/services" },
                 { name: "Editorial news", path: "#/blog" },

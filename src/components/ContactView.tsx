@@ -55,13 +55,13 @@ export default function ContactView() {
     <div id="contact-scholastic-view" className="pt-16 animate-fade-in-up text-white bg-maroon-dark min-h-screen">
       
       {/* Narrative Header */}
-      <section className="bg-gradient-to-b from-maroon-dark to-primary-maroon text-white py-20 px-6 text-center relative premium-noise">
-        <div className="max-w-4xl mx-auto">
-          <h3 className="text-xs font-mono tracking-widest text-accent-gold uppercase mb-4">EDITORIAL DESK</h3>
-          <h1 className="font-serif-display text-4xl sm:text-6xl font-bold tracking-tight mb-8">
+      <section className="bg-gradient-to-b from-[#2C0509] to-[#3D0C11] text-white py-20 px-6 text-center relative premium-noise border-b border-accent-gold/25">
+        <div className="max-w-4xl mx-auto text-white">
+          <h3 className="text-xs font-mono tracking-widest text-[#C9A961] uppercase mb-4">EDITORIAL DESK</h3>
+          <h1 className="font-serif-display text-4xl sm:text-6xl font-bold tracking-tight mb-8 text-white">
             Contact & Support
           </h1>
-          <p className="font-serif-accent text-lg sm:text-xl italic text-white/85 max-w-2xl mx-auto leading-relaxed font-light">
+          <p className="font-serif-accent text-lg sm:text-xl italic text-neutral-200 max-w-2xl mx-auto leading-relaxed font-light">
             Have a question on manuscript templates or matchmaking? Drop a message to our Wolverhampton secretariat or browse our critical FAQs.
           </p>
         </div>

@@ -42,28 +42,28 @@ export default function ServicesView({ onNavigate, isLoggedIn }: ServicesViewPro
   return (
     <div id="academic-services-view" className="pt-16 animate-fade-in-up bg-maroon-dark text-white">
       {/* Narrative Header */}
-      <section className="bg-gradient-to-b from-maroon-dark to-primary-maroon text-white py-12 lg:py-16 px-6 relative premium-noise overflow-hidden border-b border-accent-gold/25">
+      <section className="bg-gradient-to-b from-[#2C0509] to-[#3D0C11] text-white py-12 lg:py-16 px-6 relative premium-noise overflow-hidden border-b border-accent-gold/25">
         <div className="max-w-6xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center text-left">
           {/* Left Column: Clear premium academic headings */}
-          <div className="lg:col-span-7 flex flex-col justify-center">
-            <span className="text-[10px] font-mono tracking-widest text-accent-gold uppercase font-bold bg-accent-gold/10 px-3 py-1.5 border border-accent-gold/20 rounded-full mb-4 inline-block self-start">
+          <div className="lg:col-span-7 flex flex-col justify-center text-white">
+            <span className="text-[10px] font-mono tracking-widest text-[#C9A961] uppercase font-bold bg-[#C9A961]/15 px-3 py-1.5 border border-[#C9A961]/30 rounded-full mb-4 inline-block self-start">
               ACADEMIC CAPABILITIES
             </span>
             <h1 className="font-serif-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-4 mt-2 text-white leading-tight animate-fade-in">
               Academic Services
             </h1>
-            <p className="font-serif-accent text-sm sm:text-base lg:text-lg italic text-white/85 max-w-2xl leading-relaxed font-light">
+            <p className="font-serif-accent text-sm sm:text-base lg:text-lg italic text-neutral-200 max-w-2xl leading-relaxed font-light">
               Providing index-linked platforms where cyber defense, advanced IoT grids, and sustainable energy methodologies meet peer recognition.
             </p>
           </div>
 
           {/* Right Column: Clear, unobstructed PNG background/banner image */}
-          <div className="lg:col-span-5 w-full h-48 sm:h-64 lg:h-80 overflow-hidden relative border border-accent-gold/30 rounded-xs shadow-xl group">
+          <div className="lg:col-span-5 w-full h-48 sm:h-64 lg:h-80 overflow-hidden relative border border-accent-gold/30 rounded-xs shadow-xl group bg-maroon-dark">
             <img 
                src="/banner 1.png" 
               alt="Academic Services Backdrop" 
               referrerPolicy="no-referrer"
-              className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500"
+              className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500 opacity-80"
               onError={(e) => {
                 const el = e.currentTarget;
                 const bkp = "https://images.unsplash.com/photo-1507668077129-56e32842fceb?auto=format&fit=crop&q=80&w=1600";
@@ -71,13 +71,13 @@ export default function ServicesView({ onNavigate, isLoggedIn }: ServicesViewPro
                   el.src = bkp;
                 } else {
                   el.onerror = null;
-                  el.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3Crect width='100%25' height='100%25' fill='%23000'/%3E%3C/svg%3E";
+                  el.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3Crect width='100%25' height='100%25' fill='%23fff'/%3E%3C/svg%3E";
                 }
               }}
             />
             {/* Subtle elegant gold overlay/plaque line */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
-            <div className="absolute bottom-3 right-3 px-2 py-1 bg-[#030a17]/85 border border-accent-gold/30 text-accent-gold font-mono text-[8px] uppercase tracking-widest font-semibold rounded-xs">
+            <div className="absolute bottom-3 right-3 px-2 py-1 bg-maroon-dark/90 border border-accent-gold/45 text-accent-gold font-mono text-[8px] uppercase tracking-widest font-semibold rounded-xs shadow-xs">
               RESEARCH SOLUTIONS FOR CLIENTS
             </div>
           </div>

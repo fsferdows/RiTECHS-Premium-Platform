@@ -81,34 +81,34 @@ export default function MentorsView({ mentors, onNavigate }: MentorsViewProps) {
   return (
     <div id="mentors-matchmaking-view" className="pt-20 animate-fade-in-up text-white bg-maroon-dark min-h-screen">
       {/* Brand Header */}
-      <section className="relative bg-gradient-to-b from-maroon-dark to-primary-maroon text-white py-12 lg:py-16 px-6 border-b border-accent-gold/25 premium-noise overflow-hidden">
+      <section className="relative bg-gradient-to-b from-[#2C0509] to-[#3D0C11] text-white py-12 lg:py-16 px-6 border-b border-accent-gold/25 premium-noise overflow-hidden">
         {/* Subtle geometric lines */}
-        <div className="absolute inset-0 opacity-10 pointer-events-none z-10">
-          <div className="absolute top-10 left-10 w-96 h-96 rounded-full border border-accent-gold/30" />
-          <div className="absolute -bottom-10 -right-10 w-80 h-80 rounded-full border-2 border-dashed border-accent-gold/15" />
+        <div className="absolute inset-0 opacity-10 pointer-events-none z-10 animate-pulse">
+          <div className="absolute top-10 left-10 w-96 h-96 rounded-full border border-[#C9A961]/20" />
+          <div className="absolute -bottom-10 -right-10 w-80 h-80 rounded-full border-2 border-dashed border-[#C9A961]/10" />
         </div>
 
         <div className="max-w-6xl mx-auto relative z-20 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center text-left">
           {/* Left Column: Clear premium scholastic headings */}
-          <div className="lg:col-span-7 flex flex-col justify-center">
-            <span className="text-[10px] font-mono tracking-widest text-accent-gold uppercase font-bold bg-accent-gold/10 px-3 py-1.5 border border-accent-gold/20 rounded-full mb-4 inline-block self-start">
+          <div className="lg:col-span-7 flex flex-col justify-center text-white">
+            <span className="text-[10px] font-mono tracking-widest text-[#C9A961] uppercase font-bold bg-[#C9A961]/15 px-3 py-1.5 border border-[#C9A961]/30 rounded-full mb-4 inline-block self-start">
               SCHOLASTIC MATCHMAKER NETWORK
             </span>
             <h1 className="font-serif-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-4 mt-2 text-white leading-tight animate-fade-in">
               Colleague & Editorial Matches
             </h1>
-            <p className="font-serif-accent text-sm sm:text-base lg:text-lg italic text-white/85 max-w-2xl leading-relaxed font-light">
+            <p className="font-serif-accent text-sm sm:text-base lg:text-lg italic text-neutral-200 max-w-2xl leading-relaxed font-light">
               Connecting PhD candidates and elite scholars with world-class editors, reviewers, and scientific leaders from top-tier academic boards.
             </p>
           </div>
 
           {/* Right Column: Clear, unobstructed PNG background/banner image */}
-          <div className="lg:col-span-5 w-full h-48 sm:h-64 lg:h-80 overflow-hidden relative border border-accent-gold/30 rounded-xs shadow-xl group">
+          <div className="lg:col-span-5 w-full h-48 sm:h-64 lg:h-80 overflow-hidden relative border border-accent-gold/30 rounded-xs shadow-xl group bg-maroon-dark">
             <img 
               src="/banner 4.png" 
               alt="Scholastic Library Backdrop" 
               referrerPolicy="no-referrer"
-              className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500"
+              className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500 opacity-80"
               onError={(e) => {
                 const el = e.currentTarget;
                 const bkp = "https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&q=80&w=1600";
@@ -116,13 +116,13 @@ export default function MentorsView({ mentors, onNavigate }: MentorsViewProps) {
                   el.src = bkp;
                 } else {
                   el.onerror = null;
-                  el.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3Crect width='100%25' height='100%25' fill='%23000'/%3E%3C/svg%3E";
+                  el.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3Crect width='100%25' height='100%25' fill='%23fff'/%3E%3C/svg%3E";
                 }
               }}
             />
             {/* Subtle elegant gold overlay/plaque line */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
-            <div className="absolute bottom-3 right-3 px-2 py-1 bg-[#030a17]/85 border border-accent-gold/30 text-accent-gold font-mono text-[8px] uppercase tracking-widest font-semibold rounded-xs">
+            <div className="absolute bottom-3 right-3 px-2 py-1 bg-maroon-dark/90 border border-accent-gold/45 text-accent-gold font-mono text-[8px] uppercase tracking-widest font-semibold rounded-xs shadow-xs">
               ADVISORY HUB
             </div>
           </div>
@@ -352,17 +352,17 @@ export default function MentorsView({ mentors, onNavigate }: MentorsViewProps) {
               className="bg-maroon-dark w-full max-w-xl h-full shadow-2xl relative z-10 flex flex-col border-l border-accent-gold/30 overflow-y-auto text-white"
             >
               {/* Header top drawer */}
-              <div className="bg-primary-maroon px-8 py-6 text-white border-b border-accent-gold/20 flex justify-between items-center premium-noise shrink-0">
+              <div className="bg-white px-8 py-6 text-black border-b border-accent-gold/20 flex justify-between items-center premium-noise shrink-0">
                 <div>
-                  <span className="text-[8px] font-mono text-accent-gold uppercase tracking-widest font-bold">EVALUATION BOARD ADVISOR</span>
-                  <h2 className="font-serif-display text-2xl font-bold mt-1 text-white">{selectedMentor.name}</h2>
+                  <span className="text-[8px] font-mono text-primary-maroon uppercase tracking-widest font-bold">EVALUATION BOARD ADVISOR</span>
+                  <h2 className="font-serif-display text-2xl font-bold mt-1 text-black">{selectedMentor.name}</h2>
                 </div>
                 <button 
                   onClick={() => setSelectedMentor(null)}
-                  className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors cursor-pointer"
+                  className="w-10 h-10 rounded-full border border-black/10 flex items-center justify-center hover:bg-black/10 transition-colors cursor-pointer"
                   id="drawer-close"
                 >
-                  <X className="w-5 h-5 text-white" />
+                  <X className="w-5 h-5 text-black" />
                 </button>
               </div>
 

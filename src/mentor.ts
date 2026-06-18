@@ -1,9 +1,54 @@
 // data/mentors.ts
 import { Mentor } from './types';
 
-// Helper to generate consistent avatar URL
-const avatar = (name: string) => 
-  `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&size=400&background=0A1F44&color=C9A961&bold=true&format=svg`;
+// Curated pool of 34 highly professional, diverse academic and scholarly portrait images
+const HEADSHOT_IDS = [
+  "photo-1573496359142-b8d87734a5a2",
+  "photo-1560250097-0b93528c311a",
+  "photo-1534528741775-53994a69daeb",
+  "photo-1544005313-94ddf0286df2",
+  "photo-1507003211169-0a1dd7228f2d",
+  "photo-1500648767791-00dcc994a43e",
+  "photo-1472099645785-5658abf4ff4e",
+  "photo-1580489944761-15a19d654956",
+  "photo-1438761681033-6461ffad8d80",
+  "photo-1519085360753-af0119f7cbe7",
+  "photo-1508214751196-bcfd4ca60f91",
+  "photo-1543132220-4bf3de6e10ae",
+  "photo-1531123897727-8f129e1688ce",
+  "photo-1517841905240-472988babdf9",
+  "photo-1544717305-2782549b5136",
+  "photo-1594744803329-e58b31de215f",
+  "photo-1534308983496-4fabb1a015ee",
+  "photo-1519345182560-3f2917c472ef",
+  "photo-1537368910025-700350fe46c7",
+  "photo-1504257400765-1d6f98624400",
+  "photo-1551836022-d5d88e9218df",
+  "photo-1567532939604-b6b5b0db2604",
+  "photo-1548142813-c348350df52b",
+  "photo-1494790108377-be9c29b29330",
+  "photo-1573497019940-1c28c88b4f3e",
+  "photo-1598550476439-6847785fce6e",
+  "photo-1554568218-0f1715e72254",
+  "photo-1512485694743-9c9538b4e6e0",
+  "photo-1542909168-82c3e7fdca5c",
+  "photo-1501196354995-cbb51c65aaea",
+  "photo-1556157382-97eda2d62296",
+  "photo-1522075469751-3a6694fb2f61",
+  "photo-1506794778202-cad84cf45f1d",
+  "photo-1539571696357-5a69c17a67c6"
+];
+
+// Helper to generate consistent, professional portrait URL from name hash
+const avatar = (name: string) => {
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const index = Math.abs(hash) % HEADSHOT_IDS.length;
+  const imgId = HEADSHOT_IDS[index];
+  return `https://images.unsplash.com/${imgId}?auto=format,compress&fit=crop&q=85&w=400&h=400`;
+};
 
 // Helper to generate email
 const email = (name: string) => 

@@ -100,10 +100,10 @@ export function SafeImageWithSkeleton({
             }
             if (onError) onError(e);
           }}
-          className={`${className} transition-all duration-1000 ease-in-out ${
+          className={`${className} transition-all duration-300 ease-out ${
             isLoaded 
               ? "opacity-100 scale-100 blur-0" 
-              : "opacity-0 scale-105 blur-lg"
+              : "opacity-0 scale-102 blur-sm"
           }`}
           loading="lazy"
           referrerPolicy="no-referrer"

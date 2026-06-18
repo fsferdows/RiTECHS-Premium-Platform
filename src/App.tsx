@@ -25,6 +25,8 @@ import BlogView from './components/BlogView';
 import ContactView from './components/ContactView';
 import LoginView from './components/LoginView';
 import AIAssistant from './components/AIAssistant';
+import ConSearchView from './components/ConSearchView';
+import ConferencePlansView from './components/ConferencePlansView';
 
 export default function App() {
   // Session handling using localStorage to keep it persistent across iframe reloads
@@ -102,7 +104,11 @@ export default function App() {
     const saved = localStorage.getItem('ritechs_mentors');
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        const hasUiAvatars = parsed.some((m: any) => m.image && m.image.includes('ui-avatars.com'));
+        if (!hasUiAvatars) {
+          return parsed;
+        }
       } catch (e) {}
     }
     return INITIAL_MENTORS;
@@ -275,6 +281,10 @@ export default function App() {
 
     if (normalized === '#/about') {
       crumbs.push({ label: 'About Us', path: '#/about' });
+    } else if (normalized === '#/con_search') {
+      crumbs.push({ label: 'Conferences Search', path: '#/con_search' });
+    } else if (normalized === '#/conference_plans') {
+      crumbs.push({ label: 'Hosting Plans & Registration', path: '#/conference_plans' });
     } else if (normalized === '#/conferences') {
       crumbs.push({ label: 'Conferences Hub', path: '#/conferences' });
     } else if (normalized.startsWith('#/conferences/')) {
@@ -370,6 +380,23 @@ export default function App() {
     
     if (normalized === '#/about') {
       return <AboutView />;
+    }
+
+    if (normalized === '#/con_search') {
+      return (
+        <ConSearchView 
+          conferences={conferences} 
+          onNavigate={handleNavigate} 
+        />
+      );
+    }
+
+    if (normalized === '#/conference_plans') {
+      return (
+        <ConferencePlansView 
+          onNavigate={handleNavigate} 
+        />
+      );
     }
 
     if (normalized === '#/conferences' || normalized.startsWith('#/conferences/')) {
@@ -491,7 +518,7 @@ export default function App() {
       />
 
       {/* Real-time reading time overlay for scroll progression */}
-      {(currentPath === '#/blog' || currentPath.startsWith('#/conferences') || currentPath === '#/dashboard') && (
+      {(currentPath === '#/blog' || currentPath === '#/dashboard') && (
         <div className="fixed top-2.5 right-6 z-[9999] bg-primary-maroon/95 backdrop-blur-md text-accent-gold border border-accent-gold/45 text-[9px] font-mono font-semibold tracking-widest px-3 py-1 uppercase rounded-xs shadow-lg flex items-center gap-1.5 select-none print:hidden">
           <Clock className="w-3 h-3 text-accent-gold animate-pulse" />
           <span>
@@ -508,6 +535,7 @@ export default function App() {
         onLogout={handleLogout} 
         theme={theme}
         onToggleTheme={toggleTheme}
+        timeThemeSync={timeThemeSync}
       />
 
       {/* Subtle, elegant breadcrumb navigation bar */}

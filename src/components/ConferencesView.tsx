@@ -331,48 +331,44 @@ ER  - `;
     return (
       <div id="conference-detail-view" className="pt-20 animate-fade-in text-white bg-maroon-dark min-h-screen">
         {/* Dynamic Editorial Hero Header with high contrast */}
-        <section className="bg-gradient-to-b from-maroon-dark to-primary-maroon text-white py-16 px-6 relative premium-noise overflow-hidden border-b border-accent-gold/25 shadow-lg">
-          <div className="absolute inset-0 z-0 opacity-10 pointer-events-none bg-[#030a17]">
+        <section className="bg-gradient-to-b from-[#2C0509] to-[#3D0C11] text-white py-16 px-6 relative premium-noise overflow-hidden border-b border-accent-gold/25 shadow-lg">
+          <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
             <div className="absolute top-1/2 left-1/4 w-96 h-96 rounded-full bg-accent-gold/5 blur-[120px]" />
-            <div className="absolute top-0 right-1/4 w-80 h-80 rounded-full bg-blue-500/5 blur-[100px]" />
           </div>
           
           <div className="max-w-5xl mx-auto relative z-10 text-left">
             <button 
               onClick={() => onNavigate('#/conferences')}
-              className="inline-flex items-center gap-2 text-accent-gold hover:text-white text-[11px] uppercase tracking-widest font-mono mb-6 transition-all duration-300"
+              className="inline-flex items-center gap-2 text-[#C9A961] hover:text-white text-[11px] uppercase tracking-widest font-mono mb-6 transition-all duration-300 cursor-pointer"
             >
               <ChevronLeft className="w-4 h-4" /> Back to Conference Hub
             </button>
 
             <div className="flex flex-wrap items-center gap-2 mb-4">
-              <span className="px-3 py-1 bg-[#102447] border border-accent-gold/45 text-accent-gold text-[10px] uppercase font-mono tracking-wider font-bold rounded-xs">
+              <span className="px-3 py-1 bg-accent-gold/15 border border-accent-gold/30 text-accent-gold text-[10px] uppercase font-mono tracking-wider font-bold rounded-xs">
                 {activeConference.year || '2026'} EDITION
               </span>
-              <span className="px-3 py-1 bg-white/20 uppercase border border-white/35 text-[10px] font-mono tracking-wider rounded-xs font-semibold text-white">
+              <span className="px-3 py-1 bg-white/10 uppercase border border-white/25 text-[10px] font-mono tracking-wider rounded-xs font-semibold text-white">
                 {activeConference.format || 'Hybrid'}
               </span>
               {isIcetcs && (
-                <span className="px-3 py-1 bg-blue-500/20 border border-blue-400/35 text-blue-200 text-[10px] font-mono tracking-wider font-bold rounded-xs uppercase">
+                <span className="px-3 py-1 bg-blue-500/10 border border-blue-400/20 text-blue-300 text-[10px] font-mono tracking-wider font-bold rounded-xs uppercase w-fit">
                   LNEE, SPRINGER PUBLISHING
                 </span>
               )}
             </div>
 
-            <h1 className="font-serif-display text-3xl sm:text-4.5xl lg:text-5.5xl font-bold tracking-tight mb-4 leading-tight text-white drop-shadow-sm">
+            <h1 className="font-serif-display text-3xl sm:text-4.5xl lg:text-5.5xl font-bold tracking-tight mb-6 leading-tight text-white drop-shadow-sm">
               {activeConference.fullName || activeConference.name}
             </h1>
-            <p className="text-accent-gold font-mono text-sm uppercase tracking-wider mb-6 flex items-center gap-2">
-              <Sparkles className="w-4 h-4 shrink-0 text-accent-gold" /> Organized by RiTECHS (Research Institute for Technology and Science)
-            </p>
 
-            <div className="flex flex-col sm:flex-row sm:items-center gap-6 text-[12px] text-gray-200 font-mono mt-8 border-t border-white/10 pt-6">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-6 text-[12px] text-neutral-300 font-mono mt-8 border-t border-white/10 pt-6">
               <div className="flex items-center gap-2.5">
-                <MapPin className="w-4 h-4 text-accent-gold shrink-0" />
+                <MapPin className="w-4 h-4 text-[#C9A961] shrink-0" />
                 <span><strong className="text-white">Venue:</strong> {activeConference.location}</span>
-              </div>
+               </div>
               <div className="flex items-center gap-2.5">
-                <Calendar className="w-4 h-4 text-accent-gold shrink-0" />
+                <Calendar className="w-4 h-4 text-[#C9A961] shrink-0" />
                 <span><strong className="text-white">Dates:</strong> {activeConference.dates}</span>
               </div>
             </div>
@@ -1419,33 +1415,33 @@ ER  - `;
   return (
     <div id="conferences-hub-view" className="pt-16 animate-fade-in-up text-white bg-maroon-dark min-h-screen">
       {/* Editorial Header */}
-      <section className="bg-gradient-to-b from-maroon-dark to-primary-maroon text-white py-12 lg:py-16 px-6 relative premium-noise overflow-hidden border-b border-accent-gold/25">
+      <section className="bg-gradient-to-b from-[#2C0509] to-[#3D0C11] text-white py-12 lg:py-16 px-6 relative premium-noise overflow-hidden border-b border-accent-gold/25">
         <div className="max-w-6xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center text-left">
           {/* Left Column: Clear premium academic headings */}
-          <div className="lg:col-span-7 flex flex-col justify-center">
-            <span className="text-[10px] font-mono tracking-widest text-accent-gold uppercase font-bold bg-accent-gold/10 px-3 py-1.5 border border-accent-gold/20 rounded-full mb-4 inline-block self-start">
+          <div className="lg:col-span-7 flex flex-col justify-center text-white">
+            <span className="text-[10px] font-mono tracking-widest text-[#C9A961] uppercase font-bold bg-[#C9A961]/15 px-3 py-1.5 border border-[#C9A961]/30 rounded-full mb-4 inline-block self-start">
               Scientific Symposiums
             </span>
             <h1 className="font-serif-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-4 mt-2 text-white leading-tight animate-fade-in">
               The Conference Hub
             </h1>
-            <p className="font-serif-accent text-sm sm:text-base lg:text-lg italic text-white/80 max-w-2xl leading-relaxed font-light">
+            <p className="font-serif-accent text-sm sm:text-base lg:text-lg italic text-neutral-200 max-w-2xl leading-relaxed font-light">
               Providing index-linked platforms where cyber defense, advanced IoT grids, and sustainable energy methodologies meet peer recognition.
             </p>
           </div>
 
           {/* Right Column: Clear, unobstructed PNG background/banner image */}
-          <div className="lg:col-span-5 w-full h-48 sm:h-64 lg:h-80 overflow-hidden relative border border-accent-gold/30 rounded-xs shadow-xl group">
+          <div className="lg:col-span-5 w-full h-48 sm:h-64 lg:h-80 overflow-hidden relative border border-accent-gold/30 rounded-xs shadow-xl group bg-maroon-dark">
             <SafeImageWithSkeleton 
               src="/banner 3.png" 
               alt="Scholastic Campus Backdrop" 
-              className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500"
+              className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500 opacity-80"
               fallbackSrc="https://images.unsplash.com/photo-1491841573176-0aa59e4b67ad?auto=format&fit=crop&q=80&w=1600"
-              skeletonClassName="bg-primary-maroon-dark/60"
+              skeletonClassName="bg-maroon-light"
             />
             {/* Subtle elegant gold overlay/plaque line */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
-            <div className="absolute bottom-3 right-3 px-2 py-1 bg-[#030a17]/85 border border-accent-gold/30 text-accent-gold font-mono text-[8px] uppercase tracking-widest font-semibold rounded-xs">
+            <div className="absolute bottom-3 right-3 px-2 py-1 bg-maroon-dark/90 border border-accent-gold/45 text-accent-gold font-mono text-[8px] uppercase tracking-widest font-semibold rounded-xs shadow-xs">
               SYMPOSIUM DIRECTORY
             </div>
           </div>

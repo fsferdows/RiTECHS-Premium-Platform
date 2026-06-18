@@ -247,7 +247,7 @@ html, body, #root, #app, main, section, nav, footer, .glass-card, h1, h2, h3, h4
 
 .theme-light, .theme-light body {
   background-color: #FCFBF9 !important;
-  color: #111827 !important;
+  color: #000000 !important;
 }
 
 /* Redesign headers & display components to meet luxury scholastic standards */
@@ -256,7 +256,7 @@ html, body, #root, #app, main, section, nav, footer, .glass-card, h1, h2, h3, h4
 .theme-light h3,
 .theme-light h4,
 .theme-light .font-serif-display {
-  color: #330309 !important; /* Rich regal burgundy instead of white */
+  color: #000000 !important; /* Pure black text on white/light background */
 }
 
 /* Comfortable reading script for body paragraphs & listings */
@@ -265,12 +265,12 @@ html, body, #root, #app, main, section, nav, footer, .glass-card, h1, h2, h3, h4
 .theme-light td,
 .theme-light th,
 .theme-light .font-serif-accent {
-  color: #2C3E50 !important;
+  color: #000000 !important; /* Pure black reading text */
 }
 
 /* Selective span styling to prevent breaking icons, dynamic badge text and gold call-outs */
 .theme-light span:not(.text-accent-gold):not(.badge-text):not(.text-red-400):not(.text-green-400):not(.text-green-500) {
-  color: #374151;
+  color: #000000 !important;
 }
 
 /* Safeguard and restore exact intended text colors inside all buttons and links */
@@ -382,7 +382,7 @@ html, body, #root, #app, main, section, nav, footer, .glass-card, h1, h2, h3, h4
 .theme-light .text-neutral-200,
 .theme-light .text-neutral-300,
 .theme-light .text-neutral-400 {
-  color: rgba(17, 24, 39, 0.7) !important;
+  color: rgba(0, 0, 0, 0.85) !important;
 }
 
 /* AI Copilot floating panel overrides */
@@ -564,3 +564,173 @@ html, body, #root, #app, main, section, nav, footer, .glass-card, h1, h2, h3, h4
     content: "";
   }
 }
+
+/* --- HIGH CONTRAST INSTRUCTION COMPLIANCE DIRECTIVE ---
+   "on the white background the texts colour should be black, and others background colour the texts colour should be white"
+*/
+
+/* 1. White, Light Ivory, and Light-theme backgrounds -> Enforce Black Text (#000000) */
+.bg-white,
+.bg-neutral-warm,
+.theme-light,
+.theme-light body,
+.theme-light main,
+.theme-light section,
+.theme-light nav,
+.theme-light footer,
+[id="editorial-news"],
+[id="trusted-partners-directory"] {
+  --color-charcoal: #000000 !important;
+  --color-muted-gray: #000000 !important;
+  color: #000000 !important;
+}
+
+.bg-white h1, .bg-white h2, .bg-white h3, .bg-white h4, .bg-white h5, .bg-white h6,
+.bg-white p, .bg-white li, .bg-white td, .bg-white th, .bg-white div, .bg-white a, .bg-white label,
+.bg-neutral-warm h1, .bg-neutral-warm h2, .bg-neutral-warm h3, .bg-neutral-warm h4, .bg-neutral-warm p, .bg-neutral-warm li, .bg-neutral-warm td, .bg-neutral-warm th, .bg-neutral-warm div, .bg-neutral-warm span, .bg-neutral-warm a,
+.theme-light h1, .theme-light h2, .theme-light h3, .theme-light h4, .theme-light h5, .theme-light h6,
+.theme-light p, .theme-light li, .theme-light td, .theme-light th, .theme-light div, .theme-light input, .theme-light textarea, .theme-light select, .theme-light a {
+  color: #000000 !important;
+}
+
+/* Guard: If inside a dark background element within theme-light, preserve white text */
+.theme-light .text-white,
+.theme-light .text-white h1, .theme-light .text-white h2, .theme-light .text-white h3, .theme-light .text-white h4, .theme-light .text-white p, .theme-light .text-white li, .theme-light .text-white div, .theme-light .text-white span,
+.theme-light .bg-primary-maroon,
+.theme-light .bg-primary-maroon h1, .theme-light .bg-primary-maroon h2, .theme-light .bg-primary-maroon h3, .theme-light .bg-primary-maroon h4, .theme-light .bg-primary-maroon p, .theme-light .bg-primary-maroon li, .theme-light .bg-primary-maroon div, .theme-light .bg-primary-maroon span,
+.theme-light .bg-[#3D0C11],
+.theme-light .bg-[#3D0C11] h1, .theme-light .bg-[#3D0C11] h2, .theme-light .bg-[#3D0C11] h3, .theme-light .bg-[#3D0C11] h4, .theme-light .bg-[#3D0C11] p, .theme-light .bg-[#3D0C11] li, .theme-light .bg-[#3D0C11] div, .theme-light .bg-[#3D0C11] span,
+.theme-light .bg-[#4A0E17],
+.theme-light .bg-[#4A0E17] h1, .theme-light .bg-[#4A0E17] h2, .theme-light .bg-[#4A0E17] h3, .theme-light .bg-[#4A0E17] h4, .theme-light .bg-[#4A0E17] p, .theme-light .bg-[#4A0E17] li, .theme-light .bg-[#4A0E17] div, .theme-light .bg-[#4A0E17] span,
+.theme-light .bg-[#1f090d],
+.theme-light .bg-[#1f090d] h1, .theme-light .bg-[#1f090d] h2, .theme-light .bg-[#1f090d] h3, .theme-light .bg-[#1f090d] h4, .theme-light .bg-[#1f090d] p, .theme-light .bg-[#1f090d] li, .theme-light .bg-[#1f090d] div, .theme-light .bg-[#1f090d] span,
+.theme-light .bg-[#4A0E17]\/95,
+.theme-light .bg-maroon-dark,
+.theme-light .bg-maroon-dark h1, .theme-light .bg-maroon-dark h2, .theme-light .bg-maroon-dark h3, .theme-light .bg-maroon-dark h4, .theme-light .bg-maroon-dark p, .theme-light .bg-maroon-dark li, .theme-light .bg-maroon-dark div, .theme-light .bg-maroon-dark span,
+.theme-light .bg-[#2C0509],
+.theme-light .bg-maroon-light,
+.theme-light .bg-maroon-light h1, .theme-light .bg-maroon-light h2, .theme-light .bg-maroon-light h3, .theme-light .bg-maroon-light h4, .theme-light .bg-maroon-light p, .theme-light .bg-maroon-light li, .theme-light .bg-maroon-light div, .theme-light .bg-maroon-light span,
+.theme-light .bg-primary-navy,
+.theme-light .bg-primary-navy h1, .theme-light .bg-primary-navy h2, .theme-light .bg-primary-navy h3, .theme-light .bg-primary-navy h4, .theme-light .bg-primary-navy p, .theme-light .bg-primary-navy li, .theme-light .bg-primary-navy div, .theme-light .bg-primary-navy span,
+.theme-light .bg-charcoal,
+.theme-light .bg-charcoal h1, .theme-light .bg-charcoal h2, .theme-light .bg-charcoal h3, .theme-light .bg-charcoal h4, .theme-light .bg-charcoal p, .theme-light .bg-charcoal li, .theme-light .bg-charcoal div, .theme-light .bg-charcoal span,
+.theme-light [id="mentor-spotlight"],
+.theme-light [id="mentor-spotlight"] h2, .theme-light [id="mentor-spotlight"] span, .theme-light [id="mentor-spotlight"] p, .theme-light [id="mentor-spotlight"] button, .theme-light [id="mentor-spotlight"] div {
+  color: #ffffff !important;
+}
+
+.theme-light .text-accent-gold,
+.theme-light .text-accent-gold\/80,
+.theme-light .text-accent-gold\/60,
+.theme-light .text-accent-gold\/40,
+.theme-light .bg-primary-maroon .text-accent-gold,
+.theme-light .bg-maroon-dark .text-accent-gold,
+.theme-light .bg-[#3D0C11] .text-accent-gold,
+.theme-light .bg-[#4A0E17] .text-accent-gold {
+  color: #C9A961 !important;
+}
+
+.bg-white .text-primary-navy,
+.bg-white .text-stone-850,
+.bg-white .text-stone-900,
+.bg-white .text-muted-gray,
+.bg-neutral-warm .text-primary-navy,
+.bg-neutral-warm .text-stone-850,
+.bg-neutral-warm .text-stone-900,
+.bg-neutral-warm .text-muted-gray,
+.theme-light .text-primary-navy,
+.theme-light .text-stone-850,
+.theme-light .text-stone-900,
+.theme-light .text-muted-gray {
+  color: #000000 !important;
+}
+
+.theme-light span:not(.text-accent-gold):not(.badge-text):not(.text-red-400):not(.text-green-400):not(.text-green-500):not(.text-blue-400):not(.text-emerald-500):not(.text-red-600) {
+  color: #000000 !important;
+}
+.bg-white span:not(.text-accent-gold):not(.badge-text):not(.text-red-400):not(.text-green-400):not(.text-green-500):not(.text-blue-500):not(.text-emerald-500):not(.text-red-600) {
+  color: #000000 !important;
+}
+
+/* 2. Other backgrounds (primary-maroon, maroon-dark, primary-navy, charcoal, etc.) -> Enforce White Text (#ffffff) */
+.bg-primary-navy,
+.bg-primary-maroon,
+.bg-primary-maroon\/40,
+.bg-maroon-dark,
+.bg-maroon-light,
+.bg-charcoal,
+.bg-primary-maroon\/20,
+.bg-primary-navy *,
+.bg-[#030a17],
+.bg-[#030a17] *,
+.bg-[#040a1b],
+.bg-[#040a1b] *,
+.bg-[#050e21],
+.bg-[#050e21] *,
+.bg-[#040c1e],
+.bg-[#040c1e] *,
+.bg-[#0a1f44],
+.bg-[#0a1f44] *,
+.bg-[#0b1b36],
+.bg-[#0b1b36] * {
+  --color-charcoal: #ffffff !important;
+  color: #ffffff !important;
+}
+
+.bg-primary-navy h1, .bg-primary-navy h2, .bg-primary-navy h3, .bg-primary-navy h4, .bg-primary-navy p, .bg-primary-navy li, .bg-primary-navy td, .bg-primary-navy th, .bg-primary-navy div, .bg-primary-navy span, .bg-primary-navy a,
+.bg-primary-maroon h1, .bg-primary-maroon h2, .bg-primary-maroon h3, .bg-primary-maroon h4, .bg-primary-maroon p, .bg-primary-maroon li, .bg-primary-maroon td, .bg-primary-maroon th, .bg-primary-maroon div, .bg-primary-maroon span, .bg-primary-maroon a,
+.bg-maroon-dark h1, .bg-maroon-dark h2, .bg-maroon-dark h3, .bg-maroon-dark h4, .bg-maroon-dark p, .bg-maroon-dark li, .bg-maroon-dark td, .bg-maroon-dark th, .bg-maroon-dark div, .bg-maroon-dark span, .bg-maroon-dark a,
+.bg-maroon-light h1, .bg-maroon-light h2, .bg-maroon-light h3, .bg-maroon-light h4, .bg-maroon-light p, .bg-maroon-light li, .bg-maroon-light td, .bg-maroon-light th, .bg-maroon-light div, .bg-maroon-light span, .bg-maroon-light a,
+.bg-charcoal h1, .bg-charcoal h2, .bg-charcoal h3, .bg-charcoal h4, .bg-charcoal p, .bg-charcoal li, .bg-charcoal td, .bg-charcoal th, .bg-charcoal div, .bg-charcoal span, .bg-charcoal a,
+.bg-primary-maroon\/40 h1, .bg-primary-maroon\/40 h2, .bg-primary-maroon\/40 h3, .bg-primary-maroon\/40 h4, .bg-primary-maroon\/40 p, .bg-primary-maroon\/40 li, .bg-primary-maroon\/40 td, .bg-primary-maroon\/40 th, .bg-primary-maroon\/40 div, .bg-primary-maroon\/40 span, .bg-primary-maroon\/40 a {
+  color: #ffffff !important;
+}
+
+body:not(.theme-light) .bg-primary-navy span,
+body:not(.theme-light) .bg-primary-maroon span,
+body:not(.theme-light) .bg-maroon-dark span,
+body:not(.theme-light) .bg-maroon-light span,
+body:not(.theme-light) .bg-charcoal span,
+body:not(.theme-light) .bg-\[\#030a17\] span,
+body:not(.theme-light) .bg-\[\#040a1b\] span,
+body:not(.theme-light) .bg-\[\#050e21\] span,
+body:not(.theme-light) .bg-\[\#040c1e\] span,
+body:not(.theme-light) .bg-\[\#0a1f44\] span,
+body:not(.theme-light) .bg-\[\#0b1b36\] span {
+  color: #ffffff !important;
+}
+
+/* Guard the gold brand highlight */
+.bg-primary-navy .text-accent-gold,
+.bg-primary-maroon .text-accent-gold,
+.bg-maroon-dark .text-accent-gold,
+.bg-maroon-light .text-accent-gold,
+.text-accent-gold,
+span.text-accent-gold,
+.theme-light .bg-maroon-dark .text-accent-gold,
+.theme-light .bg-primary-maroon .text-accent-gold,
+.theme-light .bg-maroon-light .text-accent-gold,
+.theme-light .bg-[#3D0C11] .text-accent-gold,
+.theme-light .bg-[#4A0E17] .text-accent-gold,
+.theme-light .bg-[#2C0509] .text-accent-gold,
+.theme-light .bg-[rgba(201,169,97,0.15)] .text-accent-gold,
+.theme-light [id="mentor-spotlight"] .text-accent-gold,
+.theme-light .text-accent-gold\/80,
+.theme-light .text-accent-gold\/60,
+.theme-light .text-accent-gold\/40 {
+  color: #C9A961 !important;
+}
+
+/* Guard: Ensure spans inside light theme dark sections remain white */
+.theme-light .bg-maroon-dark span:not(.text-accent-gold),
+.theme-light .bg-primary-maroon span:not(.text-accent-gold),
+.theme-light .bg-maroon-light span:not(.text-accent-gold),
+.theme-light .bg-[#3D0C11] span:not(.text-accent-gold),
+.theme-light .bg-[#4A0E17] span:not(.text-accent-gold),
+.theme-light .bg-[#2C0509] span:not(.text-accent-gold),
+.theme-light .bg-[#1f090d] span:not(.text-accent-gold),
+.theme-light [id="mentor-spotlight"] span:not(.text-accent-gold),
+.theme-light .text-white span:not(.text-accent-gold) {
+  color: #ffffff !important;
+}
+

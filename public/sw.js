@@ -3,6 +3,7 @@ const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
   '/logo.png',
+  '/banner 1.0.png',
   '/banner 1.png',
   '/banner 3.png',
   '/banner 4.png',

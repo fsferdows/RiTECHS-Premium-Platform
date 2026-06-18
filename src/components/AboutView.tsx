@@ -63,14 +63,14 @@ export default function AboutView() {
   return (
     <div id="about-view" className="pt-16 animate-fade-in-up text-charcoal">
       {/* Editorial Header */}
-      <section id="scholastic-heritage-hero" className="relative min-h-[340px] sm:min-h-[400px] flex items-center justify-start text-white px-6 sm:px-12 py-16 overflow-hidden border-b border-accent-gold/25">
+      <section id="scholastic-heritage-hero" className="relative min-h-[340px] sm:min-h-[400px] flex items-center justify-start bg-gradient-to-b from-[#2C0509] to-[#3D0C11] text-white px-6 sm:px-12 py-16 overflow-hidden border-b border-accent-gold/25">
         {/* Full span backdrop image of the entire section */}
-        <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 z-0 bg-maroon-dark">
           <img 
             src="/banner 1.0.png" 
             alt="Scholastic Heritage Background" 
             referrerPolicy="no-referrer"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover opacity-20"
             onError={(e) => {
               const el = e.currentTarget;
               const bkp = "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format,compress&fit=crop&q=70&w=1600";
@@ -78,29 +78,29 @@ export default function AboutView() {
                 el.src = bkp;
               } else {
                 el.onerror = null;
-                el.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3Crect width='100%25' height='100%25' fill='%23000'/%3E%3C/svg%3E";
+                el.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3Crect width='100%25' height='100%25' fill='%23fff'/%3E%3C/svg%3E";
               }
             }}
           />
-          {/* Subtle gradient overlay keeping the left text beautifully readable while preserving the image visual details */}
-          <div className="absolute inset-0 bg-gradient-to-r from-maroon-dark via-maroon-dark/85 to-transparent" />
+          {/* Subtle gradient overlay keeping the left text beautifully readable on a high contrast background */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#210204] via-[#2C0509]/95 to-transparent" />
         </div>
 
         {/* Narrative and text overlay */}
         <div className="max-w-4xl mx-auto w-full relative z-10 text-left">
-          <span className="text-[10px] font-mono tracking-widest text-accent-gold uppercase font-bold bg-accent-gold/20 px-3 py-1.5 border border-accent-gold/35 rounded-full mb-4 inline-block">
+          <span className="text-[10px] font-mono tracking-widest text-[#C9A961] uppercase font-bold bg-[#C9A961]/15 px-3 py-1.5 border border-[#C9A961]/35 rounded-full mb-4 inline-block">
             Scholastic Heritage & Academic Foundation
           </span>
           <h1 className="font-serif-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-4 mt-2 text-white leading-tight">
             RiTECHS Governance
           </h1>
-          <p className="font-serif-accent text-lg sm:text-xl md:text-2xl italic text-[#FAFAF7] max-w-2xl leading-relaxed font-light">
+          <p className="font-serif-accent text-lg sm:text-xl md:text-2xl italic text-neutral-200 max-w-2xl leading-relaxed font-light">
             "Fostering continuous research capability, language precision, and global publication strategy."
           </p>
         </div>
 
         {/* Exquisite small badge on bottom right corner representing Heritage Plaza */}
-        <div className="absolute bottom-4 right-4 z-10 px-3 py-1.5 bg-maroon-dark/95 border border-accent-gold/40 text-accent-gold font-mono text-[9px] uppercase tracking-widest font-semibold rounded-xs">
+        <div className="absolute bottom-4 right-4 z-10 px-3 py-1.5 bg-white border border-[#C9A961]/40 text-[#9E7D3B] font-mono text-[9px] uppercase tracking-widest font-semibold rounded-xs shadow-xs">
           HERITAGE PLAZA
         </div>
       </section>
