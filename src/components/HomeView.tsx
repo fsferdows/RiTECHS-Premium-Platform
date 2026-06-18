@@ -121,7 +121,7 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
       </FadeUpSection>
 
       {/* 3. Global Impact Stats Grid */}
-      <FadeUpSection id="impact-stats" className="py-20 bg-maroon-dark premium-noise border-b border-accent-gold/15 text-white">
+      <FadeUpSection id="impact-stats" className="py-12 md:py-20 bg-maroon-dark premium-noise border-b border-accent-gold/15 text-white">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-10">
             <h3 className="text-xs font-mono tracking-widest text-accent-gold uppercase mb-2">Scale & Network</h3>
@@ -149,7 +149,7 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
       </FadeUpSection>
 
       {/* 4. Featured Conferences */}
-      <FadeUpSection id="featured-conferences" className="py-20 bg-maroon-light premium-noise border-b border-accent-gold/15">
+      <FadeUpSection id="featured-conferences" className="py-12 md:py-20 bg-maroon-light premium-noise border-b border-accent-gold/15">
         <div className="max-w-6xl mx-auto px-6">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-10">
             <div>
@@ -209,7 +209,7 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
       </FadeUpSection>
 
       {/* 5. Mentor Spotlight */}
-      <FadeUpSection id="mentor-spotlight" className="py-20 bg-primary-maroon relative border-y border-accent-gold/15 overflow-hidden premium-noise">
+      <FadeUpSection id="mentor-spotlight" className="py-12 md:py-20 bg-primary-maroon relative border-y border-accent-gold/15 overflow-hidden premium-noise">
         <div className="max-w-6xl mx-auto px-6 mb-10">
           <div className="flex flex-col md:flex-row md:items-end justify-between">
             <div>
@@ -253,7 +253,7 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
       </FadeUpSection>
 
       {/* Interactive Academic Broadcast Lectures Showcase */}
-      <FadeUpSection id="academic-transmissions" className="py-20 bg-maroon-dark premium-noise border-y border-accent-gold/15 w-full text-left">
+      <FadeUpSection id="academic-transmissions" className="py-12 md:py-20 bg-maroon-dark premium-noise border-y border-accent-gold/15 w-full text-left">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-12">
             <h3 className="text-xs font-mono tracking-widest text-accent-gold uppercase mb-2">SCHOLASTIC BROADCASTS</h3>
@@ -576,7 +576,7 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
       </FadeUpSection>
 
       {/* 7. Comprehensive Testimonial Carousel */}
-      <FadeUpSection id="testimonials" className="py-20 bg-primary-maroon relative border-y border-accent-gold/15 w-full overflow-hidden premium-noise text-white">
+      <FadeUpSection id="testimonials" className="py-12 md:py-20 bg-primary-maroon relative border-y border-accent-gold/15 w-full overflow-hidden premium-noise text-white">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <MessageSquare className="w-8 h-8 text-accent-gold/40 mx-auto mb-4" />
           
@@ -706,7 +706,7 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
       </FadeUpSection>
 
       {/* 8.5. Our Trusted Partners Directory Section */}
-      <FadeUpSection id="trusted-partners-directory" className="py-20 bg-neutral-warm border-t border-accent-gold/15 text-stone-900 select-none">
+      <FadeUpSection id="trusted-partners-directory" className="py-12 md:py-20 bg-neutral-warm border-t border-accent-gold/15 text-stone-900 select-none">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-10">
             <h3 className="text-xs font-mono tracking-widest text-[#9c2535] uppercase mb-2">Academic Alliance</h3>
@@ -768,7 +768,7 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
       </FadeUpSection>
 
       {/* 9. Join The Network Banner CTA */}
-      <FadeUpSection id="banner-cta" className="border-t border-accent-gold/25 py-20 text-center text-white overflow-hidden relative w-full bg-primary-navy">
+      <FadeUpSection id="banner-cta" className="border-t border-accent-gold/25 py-12 md:py-20 text-center text-white overflow-hidden relative w-full bg-primary-navy">
         {/* Background Premium Banner 5 */}
         <div className="absolute inset-0 z-0 pointer-events-none">
           <img 

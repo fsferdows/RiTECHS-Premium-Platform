@@ -55,7 +55,7 @@ export default function ContactView() {
     <div id="contact-scholastic-view" className="pt-16 animate-fade-in-up text-white bg-maroon-dark min-h-screen">
       
       {/* Narrative Header */}
-      <section className="bg-gradient-to-b from-[#2C0509] to-[#3D0C11] text-white py-20 px-6 text-center relative premium-noise border-b border-accent-gold/25">
+      <section className="bg-gradient-to-b from-[#2C0509] to-[#3D0C11] text-white py-12 md:py-20 px-6 text-center relative premium-noise border-b border-accent-gold/25">
         <div className="max-w-4xl mx-auto text-white">
           <h3 className="text-xs font-mono tracking-widest text-[#C9A961] uppercase mb-4">EDITORIAL DESK</h3>
           <h1 className="font-serif-display text-4xl sm:text-6xl font-bold tracking-tight mb-8 text-white">
@@ -68,7 +68,7 @@ export default function ContactView() {
       </section>
 
       {/* Main split grid contact form / office cards */}
-      <FadeUpSection className="py-20 bg-maroon-dark w-full border-b border-accent-gold/15 text-white premium-noise text-left">
+      <FadeUpSection className="py-12 md:py-20 bg-maroon-dark w-full border-b border-accent-gold/15 text-white premium-noise text-left">
         <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 text-left">
           
           {/* Left Form (Col span 7) */}
@@ -215,7 +215,7 @@ export default function ContactView() {
       </div>
 
     </FadeUpSection>      {/* FAQ Accordion Section */}
-      <FadeUpSection id="faq-accordions" className="py-20 bg-maroon-dark text-white w-full premium-noise border-b border-accent-gold/15 text-left">
+      <FadeUpSection id="faq-accordions" className="py-12 md:py-20 bg-maroon-dark text-white w-full premium-noise border-b border-accent-gold/15 text-left">
         <div className="max-w-4xl mx-auto px-6">
           <div className="text-center mb-16">
             <HelpCircle className="w-10 h-10 text-accent-gold/70 mx-auto mb-4 animate-pulse" />

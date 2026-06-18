@@ -222,7 +222,7 @@ export default function MentorsView({ mentors, onNavigate }: MentorsViewProps) {
             ))}
           </motion.div>
         ) : (
-          <div className="text-center py-20 bg-primary-maroon/40 border border-dashed border-accent-gold/20 rounded-sm">
+          <div className="text-center py-12 md:py-20 bg-primary-maroon/40 border border-dashed border-accent-gold/20 rounded-sm">
             <Filter className="w-8 h-8 text-accent-gold/60 mx-auto mb-4" />
             <h3 className="font-serif-display text-lg text-white font-bold">No academic matches found</h3>
             <p className="text-xs text-neutral-300 mt-1 max-w-sm mx-auto font-light">

@@ -106,7 +106,7 @@ export default function AboutView() {
       </section>
 
       {/* Mission & Vision Split Section */}
-      <FadeUpSection className="py-20 bg-maroon-dark premium-noise border-b border-accent-gold/15 text-white">
+      <FadeUpSection className="py-12 md:py-20 bg-maroon-dark premium-noise border-b border-accent-gold/15 text-white">
         <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12">
           {/* Mission Card */}
           <div className="bg-primary-maroon border border-accent-gold/20 p-10 rounded-sm shadow-xs relative overflow-hidden group hover:border-accent-gold transition-colors duration-500 text-left">
@@ -264,7 +264,7 @@ export default function AboutView() {
       </FadeUpSection>
 
       {/* Global Network Map Card */}
-      <FadeUpSection id="network-map" className="py-20 bg-maroon-dark border-b border-accent-gold/15 premium-noise text-white">
+      <FadeUpSection id="network-map" className="py-12 md:py-20 bg-maroon-dark border-b border-accent-gold/15 premium-noise text-white">
         <div className="max-w-5xl mx-auto px-6">
           <div className="text-center mb-16">
             <h3 className="text-xs font-mono tracking-widest text-accent-gold uppercase mb-3">The Academic Sphere</h3>

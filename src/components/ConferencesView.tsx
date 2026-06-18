@@ -1506,7 +1506,7 @@ ER  - `;
       </section>
 
       {/* Conference Grid List */}
-      <FadeUpSection className="py-20 max-w-5xl mx-auto px-6">
+      <FadeUpSection className="py-12 md:py-20 max-w-5xl mx-auto px-6">
         {filteredConferences.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredConferences.map((conf) => (
@@ -1519,7 +1519,7 @@ ER  - `;
             ))}
           </div>
         ) : (
-          <div className="text-center py-20 bg-primary-maroon/40 border border-dashed border-accent-gold/20 rounded-sm">
+          <div className="text-center py-12 md:py-20 bg-primary-maroon/40 border border-dashed border-accent-gold/20 rounded-sm">
             <Info className="w-8 h-8 text-accent-gold/60 mx-auto mb-4" />
             <h3 className="font-serif-display text-lg text-white font-bold">No conferences match criteria</h3>
             <p className="text-xs text-neutral-300 mt-1 max-w-sm mx-auto font-light leading-relaxed">

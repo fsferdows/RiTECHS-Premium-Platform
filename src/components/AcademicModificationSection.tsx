@@ -23,7 +23,7 @@ export default function AcademicModificationSection() {
   };
 
   return (
-    <section id="academic-modification" className="py-20 bg-maroon-dark text-white border-b border-accent-gold/15">
+    <section id="academic-modification" className="py-12 md:py-20 bg-maroon-dark text-white border-b border-accent-gold/15">
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           

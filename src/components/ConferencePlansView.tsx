@@ -323,7 +323,7 @@ export default function ConferencePlansView({ onNavigate }: ConferencePlansViewP
                   {/* Select Plan sync */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="font-mono text-[10px] tracking-widest text-[#C9A961] uppercase block mb-2 font-semibold">
+                      <label className="font-mono text-[10px] tracking-widest text-accent-gold uppercase block mb-2 font-semibold">
                         Choose Tier
                       </label>
                       <select
@@ -338,7 +338,7 @@ export default function ConferencePlansView({ onNavigate }: ConferencePlansViewP
                     </div>
 
                     <div>
-                      <label className="font-mono text-[10px] tracking-widest text-[#C9A961] uppercase block mb-2 font-semibold">
+                      <label className="font-mono text-[10px] tracking-widest text-accent-gold uppercase block mb-2 font-semibold">
                         Quantity of Attendees / Papers
                       </label>
                       <input
@@ -385,7 +385,7 @@ export default function ConferencePlansView({ onNavigate }: ConferencePlansViewP
                 {/* Calculation breakdown */}
                 <div className="lg:col-span-4 bg-black/35 border border-white/10 p-6 rounded-xs flex flex-col justify-between h-full min-h-[220px]">
                   <div>
-                    <div className="text-[10px] font-mono tracking-widest text-[#C9A961] uppercase mb-4 font-bold border-b border-white/5 pb-2">
+                    <div className="text-[10px] font-mono tracking-widest text-accent-gold uppercase mb-4 font-bold border-b border-white/5 pb-2">
                       ESTIMATED RATE SHEET
                     </div>
                     <div className="flex justify-between items-center text-xs text-white/70 mb-2">
@@ -449,7 +449,7 @@ export default function ConferencePlansView({ onNavigate }: ConferencePlansViewP
                       <span className="font-serif-display text-3xl font-bold text-white">{pack.basePrice}</span>
                       <span className="text-[10px] font-mono text-white/45">/ Base Establishment</span>
                     </div>
-                    <div className="font-mono text-[11px] text-[#C9A961] mb-4">CAPACITY LIMIT: {pack.capacity}</div>
+                    <div className="font-mono text-[11px] text-accent-gold mb-4">CAPACITY LIMIT: {pack.capacity}</div>
                     <p className="text-white/60 text-xs font-light mb-6 border-b border-white/5 pb-4 leading-relaxed">
                       {pack.description}
                     </p>
@@ -493,7 +493,7 @@ export default function ConferencePlansView({ onNavigate }: ConferencePlansViewP
                   
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="font-mono text-[10px] tracking-widest text-[#C9A961] uppercase block mb-2 font-semibold">
+                      <label className="font-mono text-[10px] tracking-widest text-accent-gold uppercase block mb-2 font-semibold">
                         Co-Host Suite Level
                       </label>
                       <select
@@ -508,7 +508,7 @@ export default function ConferencePlansView({ onNavigate }: ConferencePlansViewP
                     </div>
 
                     <div>
-                      <label className="font-mono text-[10px] tracking-widest text-[#C9A961] uppercase block mb-2 font-semibold">
+                      <label className="font-mono text-[10px] tracking-widest text-accent-gold uppercase block mb-2 font-semibold">
                         Expected Submission volume Count
                       </label>
                       <input
@@ -539,7 +539,7 @@ export default function ConferencePlansView({ onNavigate }: ConferencePlansViewP
                 {/* Institutional calculation sheet & contact proposal Form */}
                 <div className="lg:col-span-4 bg-black/35 border border-white/10 p-6 rounded-xs flex flex-col justify-between h-full min-h-[220px]">
                   <div>
-                    <div className="text-[10px] font-mono tracking-widest text-[#C9A961] uppercase mb-4 font-bold border-b border-white/5 pb-2">
+                    <div className="text-[10px] font-mono tracking-widest text-accent-gold uppercase mb-4 font-bold border-b border-white/5 pb-2">
                       ESTIMATED SPONSOR SHEET
                     </div>
                     <div className="flex justify-between items-center text-xs text-white/70 mb-2">

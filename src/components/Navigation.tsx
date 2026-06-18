@@ -63,14 +63,14 @@ export default function Navigation({ currentPath, onNavigate, user, onLogout, th
           : 'bg-transparent border-b border-transparent text-white'
       }`}
     >
-      <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 h-14 md:h-16 flex items-center justify-between gap-2 md:gap-4 lg:gap-6">
         {/* Brand Logo */}
         <div 
           onClick={() => handleNav("#/")}
-          className="flex items-center gap-3 cursor-pointer group"
+          className="flex items-center gap-2 sm:gap-3 cursor-pointer group shrink-0"
           id="brand-logo"
         >
-          <div className="w-10 h-10 rounded-sm border border-accent-gold flex items-center justify-center bg-primary-maroon shadow-inner transition-transform duration-500 group-hover:rotate-12 overflow-hidden">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-sm border border-accent-gold flex items-center justify-center bg-primary-maroon shadow-inner transition-transform duration-500 group-hover:rotate-12 overflow-hidden shrink-0">
             {!logoError ? (
               <img 
                 src={localStorage.getItem('ritechs_logo') ?? '/logo.png'} 
@@ -79,19 +79,19 @@ export default function Navigation({ currentPath, onNavigate, user, onLogout, th
                 className="w-full h-full object-cover"
               />
             ) : (
-              <GraduationCap className="w-6 h-6 text-accent-gold" />
+              <GraduationCap className="w-5 h-5 sm:w-6 sm:h-6 text-accent-gold" />
             )}
           </div>
           <div>
-            <div className={`font-serif-display text-xl font-bold tracking-tight flex items-center leading-none ${
+            <div className={`font-serif-display text-sm sm:text-base md:text-xl font-bold tracking-tight flex items-center leading-none ${
               isBgWhite ? 'text-[#000000]' : 'text-white'
             }`}>
               RiTECHS
-              <span className="text-accent-gold text-xs font-sans font-semibold tracking-widest ml-1 md:inline hidden align-top">
+              <span className="text-accent-gold text-[9px] sm:text-xs font-sans font-semibold tracking-widest ml-1 md:inline hidden align-top">
                 PLATFORM
               </span>
             </div>
-            <p className={`text-[9px] font-mono tracking-widest md:block hidden uppercase ${
+            <p className={`text-[8px] sm:text-[9px] font-mono tracking-widest md:block hidden uppercase ${
               isBgWhite ? 'text-stone-850/75' : 'text-[#C9A961]/80'
             }`}>
               Global Academic Excellence
@@ -100,18 +100,18 @@ export default function Navigation({ currentPath, onNavigate, user, onLogout, th
         </div>
 
         {/* Desktop Menu */}
-        <div className="hidden lg:flex items-center gap-8">
-          <div className="flex items-center gap-6">
+        <div className="hidden lg:flex items-center gap-4 xl:gap-8">
+          <div className="flex items-center gap-3 xl:gap-6">
             {navItems.map((item) => (
               <button
                 key={item.name}
                 onClick={() => handleNav(item.path)}
-                className={`relative py-2.5 text-xs font-sans uppercase tracking-widest transition-all duration-300 flex items-center gap-1.5 group/nav cursor-pointer ${
+                className={`relative py-2 text-xs font-sans uppercase tracking-wider transition-all duration-300 flex items-center gap-1 group/nav cursor-pointer ${
                   isActive(item.path)
                     ? 'text-accent-gold font-semibold'
                     : isBgWhite
-                      ? 'text-[#000000]/80 hover:text-accent-gold'
-                      : 'text-white/80 hover:text-accent-gold'
+                      ? 'text-[#000000]/85 hover:text-accent-gold'
+                      : 'text-white/85 hover:text-accent-gold'
                 }`}
               >
                 <span>{item.name}</span>
@@ -131,10 +131,10 @@ export default function Navigation({ currentPath, onNavigate, user, onLogout, th
           <div className={`h-4 w-px ${isBgWhite ? 'bg-[#000000]/15' : 'bg-white/20'}`} />
 
           {/* Theme Dynamic Controller */}
-          <div className="flex items-center gap-1.5" id="theme-control-wrapper" title={timeThemeSync ? "Theme auto-synced with system time (18:00 - 06:00 is dark)" : "Theme manually overridden by user"}>
+          <div className="flex items-center gap-1" id="theme-control-wrapper" title={timeThemeSync ? "Theme auto-synced with system time (18:00 - 06:00 is dark)" : "Theme manually overridden by user"}>
             <button
               onClick={onToggleTheme}
-              className={`w-8 h-8 rounded-full border border-accent-gold/20 hover:border-accent-gold hover:rotate-30 transition-all duration-300 flex items-center justify-center cursor-pointer ${
+              className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-accent-gold/20 hover:border-accent-gold hover:rotate-30 transition-all duration-300 flex items-center justify-center cursor-pointer ${
                 isBgWhite ? 'bg-black/5 hover:bg-neutral-100' : 'bg-white/5 hover:bg-white/10'
               }`}
               title={theme === 'dark' ? "Toggle Luxurious Light Theme" : "Toggle Classic Dark Theme"}
@@ -142,9 +142,9 @@ export default function Navigation({ currentPath, onNavigate, user, onLogout, th
               type="button"
             >
               {theme === 'dark' ? (
-                <Sun className="w-4 h-4 text-accent-gold" />
+                <Sun className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent-gold" />
               ) : (
-                <Moon className="w-4 h-4 text-[#9E7D3B]" />
+                <Moon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#9E7D3B]" />
               )}
             </button>
             <div className="flex items-center select-none cursor-help">
@@ -167,13 +167,13 @@ export default function Navigation({ currentPath, onNavigate, user, onLogout, th
           <div className={`h-4 w-px ${isBgWhite ? 'bg-[#000000]/15' : 'bg-white/20'}`} />
 
           {/* User Controls */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 xl:gap-4">
             {user.isLoggedIn ? (
               <>
                 {user.role === 'admin' ? (
                   <button
                     onClick={() => handleNav("#/admin")}
-                    className={`flex items-center gap-2 px-4 py-2 border border-accent-gold rounded-xs text-xs font-sans uppercase tracking-widest transition-all duration-300 ${
+                    className={`flex items-center gap-1.5 px-3 py-1.5 border border-accent-gold rounded-xs text-[10px] sm:text-xs font-sans uppercase tracking-wider transition-all duration-300 ${
                       currentPath === "#/admin"
                         ? 'bg-accent-gold text-primary-maroon font-bold'
                         : isBgWhite
@@ -182,32 +182,32 @@ export default function Navigation({ currentPath, onNavigate, user, onLogout, th
                     }`}
                     id="nav-btn-admin"
                   >
-                    <Award className="w-3.5 h-3.5" />
+                    <Award className="w-3.5 h-3.5 shrink-0" />
                     Admin CMS Panel
                   </button>
                 ) : (
                   <button
                     onClick={() => handleNav("#/dashboard")}
-                    className={`flex items-center gap-2 px-4 py-2 border border-accent-gold/30 rounded-xs text-xs font-sans uppercase tracking-widest transition-all duration-300 ${
+                    className={`flex items-center gap-1.5 px-3 py-1.5 border border-accent-gold/30 rounded-xs text-[10px] sm:text-xs font-sans uppercase tracking-wider transition-all duration-300 ${
                       currentPath === "#/dashboard"
                         ? 'bg-accent-gold text-primary-maroon font-bold'
                         : 'text-accent-gold hover:bg-accent-gold/10'
                     }`}
                     id="nav-btn-dashboard"
                   >
-                    <LayoutDashboard className="w-3.5 h-3.5" />
+                    <LayoutDashboard className="w-3.5 h-3.5 shrink-0" />
                     Dashboard
                   </button>
                 )}
                 <div className="hidden xl:flex flex-col text-right">
-                  <span className={`text-[10px] leading-tight ${isBgWhite ? 'text-[#000000]/60' : 'text-white/50'}`}>Logged as</span>
-                  <span className="text-[11px] text-accent-gold font-medium leading-none max-w-[100px] truncate">
+                  <span className={`text-[9px] leading-tight ${isBgWhite ? 'text-[#000000]/60' : 'text-white/50'}`}>Logged as</span>
+                  <span className="text-[10px] text-accent-gold font-medium leading-none max-w-[90px] truncate">
                     {user.name}
                   </span>
                 </div>
                 <button
                   onClick={onLogout}
-                  className={`p-2 transition-colors ${isBgWhite ? 'text-[#000000]/60 hover:text-red-650' : 'text-white/60 hover:text-red-400'}`}
+                  className={`p-1.5 transition-colors ${isBgWhite ? 'text-[#000000]/60 hover:text-red-650' : 'text-white/60 hover:text-red-400'}`}
                   title="Logout"
                   id="nav-btn-logout"
                 >
@@ -218,7 +218,7 @@ export default function Navigation({ currentPath, onNavigate, user, onLogout, th
               <>
                 <button
                   onClick={() => handleNav("#/login?mode=login")}
-                  className={`text-xs font-sans uppercase tracking-widest transition-colors py-2 cursor-pointer ${
+                  className={`text-[11px] sm:text-xs font-sans uppercase tracking-wider transition-colors py-1.5 cursor-pointer ${
                     isBgWhite ? 'text-[#000000]/80 hover:text-primary-maroon font-medium' : 'text-white/80 hover:text-white'
                   }`}
                   id="nav-btn-login"
@@ -227,7 +227,7 @@ export default function Navigation({ currentPath, onNavigate, user, onLogout, th
                 </button>
                 <button
                   onClick={() => handleNav("#/login?mode=register")}
-                  className="bg-accent-gold hover:bg-[#B3934B] text-primary-maroon px-5 py-2.5 rounded-sm text-xs font-sans uppercase tracking-widest font-semibold transition-all duration-300 shadow-sm cursor-pointer"
+                  className="bg-accent-gold hover:bg-[#B3934B] text-primary-maroon px-3 sm:px-4 py-2 rounded-xs text-[10px] sm:text-xs font-sans uppercase tracking-wider font-semibold transition-all duration-300 shadow-sm cursor-pointer"
                   id="nav-btn-register"
                 >
                   Register

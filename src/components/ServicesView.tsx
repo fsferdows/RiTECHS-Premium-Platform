@@ -85,7 +85,7 @@ export default function ServicesView({ onNavigate, isLoggedIn }: ServicesViewPro
       </section>
 
       {/* Services breakdown section */}
-      <FadeUpSection className="py-20 max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-3 gap-12 border-b border-accent-gold/15">
+      <FadeUpSection className="py-12 md:py-20 max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-3 gap-12 border-b border-accent-gold/15">
         
         {/* Pillar 1 */}
         <div className="bg-primary-maroon border border-accent-gold/25 p-5 md:p-6 flex flex-col justify-between h-full hover:shadow-lg transition-all duration-300 rounded-xs text-left">

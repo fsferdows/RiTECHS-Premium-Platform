@@ -61,7 +61,7 @@ export default function BlogView({ blogs }: BlogViewProps) {
     <div id="editorial-blog-view" className="pt-16 animate-fade-in text-white bg-maroon-dark min-h-screen">
       
       {/* Narrative Header */}
-      <section className="bg-gradient-to-b from-maroon-dark to-primary-maroon text-white py-20 px-6 text-center relative premium-noise">
+      <section className="bg-gradient-to-b from-maroon-dark to-primary-maroon text-white py-12 md:py-20 px-6 text-center relative premium-noise">
         <div className="max-w-4xl mx-auto">
           <h3 className="text-xs font-mono tracking-widest text-accent-gold uppercase mb-4">Litterae & Gazette</h3>
           <h1 className="font-serif-display text-3xl sm:text-4xl md:text-5.5xl lg:text-6xl font-bold tracking-tight mb-8">
@@ -106,7 +106,7 @@ export default function BlogView({ blogs }: BlogViewProps) {
       </section>
 
       {/* Main Magazine Layout container */}
-      <FadeUpSection className="py-20 bg-maroon-dark w-full text-white border-b border-accent-gold/15 premium-noise text-left">
+      <FadeUpSection className="py-12 md:py-20 bg-maroon-dark w-full text-white border-b border-accent-gold/15 premium-noise text-left">
         <div className="max-w-6xl mx-auto px-6 flex flex-col gap-20">
           
           {/* 1. Hero Full-width Article (Renders primarily if no filter is active, or matches criteria) */}

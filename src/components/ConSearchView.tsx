@@ -264,7 +264,7 @@ export default function ConSearchView({ conferences, onNavigate }: ConSearchView
                 <div className="flex flex-col gap-6 text-xs text-white/80">
                   {/* Domain Selector */}
                   <div>
-                    <label className="font-mono text-[10px] tracking-widest text-[#C9A961] uppercase block mb-2 font-semibold">
+                    <label className="font-mono text-[10px] tracking-widest text-accent-gold uppercase block mb-2 font-semibold">
                       Subject Taxonomy
                     </label>
                     <select
@@ -280,7 +280,7 @@ export default function ConSearchView({ conferences, onNavigate }: ConSearchView
 
                   {/* Format Selector */}
                   <div>
-                    <label className="font-mono text-[10px] tracking-widest text-[#C9A961] uppercase block mb-2 font-semibold">
+                    <label className="font-mono text-[10px] tracking-widest text-accent-gold uppercase block mb-2 font-semibold">
                       Symposium Format
                     </label>
                     <select
@@ -296,7 +296,7 @@ export default function ConSearchView({ conferences, onNavigate }: ConSearchView
 
                   {/* Indexing Provider */}
                   <div>
-                    <label className="font-mono text-[10px] tracking-widest text-[#C9A961] uppercase block mb-2 font-semibold">
+                    <label className="font-mono text-[10px] tracking-widest text-accent-gold uppercase block mb-2 font-semibold">
                       Indexing Partners
                     </label>
                     <select
@@ -387,7 +387,7 @@ export default function ConSearchView({ conferences, onNavigate }: ConSearchView
                           {/* Specific indexing indicator */}
                           <div className="my-3 flex items-center gap-1.5 pt-1">
                             <BookOpen className="w-3.5 h-3.5 text-accent-gold" />
-                            <span className="text-[10px] font-mono tracking-wider text-[#C9A961]/90">
+                            <span className="text-[10px] font-mono tracking-wider text-accent-gold/90">
                               {isLnee 
                                 ? "Lecture Notes (Springer Nature) - Scopus Indexed" 
                                 : "IEEE Xplore Publishing - Peer-Reviewed Record"
@@ -470,7 +470,7 @@ export default function ConSearchView({ conferences, onNavigate }: ConSearchView
               <form onSubmit={handleMatchmaking} className="bg-[#1f0305] border border-accent-gold/20 p-8 rounded-xs text-left shadow-2xl">
                 <div className="flex flex-col gap-6 text-xs">
                   <div>
-                    <label className="font-mono text-[10px] tracking-widest text-[#C9A961] uppercase block mb-2 font-semibold">
+                    <label className="font-mono text-[10px] tracking-widest text-accent-gold uppercase block mb-2 font-semibold">
                       Proposed Paper Title
                     </label>
                     <input
@@ -484,7 +484,7 @@ export default function ConSearchView({ conferences, onNavigate }: ConSearchView
                   </div>
 
                   <div>
-                    <label className="font-mono text-[10px] tracking-widest text-[#C9A961] uppercase block mb-2 font-semibold">
+                    <label className="font-mono text-[10px] tracking-widest text-accent-gold uppercase block mb-2 font-semibold">
                       Manuscript Abstract
                     </label>
                     <textarea
@@ -498,7 +498,7 @@ export default function ConSearchView({ conferences, onNavigate }: ConSearchView
                   </div>
 
                   <div>
-                    <label className="font-mono text-[10px] tracking-widest text-[#C9A961] uppercase block mb-2 font-semibold">
+                    <label className="font-mono text-[10px] tracking-widest text-accent-gold uppercase block mb-2 font-semibold">
                       Research Keywords
                     </label>
                     <input
@@ -598,7 +598,7 @@ export default function ConSearchView({ conferences, onNavigate }: ConSearchView
                                 </p>
                               </div>
 
-                              <div className="md:w-56 shrink-0 flex flex-col justify-between self-stretch border-t md:border-t-0 md:border-l border-white/10 pt-4 md:pt-0 md:pl-6 text-xs text-[#C9A961]/90 font-mono gap-4">
+                              <div className="md:w-56 shrink-0 flex flex-col justify-between self-stretch border-t md:border-t-0 md:border-l border-white/10 pt-4 md:pt-0 md:pl-6 text-xs text-accent-gold/90 font-mono gap-4">
                                 <div className="flex flex-col gap-1.5">
                                   <div className="text-[10px] text-white/40">DEADLINE:</div>
                                   <div className="text-white font-bold flex items-center gap-1.5">

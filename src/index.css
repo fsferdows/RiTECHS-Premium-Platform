@@ -303,9 +303,25 @@ html, body, #root, #app, main, section, nav, footer, .glass-card, h1, h2, h3, h4
 .theme-light .bg-\[\#050e21\],
 .theme-light .bg-\[\#040c1e\],
 .theme-light .bg-\[\#0a1f44\],
+.theme-light .bg-\[\#230407\],
+.theme-light .bg-\[\#1b0305\],
+.theme-light .bg-\[\#1f0305\],
+.theme-light .bg-\[\#270407\],
+.theme-light .bg-\[\#2C0509\],
+.theme-light .bg-\[\#3D0C11\],
+.theme-light .bg-\[\#200305\],
 .theme-light #ritechs-breadcrumbs {
   background-color: #FAFAF7 !important;
   border-color: rgba(140, 109, 35, 0.18) !important;
+}
+
+/* Redesign gradients to clean cream linear structures in day mode */
+.theme-light .bg-gradient-to-b.from-\[\#2C0509\].to-\[\#3D0C11\],
+.theme-light .bg-gradient-to-b.from-\[\#1f0305\].to-\[\#270407\] {
+  background-image: linear-gradient(to bottom, #FAF8F2, #EFECE1) !important;
+}
+.theme-light .bg-gradient-to-r.from-\[\#2C0509\].to-\[\#200305\] {
+  background-image: linear-gradient(to right, #FAF8F2, #EFECE1) !important;
 }
 
 /* Sub-panels and translucent container layouts in light theme */
@@ -374,13 +390,21 @@ html, body, #root, #app, main, section, nav, footer, .glass-card, h1, h2, h3, h4
 }
 
 /* Dynamic text opacity overrides under light theme */
-.theme-light .text-white\/40,
-.theme-light .text-white\/50,
-.theme-light .text-white\/60,
-.theme-light .text-white\/70,
+.theme-light .text-white,
+.theme-light .text-white\/95,
+.theme-light .text-white\/90,
+.theme-light .text-white\/85,
 .theme-light .text-white\/80,
+.theme-light .text-white\/75,
+.theme-light .text-white\/70,
+.theme-light .text-white\/65,
+.theme-light .text-white\/60,
+.theme-light .text-white\/50,
+.theme-light .text-white\/40,
+.theme-light .text-neutral-100,
 .theme-light .text-neutral-200,
 .theme-light .text-neutral-300,
+.theme-light .text-neutral-450,
 .theme-light .text-neutral-400 {
   color: rgba(0, 0, 0, 0.85) !important;
 }
