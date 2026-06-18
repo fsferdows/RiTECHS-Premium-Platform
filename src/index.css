@@ -640,7 +640,7 @@ html, body, #root, #app, main, section, nav, footer, .glass-card, h1, h2, h3, h4
 .theme-light .bg-charcoal h1, .theme-light .bg-charcoal h2, .theme-light .bg-charcoal h3, .theme-light .bg-charcoal h4, .theme-light .bg-charcoal p, .theme-light .bg-charcoal li, .theme-light .bg-charcoal div, .theme-light .bg-charcoal span,
 .theme-light [id="mentor-spotlight"],
 .theme-light [id="mentor-spotlight"] h2, .theme-light [id="mentor-spotlight"] span, .theme-light [id="mentor-spotlight"] p, .theme-light [id="mentor-spotlight"] button, .theme-light [id="mentor-spotlight"] div {
-  color: #ffffff !important;
+  color: #000000 !important;
 }
 
 .theme-light .text-accent-gold,
@@ -651,7 +651,7 @@ html, body, #root, #app, main, section, nav, footer, .glass-card, h1, h2, h3, h4
 .theme-light .bg-maroon-dark .text-accent-gold,
 .theme-light .bg-[#3D0C11] .text-accent-gold,
 .theme-light .bg-[#4A0E17] .text-accent-gold {
-  color: #C9A961 !important;
+  color: #907338 !important;
 }
 
 .bg-white .text-primary-navy,
@@ -730,7 +730,10 @@ body:not(.theme-light) .bg-\[\#0b1b36\] span {
 .bg-maroon-dark .text-accent-gold,
 .bg-maroon-light .text-accent-gold,
 .text-accent-gold,
-span.text-accent-gold,
+span.text-accent-gold {
+  color: #C9A961 !important;
+}
+
 .theme-light .bg-maroon-dark .text-accent-gold,
 .theme-light .bg-primary-maroon .text-accent-gold,
 .theme-light .bg-maroon-light .text-accent-gold,
@@ -742,10 +745,10 @@ span.text-accent-gold,
 .theme-light .text-accent-gold\/80,
 .theme-light .text-accent-gold\/60,
 .theme-light .text-accent-gold\/40 {
-  color: #C9A961 !important;
+  color: #907338 !important;
 }
 
-/* Guard: Ensure spans inside light theme dark sections remain white */
+/* Guard: Ensure spans inside light theme dark sections remain readable (black/dark color) */
 .theme-light .bg-maroon-dark span:not(.text-accent-gold),
 .theme-light .bg-primary-maroon span:not(.text-accent-gold),
 .theme-light .bg-maroon-light span:not(.text-accent-gold),
@@ -755,6 +758,6 @@ span.text-accent-gold,
 .theme-light .bg-[#1f090d] span:not(.text-accent-gold),
 .theme-light [id="mentor-spotlight"] span:not(.text-accent-gold),
 .theme-light .text-white span:not(.text-accent-gold) {
-  color: #ffffff !important;
+  color: #000000 !important;
 }
 
