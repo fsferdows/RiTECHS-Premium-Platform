@@ -3,7 +3,7 @@ import { Mentor } from '../types';
 import { 
   Search, Filter, Mail, Star, X, Calendar, CheckSquare, Award, 
   BookOpen, Clock, UserCheck, Sparkles, Send, Check, Loader, ChevronRight,
-  Video, Trash2, Copy, Download, CalendarRange, Clock3, AlertCircle, CalendarPlus, Plus, RefreshCw
+  Video, Trash2, Copy, Download, CalendarRange, Clock3, AlertCircle, CalendarPlus, Plus, RefreshCw, Heart
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { TiltCard } from './TiltCard';
@@ -34,10 +34,81 @@ export default function MentorsView({ mentors, onNavigate }: MentorsViewProps) {
   // Search & Filter state
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedField, setSelectedField] = useState<string>('All');
-  const [selectedRole, setSelectedRole] = useState<'all' | 'mentor' | 'mentee'>('all');
+  const [selectedRole, setSelectedRole] = useState<'all' | 'mentor' | 'mentee' | 'favorites'>('all');
   
   // Drawer state
   const [selectedMentor, setSelectedMentor] = useState<Mentor | null>(null);
+
+  // Favorites state synced to localStorage
+  const [favorites, setFavorites] = useState<number[]>(() => {
+    try {
+      const saved = localStorage.getItem('ritechs_favorites_mentors');
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    localStorage.setItem('ritechs_favorites_mentors', JSON.stringify(favorites));
+  }, [favorites]);
+
+  const toggleFavorite = (id: number) => {
+    setFavorites(prev => 
+      prev.includes(id) ? prev.filter(f => f !== id) : [...prev, id]
+    );
+  };
+
+  // Student reviews state synced to localStorage
+  const [endorsements, setEndorsements] = useState<Record<string, { id: string, name: string, title: string, rating: number, comment: string, date: string }[]>>(() => {
+    try {
+      const saved = localStorage.getItem('ritechs_endorsements_map');
+      if (saved) return JSON.parse(saved);
+    } catch(e) {}
+    
+    // Default masterclass review records matching advisor profiles
+    return {
+      "12": [
+        { id: "e1", name: "Dr. Simone Rossi", title: "Faculty of Cybernetics, Genoa", rating: 5, comment: "Dr. Evans gave unmatched help during my research on behavioral intrusion. His critique on the CAN bus sniffing was instrumental for my Q1 submission.", date: "2026-04-12" },
+        { id: "e2", name: "Amelia Chen", title: "PhD Student, Wolverhampton", rating: 5, comment: "Extremely methodical! He helped clarify my LaTeX equations and suggested precise reviewer rebuttals.", date: "2026-05-18" }
+      ],
+      "13": [
+        { id: "s1", name: "Marcus Thorne", title: "Postdoctoral Researcher, Oxford", rating: 5, comment: "The zero-trust framework audit was highly rigorous. Thanks to Prof. Sterling, we avoided a major security leak in our multi-layer model.", date: "2026-03-29" },
+        { id: "s2", name: "Dr. Kenji Tanaka", title: "Junior Faculty, Tokyo Tech", rating: 5, comment: "Pristine academic feedback. His Oxford background shows in how he structures the literature gaps.", date: "2026-05-02" }
+      ],
+      "14": [
+        { id: "r1", name: "Ibrahim Diallo", title: "Lecturer, Dakar University", rating: 5, comment: "An exceptional co-author. His guidance on satellite IoT backhaul modulation was vital to our acceptance in IEEE IoT.", date: "2026-02-14" },
+        { id: "r2", name: "Sarah Jenkins", title: "PhD Candidate, Bristol", rating: 5, comment: "Incredibly direct editor. He tells you exactly why a paper will get rejected and how to restructure the results section.", date: "2026-06-05" }
+      ],
+      "472": [
+        { id: "i1", name: "Prof. Ahmad Yusof", title: "UTM Senior Lecturer", rating: 5, comment: "Extremely experienced in piezoelectric sensory grids. Helped formulate battery life cycle diagnostics perfectly.", date: "2026-05-20" }
+      ]
+    };
+  });
+
+  // Sync reviews Map when updated
+  useEffect(() => {
+    localStorage.setItem('ritechs_endorsements_map', JSON.stringify(endorsements));
+  }, [endorsements]);
+
+  // Review submission state inside details view
+  const [newReviewName, setNewReviewName] = useState('');
+  const [newReviewTitle, setNewReviewTitle] = useState('Research Scholar');
+  const [newReviewRating, setNewReviewRating] = useState(5);
+  const [newReviewComment, setNewReviewComment] = useState('');
+  const [endorseSuccess, setEndorseSuccess] = useState(false);
+
+  // Matchmaker Questionnaire State
+  const [showQuestionnaire, setShowQuestionnaire] = useState(false);
+  const [questionnaireStep, setQuestionnaireStep] = useState(1);
+  const [qAnswers, setQAnswers] = useState({
+    field: '',
+    goal: '',
+    style: '',
+    tier: ''
+  });
+  const [quizResults, setQuizResults] = useState<(Mentor & { matchIndex: number })[] | null>(null);
+  const [quizLoading, setQuizLoading] = useState(false);
   
   // Bookings state initialized from localStorage
   const [bookings, setBookings] = useState<AcademicBooking[]>(() => {
@@ -56,6 +127,44 @@ export default function MentorsView({ mentors, onNavigate }: MentorsViewProps) {
   useEffect(() => {
     localStorage.setItem('ritechs_bookings', JSON.stringify(bookings));
   }, [bookings]);
+
+  // Dynamic selector helper to yield real-time upcoming availability status per mentor
+  const getAvailabilityStatus = (mId: string | number) => {
+    const mentorIdNum = Number(mId);
+    // Find already active bookings for this mentor to flag slot occupancy
+    const mentorBookings = bookings.filter(b => Number(b.mentorId) === mentorIdNum);
+    
+    // Design deterministic interactive slots
+    const daysOffset = [1, 2, 4]; // Tuesday, Wednesday, Friday
+    const daysName = ["Tuesday", "Wednesday", "Friday"];
+    const slotHours = ["09:30 AM", "11:30 AM", "02:00 PM", "04:00 PM"];
+    
+    const slots = daysName.flatMap((day, dIdx) => {
+      return slotHours.map((hour, hIdx) => {
+        const isBooked = mentorBookings.some(b => b.timeSlot.startsWith(hour));
+        return {
+          day,
+          time: hour,
+          isBooked,
+          occupancy: isBooked ? 100 : (20 + (mentorIdNum % 7) * 10)
+        };
+      });
+    }).slice(0, 6); // Keep it highly compact
+
+    const openCount = slots.filter(s => !s.isBooked).length;
+    let summary = "🟢 High Availability (5 open slots this week)";
+    if (openCount <= 2) {
+      summary = "🔴 Low Availability (1-2 remaining slots)";
+    } else if (openCount <= 4) {
+      summary = "🟡 Medium Availability (3-4 remaining slots)";
+    }
+
+    return {
+      summary,
+      openCount,
+      slots
+    };
+  };
 
   // Consultation form inside Drawer
   const [consultDateType, setConsultDateType] = useState<'quick' | 'custom'>('quick');
@@ -114,6 +223,80 @@ export default function MentorsView({ mentors, onNavigate }: MentorsViewProps) {
     }
   }, [quickDates, quickDateSelected]);
 
+  // Handle Matchmaker questionnaire formula
+  const handleCalculateQuizMatches = () => {
+    setQuizLoading(true);
+    setTimeout(() => {
+      const scored = mentors.map(m => {
+        let score = 55; // Base line
+        const mFields = m.fields.join(' ').toLowerCase();
+        
+        // Match Field
+        if (qAnswers.field === 'cybersecurity' && mFields.match(/cyber|crypt|quantum|security|networks/)) {
+          score += 25;
+        } else if (qAnswers.field === 'energy' && mFields.match(/energy|power|solar|battery|sustainable/)) {
+          score += 25;
+        } else if (qAnswers.field === 'ioe' && mFields.match(/iot|embedded|sensor|harvester|systems/)) {
+          score += 25;
+        } else if (qAnswers.field === 'craft' && mFields.match(/writing|academic|cognitive|literature|publications|machine/)) {
+          score += 20;
+        }
+
+        // Match Goal
+        if (qAnswers.goal === 'publish' && m.publications.length >= 2) {
+          score += 15;
+        } else if (qAnswers.goal === 'latex' && (m.bio.toLowerCase().includes('mathematical') || m.bio.toLowerCase().includes('typesetting'))) {
+          score += 15;
+        } else if (qAnswers.goal === 'funding' && m.country === 'United Kingdom') {
+          score += 10;
+        }
+
+        // Match Style
+        if (qAnswers.style === 'rigorous' && m.rating === 5.0) {
+          score += 10;
+        } else if (qAnswers.style === 'collaborative' && m.fields.length >= 4) {
+          score += 10;
+        }
+
+        const finalScore = Math.min(100, score + Math.floor(Math.random() * 6));
+        return {
+          ...m,
+          matchIndex: finalScore
+        };
+      });
+
+      scored.sort((a, b) => b.matchIndex - a.matchIndex);
+      setQuizResults(scored.slice(0, 3));
+      setQuizLoading(false);
+    }, 1300);
+  };
+
+  // Submit new student endorsement
+  const handleSubmitEndorsement = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedMentor || !newReviewName.trim() || !newReviewComment.trim()) return;
+
+    const newRec = {
+      id: `end-${Math.random().toString(36).substr(2, 6)}`,
+      name: newReviewName,
+      title: newReviewTitle || 'Research Delegate',
+      rating: newReviewRating,
+      comment: newReviewComment,
+      date: new Date().toISOString().split('T')[0]
+    };
+
+    const mIdStr = String(selectedMentor.id);
+    setEndorsements(prev => ({
+      ...prev,
+      [mIdStr]: [newRec, ...(prev[mIdStr] || [])]
+    }));
+
+    setNewReviewName('');
+    setNewReviewComment('');
+    setEndorseSuccess(true);
+    setTimeout(() => setEndorseSuccess(false), 3000);
+  };
+
   // Extract all fields dynamically & count them for facet badges
   const fieldCounts = React.useMemo(() => {
     const counts: Record<string, number> = {};
@@ -132,7 +315,10 @@ export default function MentorsView({ mentors, onNavigate }: MentorsViewProps) {
                           m.university.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           m.country.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesField = selectedField === 'All' || m.fields.includes(selectedField);
-    const matchesRole = selectedRole === 'all' || m.role === selectedRole;
+    
+    // Match standard role filtering or local storage favorites
+    const matchesRole = selectedRole === 'all' || 
+                        (selectedRole === 'favorites' ? favorites.includes(Number(m.id)) : m.role === selectedRole);
     return matchesSearch && matchesField && matchesRole;
   });
 
@@ -147,6 +333,9 @@ export default function MentorsView({ mentors, onNavigate }: MentorsViewProps) {
     setConsultTimeSlot(timeSlots[0]);
     setConsultTopic('');
     setConsultMode('Pre-Submission Peer Review');
+    setNewReviewName('');
+    setNewReviewComment('');
+    setEndorseSuccess(false);
   };
 
   const handleCloseMentor = () => {
@@ -447,6 +636,38 @@ export default function MentorsView({ mentors, onNavigate }: MentorsViewProps) {
         </section>
       )}
 
+      {/* RITECHS Interactive Matchmaker Diagnostic Section */}
+      <section className="bg-gradient-to-r from-primary-maroon via-[#4A0E17] to-maroon-dark text-white border-y border-accent-gold/25 relative overflow-hidden premium-noise select-none">
+        <div className="absolute top-0 right-0 w-45 h-45 bg-accent-gold/5 rounded-bl-full pointer-events-none blur-xl animate-pulse" />
+        <div className="max-w-6xl mx-auto px-6 py-5 flex flex-col md:flex-row items-center justify-between gap-5 relative z-10">
+          <div className="text-left space-y-1">
+            <div className="flex items-center gap-1.5">
+              <span className="text-[7.5px] font-mono bg-accent-gold text-primary-maroon px-2 py-0.5 rounded-full font-bold uppercase">ALGORITHM ADVANCED</span>
+              <span className="text-[7.5px] font-mono uppercase tracking-widest text-[#C9A961] font-bold">⚡ DIRECT DIAGNOSTIC MATCH</span>
+            </div>
+            <h3 className="font-serif-display text-sm sm:text-base font-bold text-white uppercase tracking-wider">
+              Find Your Ideal Co-Author & Advisory Chair
+            </h3>
+            <p className="text-[10px] sm:text-[11px] text-neutral-300 font-light font-sans max-w-xl leading-relaxed">
+              Answer 4 simple disciplinary questions regarding your citation focus, LaTeX objectives, and required coaching style. Our system will immediately calculate the optimal matches.
+            </p>
+          </div>
+          <button 
+            type="button"
+            onClick={() => {
+              setShowQuestionnaire(true);
+              setQuestionnaireStep(1);
+              setQAnswers({ field: '', goal: '', style: '', tier: '' });
+              setQuizResults(null);
+              setQuizLoading(false);
+            }}
+            className="bg-accent-gold hover:bg-[#B3934B] text-primary-maroon text-[9.5px] font-mono tracking-widest uppercase font-extrabold px-4 py-2.5 transition-all shadow-[0_4px_12px_rgba(201,169,97,0.15)] hover:shadow-[0_6px_20px_rgba(201,169,97,0.3)] shrink-0 flex items-center gap-1.5 rounded-xs cursor-pointer"
+          >
+            <Sparkles className="w-3.5 h-3.5" /> Start Advisor Placement Match
+          </button>
+        </div>
+      </section>
+
       {/* Advanced search & filter panel: compact, luxurious, structured */}
       <section className="py-6 bg-maroon-dark/95 border-b border-accent-gold/15 shadow-xl z-20 relative sticky top-16 backdrop-blur-md">
         <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row gap-5 items-stretch md:items-center justify-between">
@@ -466,21 +687,31 @@ export default function MentorsView({ mentors, onNavigate }: MentorsViewProps) {
             
             {/* Segmented Category Buttons */}
             <div className="flex items-center gap-1 border border-accent-gold/20 p-1 bg-primary-maroon/40 rounded-sm shrink-0">
-              {(['all', 'mentor', 'mentee'] as const).map((roleOption) => {
+              {(['all', 'mentor', 'mentee', 'favorites'] as const).map((roleOption) => {
                 const count = roleOption === 'all' 
                   ? mentors.length 
-                  : mentors.filter(m => m.role === roleOption).length;
+                  : roleOption === 'favorites'
+                    ? favorites.length
+                    : mentors.filter(m => m.role === roleOption).length;
                 return (
                   <button
                     key={roleOption}
+                    type="button"
                     onClick={() => setSelectedRole(roleOption)}
-                    className={`px-3 py-1.5 text-[9px] uppercase font-mono tracking-widest font-bold transition-all rounded-xs cursor-pointer ${
+                    className={`px-3 py-1.5 text-[9px] uppercase font-mono tracking-widest font-bold transition-all rounded-xs cursor-pointer flex items-center gap-1 ${
                       selectedRole === roleOption
                         ? 'bg-accent-gold text-primary-maroon shadow-md'
                         : 'text-neutral-300 hover:text-white hover:bg-primary-maroon/60'
                     }`}
                   >
-                    {roleOption === 'all' ? `All (${count})` : roleOption === 'mentor' ? `Advisors` : `Scholars`}
+                    {roleOption === 'favorites' && <Heart className={`w-2.5 h-2.5 ${selectedRole === 'favorites' ? 'fill-primary-maroon' : 'fill-accent-gold'}`} />}
+                    {roleOption === 'all' 
+                      ? `All (${count})` 
+                      : roleOption === 'mentor' 
+                        ? `Advisors` 
+                        : roleOption === 'mentee' 
+                          ? `Scholars` 
+                          : `Favorites (${count})`}
                   </button>
                 );
               })}
@@ -534,6 +765,11 @@ export default function MentorsView({ mentors, onNavigate }: MentorsViewProps) {
               >
                 <MentorCard 
                   mentor={mentor} 
+                  isFavorite={favorites.includes(Number(mentor.id))}
+                  onToggleFavorite={(e) => {
+                    e.stopPropagation();
+                    toggleFavorite(Number(mentor.id));
+                  }}
                   onClick={() => {
                     handleOpenMentor(mentor);
                     window.location.hash = `#/mentors?mentorId=${mentor.id}`;
@@ -747,6 +983,38 @@ export default function MentorsView({ mentors, onNavigate }: MentorsViewProps) {
                           <span key={i} className="text-[7px] font-mono tracking-wider uppercase bg-primary-maroon border border-accent-gold/15 px-1.5 py-0.5 text-accent-gold font-bold">
                             {f}
                           </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Real-time Availability status panel */}
+                    <div className="bg-[#4A0E17]/20 border border-accent-gold/20 p-3 space-y-2 mt-1">
+                      <div className="flex items-center gap-1.5">
+                        <span className="relative flex h-2 w-2">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
+                        <span className="font-mono text-[7px] uppercase tracking-widest text-[#C9A961] font-bold block">
+                          Current Live Availability
+                        </span>
+                      </div>
+                      
+                      <div className="font-serif-display text-[10.5px] font-bold text-white leading-tight">
+                        {getAvailabilityStatus(selectedMentor.id).summary}
+                      </div>
+
+                      {/* Six compact slots */}
+                      <div className="grid grid-cols-2 gap-1 pt-1">
+                        {getAvailabilityStatus(selectedMentor.id).slots.map((s, idx) => (
+                          <div key={idx} className="bg-black/35 p-1 border border-accent-gold/10 flex flex-col justify-between">
+                            <span className="font-mono text-[6px] text-neutral-400 uppercase tracking-tight">{s.day}</span>
+                            <div className="flex justify-between items-center mt-0.5">
+                              <span className="font-mono text-[7.5px] text-white font-extrabold">{s.time.split(' ')[0]} {s.time.split(' ')[1]}</span>
+                              <span className={`text-[5.5px] font-mono px-0.5 py-0.2 font-bold uppercase shrink-0 ${s.isBooked ? 'text-red-400 bg-red-950/20' : 'text-emerald-400 bg-emerald-950/20 border border-emerald-500/10'}`}>
+                                {s.isBooked ? "Held" : "Open"}
+                              </span>
+                            </div>
+                          </div>
                         ))}
                       </div>
                     </div>
@@ -1000,7 +1268,425 @@ export default function MentorsView({ mentors, onNavigate }: MentorsViewProps) {
                   </div>
                 </div>
 
+                {/* 🏅 Student Endorsements & Peer Reviews Section */}
+                <div className="border-t border-accent-gold/20 pt-4 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <h4 className="font-serif-display text-xs font-bold tracking-wider uppercase text-accent-gold flex items-center gap-1">
+                      <Award className="w-3.5 h-3.5 text-accent-gold" /> Scholar Endorsements & Reviews
+                    </h4>
+                    <span className="text-[8px] font-mono text-neutral-300">
+                      ({endorsements[String(selectedMentor.id)]?.length || 0} reviews)
+                    </span>
+                  </div>
+
+                  {/* Submit Endorsement form */}
+                  <form onSubmit={handleSubmitEndorsement} className="bg-primary-maroon border border-accent-gold/15 p-3 rounded-xs space-y-2.5">
+                    <p className="font-mono text-[7px] text-accent-gold/90 uppercase tracking-wider font-bold">Write Your Co-Author or Student Endorsement</p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      <div className="space-y-1 text-left">
+                        <label className="text-[6.5px] font-mono uppercase text-neutral-400 font-bold block">Your Full Name</label>
+                        <input 
+                          type="text"
+                          required
+                          value={newReviewName}
+                          onChange={(e) => setNewReviewName(e.target.value)}
+                          placeholder="E.g., Dr. Alice Vance, PhD"
+                          className="border border-accent-gold/25 bg-maroon-dark text-white p-1.5 text-[8.5px] focus:border-accent-gold outline-none w-full rounded-xs placeholder-neutral-500 font-mono"
+                        />
+                      </div>
+                      <div className="space-y-1 text-left">
+                        <label className="text-[6.5px] font-mono uppercase text-neutral-400 font-bold block">Affiliation / Title</label>
+                        <input 
+                          type="text"
+                          value={newReviewTitle}
+                          onChange={(e) => setNewReviewTitle(e.target.value)}
+                          placeholder="PhD Scholar / Associate Prof."
+                          className="border border-accent-gold/25 bg-maroon-dark text-white p-1.5 text-[8.5px] focus:border-accent-gold outline-none w-full rounded-xs placeholder-neutral-500 font-mono"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-1 text-left">
+                      <label className="text-[6.5px] font-mono uppercase text-neutral-400 font-bold block">Rating & Citation Assessment</label>
+                      <div className="flex bg-[#2C0509] p-1 border border-accent-gold/15 self-start rounded-xs w-max gap-1">
+                        {[1, 2, 3, 4, 5].map(stars => (
+                          <button
+                            key={stars}
+                            type="button"
+                            onClick={() => setNewReviewRating(stars)}
+                            className="p-0.5 filter hover:brightness-125 transition-all text-accent-gold"
+                          >
+                            <Star className={`w-3.5 h-3.5 ${newReviewRating >= stars ? 'fill-accent-gold text-accent-gold' : 'text-neutral-500'}`} />
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="space-y-1 text-left">
+                      <label className="text-[6.5px] font-mono uppercase text-neutral-400 font-bold block">Endorsement Review Narrative</label>
+                      <textarea
+                        required
+                        rows={2}
+                        value={newReviewComment}
+                        onChange={(e) => setNewReviewComment(e.target.value)}
+                        placeholder="Detail your advisory experience, publishing support, coaching style or LaTeX audit quality..."
+                        className="border border-accent-gold/25 bg-maroon-dark text-white p-1.5 text-[8.5px] focus:border-accent-gold outline-none w-full rounded-xs placeholder-neutral-500"
+                      />
+                    </div>
+
+                    <div className="flex justify-between items-center gap-2 pt-1">
+                      {endorseSuccess ? (
+                        <p className="font-mono text-[7.5px] text-emerald-400 font-bold animate-pulse">✓ ENDORSEMENT PUBLISHED TO YOUR BROWSER LEDGER!</p>
+                      ) : (
+                        <span />
+                      )}
+                      <button
+                        type="submit"
+                        className="bg-accent-gold hover:bg-[#B3934B] text-primary-maroon px-3 py-1.5 text-[7.5px] font-mono uppercase tracking-widest font-extrabold transition-all cursor-pointer rounded-xs"
+                      >
+                        Publish Testimonial
+                      </button>
+                    </div>
+                  </form>
+
+                  {/* Reviews List */}
+                  <div className="space-y-2 max-h-[160px] overflow-y-auto pr-1">
+                    {(endorsements[String(selectedMentor.id)] || []).length > 0 ? (
+                      (endorsements[String(selectedMentor.id)] || []).map((review) => (
+                        <div key={review.id} className="bg-primary-maroon/30 border border-accent-gold/10 p-2 text-left space-y-1 rounded-xs">
+                          <div className="flex items-center justify-between gap-1.5">
+                            <div className="min-w-0">
+                              <span className="font-mono text-[8px] text-white font-extrabold">{review.name}</span>
+                              <span className="text-[7px] font-mono text-neutral-400 border-l border-accent-gold/20 pl-1.5 ml-1.5 uppercase font-medium">{review.title}</span>
+                            </div>
+                            <div className="flex gap-0.5 shrink-0">
+                              {Array.from({ length: 5 }).map((_, fIdx) => (
+                                <Star key={fIdx} className={`w-2 h-2 ${review.rating > fIdx ? 'fill-accent-gold text-accent-gold' : 'text-neutral-700'}`} />
+                              ))}
+                            </div>
+                          </div>
+                          <p className="text-[8.5px] font-sans font-light text-neutral-200 leading-normal italic select-text">
+                            "{review.comment}"
+                          </p>
+                          <div className="text-[6.5px] text-neutral-400 text-right font-mono font-bold uppercase">
+                            Date Verified: {review.date}
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-[8.5px] text-neutral-400 text-left font-serif-accent italic py-4">No scholar reviews left yet. Be the first to publish an endorsement!</p>
+                    )}
+                  </div>
+                </div>
+
               </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Questionnaire wizard modal overlay */}
+      <AnimatePresence>
+        {showQuestionnaire && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto">
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-[#2D060A] border-2 border-accent-gold/40 text-left text-white max-w-xl w-full rounded-sm p-6 relative shadow-2xl flex flex-col my-8"
+            >
+              <button
+                type="button"
+                onClick={() => setShowQuestionnaire(false)}
+                className="absolute top-4 right-4 text-accent-gold/70 hover:text-white transition-colors cursor-pointer"
+                aria-label="Close Questionnaire"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              <div className="flex items-center gap-1.5 mb-2">
+                <Sparkles className="w-4 h-4 text-accent-gold animate-pulse" />
+                <span className="font-mono text-[8px] tracking-widest uppercase text-accent-gold font-bold">RITECHS EXPERT MATCHMAKER</span>
+              </div>
+
+              <h2 className="font-serif-display text-base sm:text-lg font-bold text-white uppercase tracking-wider mb-2">
+                Advisor Diagnostic Alignment
+              </h2>
+
+              {/* Progress bar */}
+              <div className="w-full h-1 bg-primary-maroon rounded-full mb-6 overflow-hidden">
+                <div 
+                  className="h-full bg-accent-gold transition-all duration-300"
+                  style={{ width: `${quizResults ? 100 : ((questionnaireStep - 1) * 33.3 + 5)}%` }}
+                />
+              </div>
+
+              {!quizResults && !quizLoading && (
+                <div className="space-y-4">
+                  {questionnaireStep === 1 && (
+                    <div className="space-y-3">
+                      <p className="font-mono text-[9px] uppercase tracking-wider text-accent-gold/80 font-semibold mb-2">
+                        STEP 1: Select Your Current Major Scholastic Domain
+                      </p>
+                      <div className="grid grid-cols-1 gap-2">
+                        {[
+                          { id: 'cybersecurity', label: 'Emerging Cybersecurity & Cryptography Foundations' },
+                          { id: 'energy', label: 'Renewable Energy & Physics-Informed Power loads' },
+                          { id: 'ioe', label: 'Internet of Everything (IoE) Embedded Nodes & Microgrids' },
+                          { id: 'craft', label: 'Academic Craft, LaTeX Typesetting, Methodology Foundations' }
+                        ].map(opt => (
+                          <button
+                            key={opt.id}
+                            type="button"
+                            onClick={() => {
+                              setQAnswers(prev => ({ ...prev, field: opt.id }));
+                              setQuestionnaireStep(2);
+                            }}
+                            className={`p-3 text-[10px] sm:text-xs font-mono text-left border rounded-xs transition-colors cursor-pointer ${
+                              qAnswers.field === opt.id 
+                                ? 'bg-accent-gold border-accent-gold text-primary-maroon font-bold shadow-md' 
+                                : 'border-accent-gold/25 bg-primary-maroon/20 text-neutral-200 hover:border-accent-gold/50'
+                            }`}
+                          >
+                            {opt.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {questionnaireStep === 2 && (
+                    <div className="space-y-3">
+                      <p className="font-mono text-[9px] uppercase tracking-wider text-accent-gold/80 font-semibold mb-2">
+                        STEP 2: Define Your Primary Academic Goal
+                      </p>
+                      <div className="grid grid-cols-1 gap-2">
+                        {[
+                          { id: 'publish', label: 'Accepted in Q1 High-Impact Journals (IEEE, Elsevier, Springer)' },
+                          { id: 'latex', label: 'Mathematical Formulations Clean LaTeX Section & proof audit' },
+                          { id: 'funding', label: 'Securing Joint International Collaborations and Faculty Grants' }
+                        ].map(opt => (
+                          <button
+                            key={opt.id}
+                            type="button"
+                            onClick={() => {
+                              setQAnswers(prev => ({ ...prev, goal: opt.id }));
+                              setQuestionnaireStep(3);
+                            }}
+                            className={`p-3 text-[10px] sm:text-xs font-mono text-left border rounded-xs transition-colors cursor-pointer ${
+                              qAnswers.goal === opt.id 
+                                ? 'bg-accent-gold border-accent-gold text-primary-maroon font-bold shadow-md' 
+                                : 'border-accent-gold/25 bg-primary-maroon/20 text-neutral-200 hover:border-accent-gold/50'
+                            }`}
+                          >
+                            {opt.label}
+                          </button>
+                        ))}
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setQuestionnaireStep(1)}
+                        className="text-[8px] font-mono uppercase text-accent-gold underline tracking-wider mt-2 hover:text-white"
+                      >
+                        BACK TO STEP 1
+                      </button>
+                    </div>
+                  )}
+
+                  {questionnaireStep === 3 && (
+                    <div className="space-y-3">
+                      <p className="font-mono text-[9px] uppercase tracking-wider text-accent-gold/80 font-semibold mb-2">
+                        STEP 3: Select Preferred Mentoral Coaching Style
+                      </p>
+                      <div className="grid grid-cols-1 gap-2">
+                        {[
+                          { id: 'rigorous', label: 'Rigorous Peer Reviewer (Detailed technical critique & proof audits)' },
+                          { id: 'patient', label: 'Methodical & Patient Coach (Concept scaffolding & section support)' },
+                          { id: 'collaborative', label: 'Collaborative Joint-researcher (Venture co-author & publisher alignments)' }
+                        ].map(opt => (
+                          <button
+                            key={opt.id}
+                            type="button"
+                            onClick={() => {
+                              setQAnswers(prev => ({ ...prev, style: opt.id }));
+                              setQuestionnaireStep(4);
+                            }}
+                            className={`p-3 text-[10px] sm:text-xs font-mono text-left border rounded-xs transition-colors cursor-pointer ${
+                              qAnswers.style === opt.id 
+                                ? 'bg-accent-gold border-accent-gold text-primary-maroon font-bold shadow-md' 
+                                : 'border-accent-gold/25 bg-primary-maroon/20 text-neutral-200 hover:border-accent-gold/50'
+                            }`}
+                          >
+                            {opt.label}
+                          </button>
+                        ))}
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setQuestionnaireStep(2)}
+                        className="text-[8px] font-mono uppercase text-accent-gold underline tracking-wider mt-2 hover:text-white"
+                      >
+                        BACK TO STEP 2
+                      </button>
+                    </div>
+                  )}
+
+                  {questionnaireStep === 4 && (
+                    <div className="space-y-3">
+                      <p className="font-mono text-[9px] uppercase tracking-wider text-accent-gold/80 font-semibold mb-2">
+                        STEP 4: Select Your Academic Career Tier
+                      </p>
+                      <div className="grid grid-cols-1 gap-2">
+                        {[
+                          { id: 'student', label: 'Doctoral Candidate / PhD Student' },
+                          { id: 'junior', label: 'Junior Faculty / Lecturer / Research Associate' },
+                          { id: 'master', label: 'Post-Graduate Student / Master’s Scholar' },
+                          { id: 'undergrad', label: 'Undergraduate Co-Author Trainee' }
+                        ].map(opt => (
+                          <button
+                            key={opt.id}
+                            type="button"
+                            onClick={() => {
+                              const updatedAnswers = { ...qAnswers, tier: opt.id };
+                              setQAnswers(updatedAnswers);
+                              setQuizLoading(true);
+                              setTimeout(() => {
+                                const scored = mentors.map(m => {
+                                  let score = 55;
+                                  const mFields = m.fields.join(' ').toLowerCase();
+                                  
+                                  if (updatedAnswers.field === 'cybersecurity' && mFields.match(/cyber|crypt|quantum|security|networks/)) {
+                                    score += 25;
+                                  } else if (updatedAnswers.field === 'energy' && mFields.match(/energy|power|solar|battery|sustainable/)) {
+                                    score += 25;
+                                  } else if (updatedAnswers.field === 'ioe' && mFields.match(/iot|embedded|sensor|harvester|systems/)) {
+                                    score += 25;
+                                  } else if (updatedAnswers.field === 'craft' && mFields.match(/writing|academic|cognitive|literature|publications|machine/)) {
+                                    score += 20;
+                                  }
+
+                                  if (updatedAnswers.goal === 'publish' && m.publications.length >= 2) {
+                                    score += 15;
+                                  } else if (updatedAnswers.goal === 'latex' && (m.bio.toLowerCase().includes('mathematical') || m.bio.toLowerCase().includes('typesetting'))) {
+                                    score += 15;
+                                  } else if (updatedAnswers.goal === 'funding' && m.country === 'United Kingdom') {
+                                    score += 10;
+                                  }
+
+                                  if (updatedAnswers.style === 'rigorous' && m.rating === 5.0) {
+                                    score += 10;
+                                  } else if (updatedAnswers.style === 'collaborative' && m.fields.length >= 4) {
+                                    score += 10;
+                                  }
+
+                                  const finalScore = Math.min(100, score + Math.floor(Math.random() * 6));
+                                  return {
+                                    ...m,
+                                    matchIndex: finalScore
+                                  };
+                                });
+
+                                scored.sort((a, b) => b.matchIndex - a.matchIndex);
+                                setQuizResults(scored.slice(0, 3));
+                                setQuizLoading(false);
+                              }, 1300);
+                            }}
+                            className={`p-3 text-[10px] sm:text-xs font-mono text-left border rounded-xs transition-colors cursor-pointer ${
+                              qAnswers.tier === opt.id 
+                                ? 'bg-accent-gold border-accent-gold text-primary-maroon font-bold shadow-md' 
+                                : 'border-accent-gold/25 bg-primary-maroon/20 text-neutral-200 hover:border-accent-gold/50'
+                            }`}
+                          >
+                            {opt.label}
+                          </button>
+                        ))}
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setQuestionnaireStep(3)}
+                        className="text-[8px] font-mono uppercase text-[#C9A961] underline tracking-wider mt-2 hover:text-white"
+                      >
+                        BACK TO STEP 3
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {quizLoading && (
+                <div className="py-12 flex flex-col items-center justify-center gap-4 text-center">
+                  <span className="w-10 h-10 border-4 border-accent-gold/30 border-t-accent-gold rounded-full animate-spin" />
+                  <div className="space-y-1">
+                    <p className="font-mono text-[10px] text-accent-gold tracking-widest uppercase font-extrabold animate-pulse">CALCULATING ALIGNMENT INDEX...</p>
+                    <p className="text-[9px] text-neutral-300 font-sans max-w-xs mx-auto">Cross-matching research coefficients and publications against top JCR/ERA index portfolios.</p>
+                  </div>
+                </div>
+              )}
+
+              {quizResults && !quizLoading && (
+                <div className="space-y-4">
+                  <p className="font-mono text-[9px] uppercase tracking-widest text-[#C9A961] font-bold">
+                    🚀 Top Alignment Peer Matches Found
+                  </p>
+                  
+                  <div className="space-y-3 max-h-[280px] overflow-y-auto pr-1">
+                    {quizResults.map((rec) => (
+                      <div 
+                        key={rec.id} 
+                        className="bg-primary-maroon/40 border border-accent-gold/25 p-3 flex gap-3 rounded-xs items-center hover:bg-[#3D0C11] transition-colors group text-left"
+                      >
+                        <div className="w-12 h-12 rounded-sm overflow-hidden shrink-0 border border-accent-gold/25 bg-maroon-dark">
+                          <img src={rec.image} alt={rec.name} className="w-full h-full object-cover" />
+                        </div>
+                        <div className="min-w-0 flex-grow text-left">
+                          <div className="flex items-center justify-between mb-0.5">
+                            <h4 className="font-serif-display text-xs font-bold text-white group-hover:text-accent-gold transition-colors truncate">{rec.name}</h4>
+                            <span className="text-[8px] font-mono text-accent-gold font-bold shrink-0 bg-[#C9A961]/10 border border-[#C9A961]/35 px-1 py-0.2">{rec.matchIndex}% Match</span>
+                          </div>
+                          <p className="text-[8.5px] uppercase font-mono tracking-tight text-neutral-300 truncate">{rec.university}</p>
+                          <div className="flex flex-wrap gap-1 mt-1 pr-1">
+                            {rec.fields.slice(0, 2).map((fd, fIdx) => (
+                              <span key={fIdx} className="text-[6.5px] font-mono whitespace-nowrap px-1 py-0.2 bg-maroon-light/30 border border-accent-gold/10 text-accent-gold">{fd}</span>
+                            ))}
+                          </div>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setShowQuestionnaire(false);
+                            handleOpenMentor(rec);
+                          }}
+                          className="px-2 py-1.5 bg-accent-gold text-primary-maroon font-mono text-[7px] font-bold uppercase hover:bg-white tracking-widest whitespace-nowrap shrink-0 cursor-pointer"
+                        >
+                          View Details
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="pt-2 border-t border-accent-gold/15 flex gap-3">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setQAnswers({ field: '', goal: '', style: '', tier: '' });
+                        setQuestionnaireStep(1);
+                        setQuizResults(null);
+                      }}
+                      className="flex-grow bg-[#2C0509] hover:bg-primary-maroon border border-accent-gold/25 text-neutral-300 font-mono text-[8px] py-2 uppercase tracking-widest font-bold text-center cursor-pointer"
+                    >
+                      Reset Quiz
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowQuestionnaire(false)}
+                      className="flex-grow bg-accent-gold hover:bg-[#B3934B] text-primary-maroon font-mono text-[8px] py-2 uppercase tracking-widest font-extrabold text-center cursor-pointer"
+                    >
+                      Finish Diagnoses
+                    </button>
+                  </div>
+                </div>
+              )}
+
             </motion.div>
           </div>
         )}

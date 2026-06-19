@@ -1,4 +1,5 @@
-import { Star, ChevronRight } from 'lucide-react';
+import React from 'react';
+import { Star, ChevronRight, Heart } from 'lucide-react';
 import { Mentor } from '../types';
 import { TiltCard } from './TiltCard';
 
@@ -8,9 +9,18 @@ interface MentorCardProps {
   onClick: () => void;
   className?: string;
   isDark?: boolean;
+  isFavorite?: boolean;
+  onToggleFavorite?: (e: React.MouseEvent) => void;
 }
 
-export function MentorCard({ mentor, onClick, className = "", isDark = true }: MentorCardProps) {
+export function MentorCard({ 
+  mentor, 
+  onClick, 
+  className = "", 
+  isDark = true,
+  isFavorite = false,
+  onToggleFavorite
+}: MentorCardProps) {
   return (
     <TiltCard 
       id={`mentor-card-${mentor.id}`}
@@ -32,6 +42,22 @@ export function MentorCard({ mentor, onClick, className = "", isDark = true }: M
           loading="eager"
           className="w-full h-full object-cover group-hover:scale-105 transition-all duration-[600ms]"
         />
+
+        {/* Tactile Favorite Toggle button in top-left */}
+        {onToggleFavorite && (
+          <button
+            type="button"
+            onClick={onToggleFavorite}
+            className={`absolute top-2.5 left-2.5 z-10 w-6 h-6 rounded-full flex items-center justify-center border transition-all cursor-pointer ${
+              isFavorite 
+                ? 'bg-rose-600 border-rose-500 text-white shadow-md scale-110' 
+                : 'bg-[#4A0E17]/90 border-accent-gold/20 text-accent-gold/80 hover:text-rose-400 hover:border-rose-400/50 hover:bg-rose-950/40'
+            }`}
+            title={isFavorite ? "Remove from Favorites" : "Add to Favorites"}
+          >
+            <Heart className={`w-3.5 h-3.5 ${isFavorite ? 'fill-current' : ''}`} />
+          </button>
+        )}
 
         {/* Rating Badge */}
         <div className="absolute top-2.5 right-2.5 bg-[#4A0E17]/95 border border-accent-gold/30 text-accent-gold text-[7.5px] font-mono px-1.5 py-0.5 tracking-widest font-semibold uppercase flex items-center gap-1 shadow-md">
