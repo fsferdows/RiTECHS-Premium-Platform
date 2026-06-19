@@ -27,6 +27,7 @@ import LoginView from './components/LoginView';
 import AIAssistant from './components/AIAssistant';
 import ConSearchView from './components/ConSearchView';
 import ConferencePlansView from './components/ConferencePlansView';
+import MentorCommonView from './components/MentorCommonView';
 
 export default function App() {
   // Session handling using localStorage to keep it persistent across iframe reloads
@@ -293,6 +294,14 @@ export default function App() {
       crumbs.push({ label: confName, path: currentPath });
     } else if (normalized === '#/mentors') {
       crumbs.push({ label: 'Mentors & Scholars', path: '#/mentors' });
+    } else if (normalized.startsWith('#/mentor-common-view')) {
+      crumbs.push({ label: 'Mentors & Scholars', path: '#/mentors' });
+      const segments = normalized.split('/');
+      const lastSegment = segments[segments.length - 1];
+      const parsed = Number(lastSegment);
+      const matchedM = mentors.find(m => m.id === parsed);
+      const mentorLabel = matchedM ? matchedM.name.toUpperCase() : 'PROFILE DETAILS';
+      crumbs.push({ label: mentorLabel, path: currentPath });
     } else if (normalized === '#/services') {
       crumbs.push({ label: 'Academic Services', path: '#/services' });
     } else if (normalized === '#/blog') {
@@ -414,6 +423,16 @@ export default function App() {
         <MentorsView 
           mentors={mentors} 
           onNavigate={handleNavigate} 
+        />
+      );
+    }
+
+    if (normalized === '#/mentor-common-view' || normalized.startsWith('#/mentor-common-view')) {
+      return (
+        <MentorCommonView 
+          mentors={mentors}
+          currentPath={currentPath}
+          onNavigate={handleNavigate}
         />
       );
     }
