@@ -68,6 +68,33 @@ export default function MentorsView({ mentors, onNavigate }: MentorsViewProps) {
     setConsultTopic('');
   };
 
+  const handleCloseMentor = () => {
+    setSelectedMentor(null);
+    // Suppress query parameters from page hash smoothly
+    const hash = window.location.hash;
+    if (hash.includes('mentorId=')) {
+      window.location.hash = '#/mentors';
+    }
+  };
+
+  useEffect(() => {
+    const handleCheckHash = () => {
+      const hash = window.location.hash;
+      const match = hash.match(/mentorId=(\d+)/);
+      if (match) {
+        const id = parseInt(match[1]);
+        const found = mentors.find(m => m.id === id);
+        if (found) {
+          handleOpenMentor(found);
+        }
+      }
+    };
+
+    handleCheckHash();
+    window.addEventListener('hashchange', handleCheckHash);
+    return () => window.removeEventListener('hashchange', handleCheckHash);
+  }, [mentors]);
+
   const handleBookConsultation = (e: React.FormEvent) => {
     e.preventDefault();
     if (!consultTimeSlot) return;
@@ -329,200 +356,229 @@ export default function MentorsView({ mentors, onNavigate }: MentorsViewProps) {
       </section>
 
       {/* ----------------------------------------
-          Advisors slide-over panel
+          Advisors slide-over panel -> Centered compact elite modal
          ---------------------------------------- */}
       <AnimatePresence>
         {selectedMentor && (
-          <div className="fixed inset-0 z-50 flex justify-end">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
             {/* Blurry Backdrop Filter with spring transitions */}
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-primary-navy/60 backdrop-blur-sm cursor-pointer" 
-              onClick={() => setSelectedMentor(null)} 
+              className="absolute inset-0 bg-primary-navy/80 backdrop-blur-md cursor-pointer" 
+              onClick={handleCloseMentor} 
             />
             
-            {/* Elegant drawer container */}
+            {/* Compact centered modal / board container */}
             <motion.div 
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "spring", damping: 30, stiffness: 280 }}
-              className="bg-maroon-dark w-full max-w-xl h-full shadow-2xl relative z-10 flex flex-col border-l border-accent-gold/30 overflow-y-auto text-white"
+              initial={{ scale: 0.95, y: 30, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.95, y: 30, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="bg-maroon-dark w-full max-w-2xl rounded-sm shadow-2xl relative z-10 flex flex-col border border-accent-gold/40 text-white overflow-hidden max-h-[92vh]"
             >
-              {/* Header top drawer */}
-              <div className="bg-white px-8 py-6 text-black border-b border-accent-gold/20 flex justify-between items-center premium-noise shrink-0">
-                <div>
-                  <span className="text-[8px] font-mono text-primary-maroon uppercase tracking-widest font-bold">EVALUATION BOARD ADVISOR</span>
-                  <h2 className="font-serif-display text-2xl font-bold mt-1 text-black">{selectedMentor.name}</h2>
+              {/* Top Bar Header */}
+              <div className="bg-white px-5 py-3.5 text-black border-b border-accent-gold/25 flex justify-between items-center premium-noise shrink-0">
+                <div className="text-left">
+                  <span className="text-[7.5px] font-mono font-bold text-primary-maroon uppercase tracking-widest bg-primary-maroon/10 px-2 py-0.5 border border-primary-maroon/20">
+                    ID: EM-{String(selectedMentor.id).padStart(3, '0')} // EVALUATION BOARD MEMBER
+                  </span>
+                  <h2 className="font-serif-display text-lg sm:text-xl font-bold mt-1 text-black leading-tight">
+                    {selectedMentor.name}
+                  </h2>
                 </div>
                 <button 
-                  onClick={() => setSelectedMentor(null)}
-                  className="w-10 h-10 rounded-full border border-black/10 flex items-center justify-center hover:bg-black/10 transition-colors cursor-pointer"
+                  onClick={handleCloseMentor}
+                  className="w-8 h-8 rounded-full border border-black/15 flex items-center justify-center hover:bg-black/10 transition-colors cursor-pointer text-black"
                   id="drawer-close"
+                  aria-label="Close details"
                 >
-                  <X className="w-5 h-5 text-black" />
+                  <X className="w-4 h-4" />
                 </button>
               </div>
 
-              {/* Profile Drawer Body */}
-              <div className="p-8 flex flex-col gap-6 flex-grow bg-maroon-dark">
+              {/* Scrollable multi-grid content area (designed with premium spatial balance) */}
+              <div className="p-4 sm:p-5 overflow-y-auto flex-grow bg-maroon-dark space-y-4">
                 
-                {/* Advisor card spotlight in drawer */}
-                <div className="flex gap-5 items-start bg-primary-maroon border border-accent-gold/20 p-4 relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-16 h-16 bg-accent-gold/5 rounded-bl-full pointer-events-none" />
-                  <div className="w-20 h-20 rounded-xs overflow-hidden border border-accent-gold/25 shrink-0 shadow-sm">
-                    <img 
-                      src={selectedMentor.image} 
-                      alt={selectedMentor.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="text-left flex-grow min-w-0">
-                    <span className="text-[8px] font-mono tracking-widest text-[#C9A961] uppercase font-bold px-1.5 py-0.5 bg-[#C9A961]/10 rounded-sm inline-block mb-1.5">
-                      {selectedMentor.role || 'mentor'}
-                    </span>
-                    <h4 className="font-serif-display text-base font-bold text-white leading-tight mb-0.5 truncate">
-                      {selectedMentor.university}
-                    </h4>
-                    <p className="text-[10px] text-neutral-300 uppercase tracking-widest font-mono font-medium">{selectedMentor.country}</p>
-                    
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-3 font-mono text-[10px] text-accent-gold mt-2 font-bold select-text">
-                      <span className="flex items-center gap-1">★ {selectedMentor.rating} RATING INDEX</span>
-                      <span className="hidden sm:inline text-white/20">|</span>
-                      <a href={`mailto:${selectedMentor.email}`} className="text-white hover:underline flex items-center gap-1 font-sans text-xs font-normal normal-case leading-none mt-1 sm:mt-0">
-                        <Mail className="w-3.5 h-3.5 text-accent-gold" /> {selectedMentor.email}
-                      </a>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Biography block */}
-                <div className="text-left">
-                  <h4 className="font-serif-display text-xs font-bold tracking-widest uppercase text-accent-gold border-b border-accent-gold/15 pb-1.5 mb-2.5">
-                    Affiliation & Biography
-                  </h4>
-                  <p className="text-xs sm:text-sm text-neutral-200 leading-relaxed font-light font-sans">
-                    {selectedMentor.bio}
-                  </p>
-                </div>
-
-                {/* Fields representation */}
-                <div className="text-left">
-                  <h4 className="font-serif-display text-xs font-bold tracking-widest uppercase text-accent-gold border-b border-accent-gold/15 pb-1.5 mb-2.5">
-                    Peer Directives
-                  </h4>
-                  <div className="flex flex-wrap gap-1.5">
-                    {selectedMentor.fields.map((f, i) => (
-                      <span key={i} className="text-[9px] font-mono tracking-wide uppercase bg-primary-maroon border border-accent-gold/20 px-2 py-0.5 text-accent-gold font-semibold">
-                        {f}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Publication list */}
-                <div className="text-left">
-                  <h4 className="font-serif-display text-xs font-bold tracking-widest uppercase text-accent-gold border-b border-accent-gold/15 pb-1.5 mb-2.5 flex items-center gap-1.5">
-                    <BookOpen className="w-4 h-4 text-accent-gold" /> Critical Publications Indexed
-                  </h4>
-                  <div className="flex flex-col gap-2 font-mono text-[9px] text-neutral-200 leading-relaxed">
-                    {selectedMentor.publications.map((p, i) => (
-                      <div key={i} className="flex gap-2.5 items-start bg-primary-maroon p-2.5 border-l-2 border-accent-gold border border-accent-gold/15">
-                        <Award className="w-3.5 h-3.5 text-accent-gold shrink-0 mt-0.5" />
-                        <span>{p}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Elegant Interactive booking module */}
-                <div className="border border-accent-gold/20 bg-primary-maroon p-5 shrink-0 select-none text-left rounded-sm mt-2">
-                  <h3 className="font-serif-display text-sm text-white font-bold mb-3 flex items-center gap-1.5">
-                    <Calendar className="w-4 h-4 text-accent-gold" /> Propose Editorial Collaboration Slot
-                  </h3>
-
-                  {!bookingSuccess ? (
-                    <form onSubmit={handleBookConsultation} className="flex flex-col gap-4 text-xs font-sans">
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div className="flex flex-col gap-1">
-                          <label className="font-mono text-[9px] uppercase tracking-wider text-accent-gold/80 font-bold">Proposed Date</label>
-                          <input 
-                            type="date" 
-                            required 
-                            min="2026-06-15"
-                            value={consultDate}
-                            onChange={(e) => setConsultDate(e.target.value)}
-                            className="border border-accent-gold/20 bg-maroon-dark text-white p-2 text-xs focus:border-accent-gold outline-none w-full"
-                          />
-                        </div>
-                        
-                        <div className="flex flex-col gap-1">
-                          <label className="font-mono text-[9px] uppercase tracking-wider text-accent-gold/80 font-bold">Available Slots (CET)</label>
-                          <div className="grid grid-cols-1 gap-1">
-                            {timeSlots.map(slot => (
-                              <button
-                                key={slot}
-                                type="button"
-                                onClick={() => setConsultTimeSlot(slot)}
-                                className={`text-left p-1.5 border text-[9px] font-mono tracking-tight transition-all uppercase font-medium cursor-pointer ${
-                                  consultTimeSlot === slot 
-                                    ? 'bg-accent-gold border-accent-gold text-primary-maroon font-bold' 
-                                    : 'border-accent-gold/20 bg-maroon-dark text-neutral-300 hover:bg-primary-maroon'
-                                }`}
-                              >
-                                {slot}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="flex flex-col gap-1">
-                        <label className="font-mono text-[9px] uppercase tracking-wider text-accent-gold/80 font-bold">Manuscript Draft Abstract or Scope Focus</label>
-                        <textarea 
-                          rows={2.5} 
-                          placeholder="Detail your draft index details, LaTeX specifications, or targeted publishing venue..."
-                          required 
-                          value={consultTopic}
-                          onChange={(e) => setConsultTopic(e.target.value)}
-                          className="border border-accent-gold/20 bg-maroon-dark text-white p-2 text-xs focus:border-accent-gold outline-none resize-none font-sans w-full"
+                {/* 2-Column Responsive Layout */}
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-start">
+                  
+                  {/* Left Column (Metadata & Details card) */}
+                  <div className="md:col-span-5 flex flex-col gap-4 text-left">
+                    {/* Compact Profile showcase card */}
+                    <div className="bg-primary-maroon border border-accent-gold/20 p-3 relative overflow-hidden flex flex-row items-center gap-3">
+                      <div className="absolute top-0 right-0 w-12 h-12 bg-accent-gold/5 rounded-bl-full pointer-events-none" />
+                      <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xs overflow-hidden border border-accent-gold/25 shrink-0 shadow-sm">
+                        <img 
+                          src={selectedMentor.image} 
+                          alt={selectedMentor.name}
+                          className="w-full h-full object-cover"
                         />
                       </div>
-
-                      <button
-                        type="submit"
-                        disabled={bookingLoading || !consultTimeSlot || !consultDate}
-                        className="w-full bg-accent-gold hover:bg-[#B3934B] text-primary-maroon text-[9px] py-3 font-mono font-bold uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-1.5 disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
-                      >
-                        {bookingLoading ? (
-                          <span className="w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
-                        ) : (
-                          <span>Propose Advisory Meeting</span>
-                        )}
-                      </button>
-                    </form>
-                  ) : (
-                    <div className="text-center p-4 bg-maroon-dark border border-accent-gold/20 animate-fade-in flex flex-col items-center gap-2 text-white">
-                      <div className="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center border border-emerald-500/20">
-                        <Clock className="w-5 h-5 animate-pulse text-emerald-500" />
-                      </div>
-                      <div>
-                        <h4 className="font-serif-display text-sm font-bold text-white">Meeting Proposed Successfully</h4>
-                        <p className="text-[10px] text-neutral-300 font-light mt-0.5 max-w-[280px] leading-relaxed mx-auto">
-                          Your advisory session slot proposal has been logged inside our index registry. {selectedMentor.name} will evaluate your abstract.
-                        </p>
-                      </div>
-                      <div className="bg-primary-maroon border border-accent-gold/20 p-2.5 font-mono text-[8px] w-full text-left mt-2 text-neutral-200">
-                        <div><span className="text-accent-gold uppercase">Advisor:</span> {selectedMentor.name}</div>
-                        <div><span className="text-accent-gold uppercase">Proposed Date:</span> {consultDate}</div>
-                        <div><span className="text-accent-gold uppercase">Proposed Term:</span> {consultTimeSlot}</div>
-                        <div><span className="text-accent-gold uppercase">Topic Abstract:</span> {consultTopic}</div>
+                      <div className="min-w-0 flex-grow">
+                        <span className="text-[7px] font-mono tracking-widest text-[#C9A961] uppercase font-bold px-1.5 py-0.5 bg-[#C9A961]/10 rounded-sm inline-block mb-1">
+                          {selectedMentor.role || 'mentor'}
+                        </span>
+                        <h4 className="font-serif-display text-xs font-bold text-white leading-tight mb-0.5 truncate" title={selectedMentor.university}>
+                          {selectedMentor.university}
+                        </h4>
+                        <p className="text-[8.5px] text-neutral-300 uppercase tracking-widest font-mono font-bold">{selectedMentor.country}</p>
+                        
+                        <div className="flex items-center gap-1.5 font-mono text-[7.5px] text-accent-gold mt-1 font-bold">
+                          <Star className="w-2.5 h-2.5 text-accent-gold fill-accent-gold shrink-0" />
+                          <span>{selectedMentor.rating} RATING INDEX</span>
+                        </div>
                       </div>
                     </div>
-                  )}
+
+                    {/* Quick Access Actions Contact Group */}
+                    <div className="bg-maroon-light/30 border border-accent-gold/15 p-2.5 rounded-xs flex flex-col gap-1.5">
+                      <span className="text-[7.5px] font-mono text-accent-gold/70 uppercase tracking-wider font-bold">Inquire Immediately</span>
+                      <a 
+                        href={`mailto:${selectedMentor.email}`} 
+                        className="bg-accent-gold hover:bg-[#B3934B] text-primary-maroon font-mono text-[7.5px] tracking-widest uppercase font-bold text-center py-1.5 px-2.5 transition-colors flex items-center justify-center gap-1 w-full"
+                      >
+                        <Mail className="w-3 h-3 text-primary-maroon" /> Send Email Direct
+                      </a>
+                    </div>
+
+                    {/* Fields representation */}
+                    <div className="space-y-1">
+                      <h4 className="font-serif-display text-[9px] font-bold tracking-widest uppercase text-accent-gold border-b border-accent-gold/15 pb-1">
+                        Peer Directives & Scope
+                      </h4>
+                      <div className="flex flex-wrap gap-1">
+                        {selectedMentor.fields.map((f, i) => (
+                          <span key={i} className="text-[7px] font-mono tracking-wider uppercase bg-primary-maroon border border-accent-gold/15 px-1.5 py-0.5 text-accent-gold font-bold">
+                            {f}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right Column (Bio, Publications & Instant Propose form) */}
+                  <div className="md:col-span-7 flex flex-col gap-4 text-left">
+                    
+                    {/* Biography block (More compact, styled neatly) */}
+                    <div>
+                      <h4 className="font-serif-display text-[9px] font-bold tracking-widest uppercase text-accent-gold border-b border-accent-gold/15 pb-1 mb-1">
+                        Academic Biography
+                      </h4>
+                      <p className="text-[9.5px] text-neutral-200 leading-relaxed font-light font-sans max-h-20 overflow-y-auto pr-1">
+                        {selectedMentor.bio}
+                      </p>
+                    </div>
+
+                    {/* Publication list (Perfect scrollable layout to maximize area) */}
+                    <div>
+                      <h4 className="font-serif-display text-[9px] font-bold tracking-widest uppercase text-accent-gold border-b border-accent-gold/15 pb-1 mb-1.5 flex items-center gap-1">
+                        <BookOpen className="w-3 h-3 text-accent-gold" /> Indexed Publications
+                      </h4>
+                      <div className="flex flex-col gap-1 font-mono text-[8px] text-neutral-200 leading-tight max-h-[70px] overflow-y-auto pr-1">
+                        {selectedMentor.publications.map((p, i) => (
+                          <div key={i} className="flex gap-1.5 items-start bg-primary-maroon p-1 border-l border-accent-gold border border-accent-gold/15">
+                            <Award className="w-2.5 h-2.5 text-accent-gold shrink-0 mt-0.5" />
+                            <span className="truncate" title={p}>{p}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Elegant Interactive booking module (Extremely Compact) */}
+                    <div className="border border-accent-gold/20 bg-primary-maroon p-3 rounded-sm select-none">
+                      <h3 className="font-serif-display text-[10px] text-white font-bold mb-2 flex items-center gap-1">
+                        <Calendar className="w-3 h-3 text-accent-gold" /> Book Advisory Session
+                      </h3>
+
+                      {!bookingSuccess ? (
+                        <form onSubmit={handleBookConsultation} className="flex flex-col gap-2 text-xs font-sans">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            <div className="flex flex-col gap-1">
+                              <label className="font-mono text-[6.5px] uppercase tracking-wider text-accent-gold/80 font-bold">Proposed Date</label>
+                              <input 
+                                type="date" 
+                                required 
+                                min="2026-06-15"
+                                value={consultDate}
+                                onChange={(e) => setConsultDate(e.target.value)}
+                                className="border border-accent-gold/20 bg-maroon-dark text-white p-1 text-[9px] focus:border-accent-gold outline-none w-full font-mono"
+                              />
+                            </div>
+                            
+                            <div className="flex flex-col gap-0.5">
+                              <label className="font-mono text-[6.5px] uppercase tracking-wider text-accent-gold/80 font-bold">CET Slots</label>
+                              <div className="grid grid-cols-2 gap-0.5">
+                                {timeSlots.map(slot => {
+                                  // Shorten timezone label for extreme compactness
+                                  const labelStr = slot.replace(" (CET)", "");
+                                  return (
+                                    <button
+                                      key={slot}
+                                      type="button"
+                                      onClick={() => setConsultTimeSlot(slot)}
+                                      className={`text-center py-0.5 px-1 border text-[7px] font-mono tracking-tighter uppercase font-medium scroll-smooth select-none cursor-pointer ${
+                                        consultTimeSlot === slot 
+                                          ? 'bg-accent-gold border-accent-gold text-primary-maroon font-bold' 
+                                          : 'border-accent-gold/15 bg-maroon-dark text-neutral-300 hover:bg-primary-maroon'
+                                      }`}
+                                    >
+                                      {labelStr}
+                                    </button>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="flex flex-col gap-0.5">
+                            <label className="font-mono text-[6.5px] uppercase tracking-wider text-accent-gold/80 font-bold">Manuscript Draft Focus</label>
+                            <textarea 
+                              rows={1} 
+                              placeholder="Detail your draft latex info or scope focus..."
+                              required 
+                              value={consultTopic}
+                              onChange={(e) => setConsultTopic(e.target.value)}
+                              className="border border-accent-gold/20 bg-maroon-dark text-white p-1 text-[9px] focus:border-accent-gold outline-none resize-none font-sans w-full"
+                            />
+                          </div>
+
+                          <button
+                            type="submit"
+                            disabled={bookingLoading || !consultTimeSlot || !consultDate}
+                            className="w-full bg-accent-gold hover:bg-[#B3934B] text-primary-maroon text-[7.5px] py-1.5 font-mono font-bold uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-1.5 disabled:opacity-35 disabled:pointer-events-none cursor-pointer"
+                          >
+                            {bookingLoading ? (
+                              <span className="w-3 h-3 border border-white/40 border-t-white rounded-full animate-spin" />
+                            ) : (
+                              <span>PROPOSE ADVISORY MATCH</span>
+                            )}
+                          </button>
+                        </form>
+                      ) : (
+                        <div className="text-center p-2 bg-maroon-dark border border-accent-gold/20 animate-fade-in flex flex-col items-center gap-1 text-white">
+                          <div className="w-6 h-6 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center border border-emerald-500/20">
+                            <Clock className="w-3.5 h-3.5 text-emerald-500" />
+                          </div>
+                          <div>
+                            <h4 className="font-serif-display text-[10px] font-bold text-white">Proposal Logged</h4>
+                            <p className="text-[8px] text-neutral-300 font-light mt-0.5 max-w-[210px] leading-tight mx-auto">
+                              Session slot proposed successfully. {selectedMentor.name} will audit your abstract.
+                            </p>
+                          </div>
+                          <div className="bg-primary-maroon border border-accent-gold/20 p-1.5 font-mono text-[7px] w-full text-left space-y-0.5 text-neutral-200">
+                            <div><span className="text-accent-gold font-bold">ADVISOR:</span> {selectedMentor.name}</div>
+                            <div><span className="text-accent-gold font-bold">PROPOSED:</span> {consultDate} at {consultTimeSlot}</div>
+                            <div><span className="text-accent-gold font-bold">METRIC:</span> {consultTopic}</div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                  </div>
                 </div>
+
               </div>
             </motion.div>
           </div>

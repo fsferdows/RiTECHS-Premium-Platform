@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   Mail, Phone, MapPin, Send, HelpCircle, CheckCircle2, 
-  ChevronDown, MessageSquareCode, Clock 
+  ChevronDown, MessageSquareCode, Clock, Copy, Check 
 } from 'lucide-react';
 import { FadeUpSection } from './FadeUpSection';
 
@@ -17,6 +17,7 @@ export default function ContactView() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [ticketNumber, setTicketNumber] = useState(0);
+  const [copied, setCopied] = useState(false);
 
   const faqs = [
     {
@@ -209,6 +210,100 @@ export default function ContactView() {
               <span className="font-serif-display font-bold text-accent-gold">Admissions Working Hours</span>
               <p className="text-neutral-300 font-light mt-0.5 leading-relaxed">Monday – Friday: 09:00 to 17:30 [GMT / London Time]</p>
             </div>
+          </div>
+
+          {/* Outreach MVP Transfer Email Draft Toolkit */}
+          <div className="bg-[#4D0F17] border border-accent-gold/30 p-6 flex flex-col gap-4 text-left shadow-lg">
+            <div>
+              <span className="text-[7px] font-mono font-bold text-accent-gold uppercase tracking-widest bg-accent-gold/10 px-2 py-0.5 border border-accent-gold/25 inline-block mb-2">
+                User Toolkit // Outreach Mail Core
+              </span>
+              <h3 className="font-serif-display text-sm font-bold text-white leading-snug">
+                One-Click Secretariat Pitch Drawer
+              </h3>
+              <p className="text-[10px] text-neutral-300 font-light leading-relaxed mt-1">
+                A pre-drafted, highly professional pitch letter to <strong className="text-white font-medium">info@ritechs.org</strong> highlighting your credentials and readiness to scale.
+              </p>
+            </div>
+
+            <div className="bg-maroon-dark/60 p-3.5 border border-accent-gold/15 select-text font-mono text-[8px] leading-relaxed text-neutral-300 max-h-40 overflow-y-auto pr-1">
+              <div className="border-b border-accent-gold/10 pb-1.5 mb-1.5"><span className="text-accent-gold">TO:</span> info@ritechs.org</div>
+              <div className="border-b border-accent-gold/10 pb-1.5 mb-1.5"><span className="text-accent-gold">SUBJ:</span> Scholastic Platform Enhancement - Ready-to-Scale MVP Website Deployment</div>
+              <div className="space-y-2 whitespace-pre-wrap font-sans text-[8.5px]">
+                {`Dear RiTECHS Secretariat Team,
+
+I hope this email finds you well.
+
+My name is FS FERDOWS. I have designed and developed a highly optimized, fully responsive, and visually polished Minimum Viable Product (MVP) scholastic platform for RiTECHS (accessible at user portal view).
+
+This platform serves as a modern digital workspace integrating scholarly conference registries, peer-to-peer expert academic matchmaking networks, student manuscript tracking boards, and AI-assisted editorial services under a pristine high-contrast Westminster/Oxford palette.
+
+Key capabilities implemented in this MVP include:
+• Scholastic Matchmaker Directory with a highly compact, responsive bento-grid index for board advisors.
+• Interactive Editorial Booking engine allowing scholars to propose LaTeX abstract evaluation slots.
+• Live Conference Hub search engines and host subscription pipelines.
+• Student Manuscript Progress tracker and secretarial administration dashboard.
+• Dual-Theme Optimization (Day-mode & Night-mode visibility guard with strict contrast audits).
+
+I am providing this fully functional, zero-latency system as a launchpad MVP. If RiTECHS desires to scale this platform up—such as integrating production email delivery servers, live databases, Stripe transactions, or multi-role scholar access models—I am fully equipped to expand and deploy these features according to your operational roadmap.
+
+I would love to schedule a brief 10-minute digital meeting to present this MVP and discuss how we can customize it to serve as the definitive entry point for your worldwide scholarly alumni networks.
+
+Thank you for your valuable time and consideration.
+
+Sincerely,
+FS FERDOWS
+Academic Web Development Specialist`}
+              </div>
+            </div>
+
+            <button
+              onClick={() => {
+                const completeEmailText = `TO: info@ritechs.org
+SUBJECT: Scholastic Platform Enhancement Proposal - Ready-to-Scale MVP Website Deployment
+
+Dear RiTECHS Secretariat Team,
+
+I hope this email finds you well.
+
+My name is FS FERDOWS. I have designed and developed a highly optimized, fully responsive, and visually polished Minimum Viable Product (MVP) scholastic platform for RiTECHS (accessible live).
+
+This platform serves as a modern digital workspace integrating scholarly conference registries, peer-to-peer expert academic matchmaking networks, student manuscript tracking boards, and AI-assisted editorial services under a pristine high-contrast Westminster/Oxford palette.
+
+Key capabilities implemented in this MVP include:
+• Scholastic Matchmaker Directory with a highly compact, responsive bento-grid index for board advisors.
+• Interactive Editorial Booking engine allowing scholars to propose LaTeX abstract evaluation slots.
+• Live Conference Hub search engines and host subscription pipelines.
+• Student Manuscript Progress tracker and secretarial administration dashboard.
+• Dual-Theme Optimization (Day-mode & Night-mode visibility guard with strict contrast audits).
+
+I am providing this fully functional, zero-latency system as a launchpad MVP. If RiTECHS desires to scale this platform up—such as integrating production email delivery servers, live databases, Stripe transactions, or multi-role scholar access models—I am fully equipped to expand and deploy these features according to your operational roadmap.
+
+I would love to schedule a brief 10-minute digital meeting to present this MVP and discuss how we can customize it to serve as the definitive entry point for your worldwide scholarly alumni networks.
+
+Thank you for your valuable time and consideration.
+
+Sincerely,
+FS FERDOWS
+Academic Web Development Specialist`;
+                navigator.clipboard.writeText(completeEmailText);
+                setCopied(true);
+                setTimeout(() => setCopied(false), 2000);
+              }}
+              className="w-full bg-accent-gold hover:bg-[#B3934B] text-primary-maroon font-mono text-[8.5px] uppercase tracking-wider py-2 font-bold cursor-pointer transition-all flex items-center justify-center gap-1.5"
+            >
+              {copied ? (
+                <>
+                  <Check className="w-3.5 h-3.5 text-primary-maroon animate-scale-up" />
+                  <span>DRAFT COPIED TO CLIPBOARD!</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="w-3.5 h-3.5 text-primary-maroon" />
+                  <span>COPY EMAIL PACKET TO CLIPBOARD</span>
+                </>
+              )}
+            </button>
           </div>
 
         </div>

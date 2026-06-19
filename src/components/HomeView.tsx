@@ -244,7 +244,7 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
                   mentor={mentor}
                   isDark={true}
                   className="border-accent-gold/20"
-                  onClick={() => onNavigate("#/mentors")}
+                  onClick={() => onNavigate(`#/mentors?mentorId=${mentor.id}`)}
                 />
               </div>
             ))}
