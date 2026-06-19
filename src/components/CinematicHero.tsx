@@ -103,7 +103,7 @@ export function CinematicHero({ onNavigate, conferences, mentors }: CinematicHer
           type: 'mentor',
           title: m.name,
           subtitle: `${m.university} • Specialized in ${m.fields.slice(0, 2).join(', ')}`,
-          link: `#/mentors`
+          link: `#/mentors?mentorId=${m.id}`
         });
       }
     });

@@ -1,4 +1,4 @@
-import { ArrowRight, Globe, Shield, Zap, Users, GraduationCap, ArrowUpRight, Award, MessageSquare, BookOpen, ChevronLeft, ChevronRight, Search, Play, Pause, Video, Volume2, VolumeX } from 'lucide-react';
+import { ArrowRight, Globe, Shield, Zap, Users, GraduationCap, ArrowUpRight, Award, MessageSquare, BookOpen, ChevronLeft, ChevronRight, Search, Play, Pause, Video, Volume2, VolumeX, X, Star, Mail } from 'lucide-react';
 import { Conference, Mentor, BlogPost } from '../types';
 import { useState, useEffect, useRef } from 'react';
 import { ALL_PARTNERS } from '../data';
@@ -38,6 +38,7 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
   const [homeIsMuted, setHomeIsMuted] = useState(true);
   const [videoHasError, setVideoHasError] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedHomeMentor, setSelectedHomeMentor] = useState<Mentor | null>(null);
 
   useEffect(() => {
     setVideoHasError(false);
@@ -244,7 +245,7 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
                   mentor={mentor}
                   isDark={true}
                   className="border-accent-gold/20"
-                  onClick={() => onNavigate(`#/mentors?mentorId=${mentor.id}`)}
+                  onClick={() => setSelectedHomeMentor(mentor)}
                 />
               </div>
             ))}
@@ -846,6 +847,149 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
           </div>
         </div>
       </FadeUpSection>
+
+      {/* 🏅 Mentor Details Modal Overlay inside HomeView */}
+      <AnimatePresence>
+        {selectedHomeMentor && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black/85 cursor-pointer" 
+              onClick={() => setSelectedHomeMentor(null)} 
+            />
+            
+            <motion.div 
+              initial={{ scale: 0.95, y: 20, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.95, y: 20, opacity: 0 }}
+              transition={{ type: "spring", damping: 28, stiffness: 320 }}
+              className="bg-[#2D060A] w-full max-w-2xl rounded-sm shadow-2xl relative z-10 flex flex-col border border-accent-gold/40 text-white overflow-hidden max-h-[92vh]"
+            >
+              {/* Top Bar Header */}
+              <div className="bg-white px-5 py-4 text-black border-b border-accent-gold/25 flex justify-between items-center premium-noise shrink-0">
+                <div className="text-left">
+                  <span className="text-[7.5px] font-mono font-bold text-primary-maroon uppercase tracking-widest bg-primary-maroon/10 px-2 py-0.5 border border-primary-maroon/20">
+                    ID: EM-{String(selectedHomeMentor.id).padStart(3, '0')} // ADVISOR INQUIRY BOARD
+                  </span>
+                  <h2 className="font-serif-display text-lg sm:text-xl font-bold mt-1 text-black leading-tight">
+                    {selectedHomeMentor.name}
+                  </h2>
+                </div>
+                <button 
+                  onClick={() => setSelectedHomeMentor(null)}
+                  className="w-8 h-8 rounded-full border border-black/15 flex items-center justify-center hover:bg-black/10 transition-colors cursor-pointer text-black"
+                  aria-label="Close details"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Scrollable grid content */}
+              <div className="p-5 overflow-y-auto flex-grow bg-[#200306] space-y-4 text-left">
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-start">
+                  
+                  {/* Left Column (Metadata) */}
+                  <div className="md:col-span-5 flex flex-col gap-4">
+                    <div className="bg-primary-maroon border border-accent-gold/20 p-3 relative overflow-hidden flex flex-row items-center gap-3">
+                      <div className="absolute top-0 right-0 w-12 h-12 bg-accent-gold/5 rounded-bl-full pointer-events-none" />
+                      <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xs overflow-hidden border border-accent-gold/25 shrink-0 shadow-sm">
+                        <img 
+                          src={selectedHomeMentor.image} 
+                          alt={selectedHomeMentor.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="min-w-0 flex-grow">
+                        <span className="text-[7px] font-mono tracking-widest text-[#C9A961] uppercase font-bold px-1.5 py-0.5 bg-[#C9A961]/10 rounded-sm inline-block mb-1">
+                          {selectedHomeMentor.role || 'mentor'}
+                        </span>
+                        <h4 className="font-serif-display text-xs font-bold text-white leading-tight mb-0.5 truncate" title={selectedHomeMentor.university}>
+                          {selectedHomeMentor.university}
+                        </h4>
+                        <p className="text-[8.5px] text-neutral-300 uppercase tracking-widest font-mono font-bold">{selectedHomeMentor.country}</p>
+                        
+                        <div className="flex items-center gap-1.5 font-mono text-[7.5px] text-accent-gold mt-1 font-bold">
+                          <Star className="w-2.5 h-2.5 text-accent-gold fill-accent-gold shrink-0" />
+                          <span>{selectedHomeMentor.rating} RATING INDEX</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="bg-maroon-light/30 border border-accent-gold/15 p-2.5 rounded-xs flex flex-col gap-1.5">
+                      <span className="text-[7.5px] font-mono text-accent-gold/70 uppercase tracking-wider font-bold">Inquire Immediately</span>
+                      <a 
+                        href={`mailto:${selectedHomeMentor.email}`} 
+                        className="bg-accent-gold hover:bg-[#B3934B] text-primary-maroon font-mono text-[7.5px] tracking-widest uppercase font-bold text-center py-1.5 px-2.5 transition-colors flex items-center justify-center gap-1 w-full animate-pulse"
+                      >
+                        <Mail className="w-3 h-3 text-primary-maroon" /> Send Email Direct
+                      </a>
+                    </div>
+
+                    <div className="space-y-1">
+                      <h4 className="font-serif-display text-[9px] font-bold tracking-widest uppercase text-accent-gold border-b border-accent-gold/15 pb-1">
+                        Peer Directives & Scope
+                      </h4>
+                      <div className="flex flex-wrap gap-1">
+                        {selectedHomeMentor.fields.map((f, i) => (
+                          <span key={i} className="text-[7px] font-mono tracking-wider uppercase bg-primary-maroon border border-accent-gold/15 px-1.5 py-0.5 text-accent-gold font-bold">
+                            {f}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right Column */}
+                  <div className="md:col-span-7 flex flex-col gap-4">
+                    <div>
+                      <h4 className="font-serif-display text-[9px] font-bold tracking-widest uppercase text-accent-gold border-b border-accent-gold/15 pb-1 mb-1">
+                        Academic Biography
+                      </h4>
+                      <p className="text-[10px] sm:text-[11.5px] text-neutral-200 leading-relaxed font-light font-sans max-h-36 overflow-y-auto pr-1">
+                        {selectedHomeMentor.bio}
+                      </p>
+                    </div>
+
+                    <div>
+                      <h4 className="font-serif-display text-[9px] font-bold tracking-widest uppercase text-accent-gold border-b border-accent-gold/15 pb-1 mb-1.5 flex items-center gap-1">
+                        <BookOpen className="w-3 h-3 text-accent-gold" /> Indexed Publications
+                      </h4>
+                      <div className="flex flex-col gap-1 font-mono text-[8px] text-neutral-200 leading-tight max-h-[120px] overflow-y-auto pr-1">
+                        {selectedHomeMentor.publications.map((p, i) => (
+                          <div key={i} className="flex gap-1.5 items-start bg-primary-maroon p-1 border-l border-accent-gold border border-accent-gold/15">
+                            <Award className="w-2.5 h-2.5 text-accent-gold shrink-0 mt-0.5" />
+                            <span className="truncate whitespace-normal text-left" title={p}>{p}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                {/* Footer Link redirecting to general listing workspace */}
+                <div className="border-t border-accent-gold/20 pt-4 flex flex-col sm:flex-row justify-between items-start sm:items-center bg-[#2D060A]/40 -mx-5 -mb-5 p-5 mt-2 gap-3">
+                  <p className="text-[9px] text-neutral-300 max-w-sm leading-tight font-sans">
+                    Want to consult peer frameworks, leave student reviews, or hold a formal presentation audit with {selectedHomeMentor.name}?
+                  </p>
+                  <button
+                    onClick={() => {
+                      setSelectedHomeMentor(null);
+                      onNavigate(`#/mentors?mentorId=${selectedHomeMentor.id}`);
+                    }}
+                    className="bg-accent-gold hover:bg-[#B3934B] text-primary-maroon text-[9px] font-mono tracking-widest uppercase font-extrabold px-3.5 py-2 transition-all shrink-0 rounded-xs flex items-center gap-1 cursor-pointer"
+                  >
+                    Open Scholar Booking Panel <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+              </div>
+
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
