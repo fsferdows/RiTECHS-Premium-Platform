@@ -82,8 +82,8 @@ export default function MentorsView({ mentors, onNavigate }: MentorsViewProps) {
       const hash = window.location.hash;
       const match = hash.match(/mentorId=(\d+)/);
       if (match) {
-        const id = parseInt(match[1]);
-        const found = mentors.find(m => m.id === id);
+        const idStr = match[1];
+        const found = mentors.find(m => String(m.id) === idStr);
         if (found) {
           handleOpenMentor(found);
         }
@@ -243,7 +243,10 @@ export default function MentorsView({ mentors, onNavigate }: MentorsViewProps) {
               >
                 <MentorCard 
                   mentor={mentor} 
-                  onClick={() => handleOpenMentor(mentor)} 
+                  onClick={() => {
+                    handleOpenMentor(mentor);
+                    window.location.hash = `#/mentors?mentorId=${mentor.id}`;
+                  }} 
                 />
               </motion.div>
             ))}
@@ -361,21 +364,21 @@ export default function MentorsView({ mentors, onNavigate }: MentorsViewProps) {
       <AnimatePresence>
         {selectedMentor && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
-            {/* Blurry Backdrop Filter with spring transitions */}
+             {/* Clear dark Backdrop overlay with spring transitions */}
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-primary-navy/80 backdrop-blur-md cursor-pointer" 
+              className="absolute inset-0 bg-black/80 cursor-pointer" 
               onClick={handleCloseMentor} 
             />
             
-            {/* Compact centered modal / board container */}
+            {/* Crisp centered modal / board container */}
             <motion.div 
-              initial={{ scale: 0.95, y: 30, opacity: 0 }}
-              animate={{ scale: 1, y: 0, opacity: 1 }}
-              exit={{ scale: 0.95, y: 30, opacity: 0 }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 20, opacity: 0 }}
+              transition={{ type: "spring", damping: 28, stiffness: 320 }}
               className="bg-maroon-dark w-full max-w-2xl rounded-sm shadow-2xl relative z-10 flex flex-col border border-accent-gold/40 text-white overflow-hidden max-h-[92vh]"
             >
               {/* Top Bar Header */}
