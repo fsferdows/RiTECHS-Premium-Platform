@@ -244,18 +244,24 @@ export function CinematicHero({ onNavigate, conferences, mentors }: CinematicHer
         {/* Premium Glass-Card container for high text legibility & elegant presentation */}
         <div 
           onClick={() => onNavigate('#/conferences/icetcs')}
-          className="bg-[#050e21]/60 border border-accent-gold/15 p-6 sm:p-8 mb-6 max-w-3xl backdrop-blur-lg relative rounded-xs shadow-[0_20px_50px_rgba(3,10,23,0.8)] cursor-pointer hover:border-accent-gold/40 hover:bg-[#050e21]/80 transition-all duration-300 group/card"
+          className="bg-gradient-to-b from-[#050e21]/80 to-[#030814]/70 border border-accent-gold/20 p-5 xs:p-7 sm:p-9 md:p-11 lg:p-14 mb-8 max-w-3xl backdrop-blur-xl relative rounded-sm shadow-[0_22px_60px_rgba(2,6,15,0.85)] cursor-pointer hover:border-accent-gold/45 hover:from-[#050e21]/90 hover:to-[#030814]/80 hover:-translate-y-1 hover:shadow-[0_28px_70px_rgba(201,169,97,0.12),0_12px_45px_rgba(2,6,15,0.9)] transition-all duration-500 group/card select-none"
           title="Click to view ICETCS 2026 Conference Details"
         >
-          {/* Subtle corner elements */}
-          <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-accent-gold/50 group-hover/card:border-accent-gold transition-colors duration-300" />
-          <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-accent-gold/50 group-hover/card:border-accent-gold transition-colors duration-300" />
-          <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-accent-gold/50 group-hover/card:border-accent-gold transition-colors duration-300" />
-          <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-accent-gold/50 group-hover/card:border-accent-gold transition-colors duration-300" />
+          {/* Reactive golden ambient spot behind card */}
+          <div className="absolute inset-0 bg-[#C9A961]/2 rounded-sm blur-2xl opacity-0 group-hover/card:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
-          <h1 className="font-serif-display text-3xl sm:text-4.5xl lg:text-5.5xl font-semibold tracking-tight mb-4 leading-tight text-white">
+          {/* Interactive animated Corner Ticks */}
+          <div className="absolute top-0 left-0 w-4.5 h-4.5 border-t-2 border-l-2 border-accent-gold/30 group-hover/card:border-accent-gold group-hover/card:-translate-x-1.5 group-hover/card:-translate-y-1.5 transition-all duration-500" />
+          <div className="absolute top-0 right-0 w-4.5 h-4.5 border-t-2 border-r-2 border-accent-gold/30 group-hover/card:border-accent-gold group-hover/card:translate-x-1.5 group-hover/card:-translate-y-1.5 transition-all duration-500" />
+          <div className="absolute bottom-0 left-0 w-4.5 h-4.5 border-b-2 border-l-2 border-accent-gold/30 group-hover/card:border-accent-gold group-hover/card:-translate-x-1.5 group-hover/card:translate-y-1.5 transition-all duration-500" />
+          <div className="absolute bottom-0 right-0 w-4.5 h-4.5 border-b-2 border-r-2 border-accent-gold/30 group-hover/card:border-accent-gold group-hover/card:translate-x-1.5 group-hover/card:translate-y-1.5 transition-all duration-500" />
+
+          {/* Glowing internal border on hover */}
+          <div className="absolute inset-px border border-accent-gold/5 rounded-[1px] group-hover/card:border-accent-gold/15 transition-all duration-500 pointer-events-none" />
+
+          <h1 className="font-serif-display text-2.5xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-[54px] font-semibold tracking-tight mb-4 leading-[1.12] text-white transition-all duration-300">
             Research. Innovation. <br className="hidden sm:inline" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-gold via-white to-accent-gold font-normal">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-gold via-[#FFFDF9] to-accent-gold font-normal">
               Technology & Education.
             </span>
           </h1>
@@ -265,11 +271,11 @@ export function CinematicHero({ onNavigate, conferences, mentors }: CinematicHer
             <AnimatePresence mode="wait">
               <motion.p
                 key={currentHeroImage}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 0.9, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                className="font-serif-accent text-xs sm:text-sm md:text-base italic text-[#F1EFEA] max-w-2xl mx-auto leading-relaxed font-light"
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 0.95, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                className="font-serif-accent text-xs sm:text-sm md:text-base italic text-[#F8F6F0] max-w-2xl mx-auto leading-relaxed font-light"
               >
                 "{heroImages[currentHeroImage].caption}"
               </motion.p>
