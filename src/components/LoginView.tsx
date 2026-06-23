@@ -336,7 +336,7 @@ export default function LoginView({ currentPath, onLoginSuccess, onNavigate }: L
           </p>
         </div>
 
-        {/* Footer meta info */}
+        {/* Footer info */}
         <p className="text-[#FAFAF7]/40 text-[10px] font-mono relative z-10 uppercase tracking-widest text-left">
           Secured by Wolverhampton Secretariat · © 2026
         </p>
@@ -350,22 +350,25 @@ export default function LoginView({ currentPath, onLoginSuccess, onNavigate }: L
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="w-full max-w-md bg-white/95 backdrop-blur-md border border-accent-gold/30 hover:border-accent-gold/60 p-8 flex flex-col shadow-[0_20px_50px_rgba(201,169,97,0.12)] hover:shadow-[0_25px_60px_rgba(201,169,97,0.22)] transition-all duration-500 rounded-xs relative overflow-hidden z-10 group/card"
+          className="w-full max-w-md bg-white/95 backdrop-blur-md border border-accent-gold/30 hover:border-accent-gold/60 p-8 flex flex-col shadow-[0_20px_50px_rgba(201,169,97,0.12)] hover:shadow-[0_25px_60px_rgba(201,169,97,0.22)] transition-all duration-500 rounded-xs relative overflow-hidden z-10 group/card animate-fade-in"
         >
           {/* Elite top highlight bar */}
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent-gold via-[#E2C785] to-accent-gold opacity-90" />
+          
+          {/* Luxurious Academic Double Border Frame */}
+          <div className="absolute inset-1.5 border border-accent-gold/15 rounded-xs pointer-events-none z-0" />
           
           {/* Subtle background glow circle inside the card that lights up on card hover */}
           <div className="absolute -top-24 -right-24 w-48 h-48 rounded-full bg-accent-gold/5 blur-3xl group-hover/card:bg-accent-gold/10 transition-all duration-500 pointer-events-none" />
 
           {/* Header switch toggler Sign in vs Register */}
-          <div className="flex gap-6 border-b border-accent-gold/15 pb-4 mb-6 relative">
+          <div className="flex gap-6 border-b border-accent-gold/15 pb-4 mb-6 relative z-10">
             <button
               id="btn-switch-login"
               type="button"
               onClick={() => { setFormMode('login'); setErrorMessage(''); }}
               className={`font-serif-display text-lg font-bold pb-1.5 relative transition-all duration-300 cursor-pointer ${
-                formMode === 'login' ? 'text-primary-maroon' : 'text-neutral-400 hover:text-primary-maroon'
+                formMode === 'login' ? 'text-primary-maroon' : 'text-neutral-500 hover:text-primary-maroon'
               }`}
             >
               Scholar Sign In
@@ -381,7 +384,7 @@ export default function LoginView({ currentPath, onLoginSuccess, onNavigate }: L
               type="button"
               onClick={() => { setFormMode('register'); setErrorMessage(''); }}
               className={`font-serif-display text-lg font-bold pb-1.5 relative transition-all duration-300 cursor-pointer ${
-                formMode === 'register' ? 'text-primary-maroon' : 'text-neutral-400 hover:text-primary-maroon'
+                formMode === 'register' ? 'text-primary-maroon' : 'text-neutral-500 hover:text-primary-maroon'
               }`}
             >
               Create Account
@@ -394,7 +397,7 @@ export default function LoginView({ currentPath, onLoginSuccess, onNavigate }: L
             </button>
           </div>
 
-          <p className="text-left text-xs text-neutral-500 font-light mb-5 leading-relaxed">
+          <p className="text-left text-xs text-neutral-500 font-light mb-5 leading-relaxed relative z-10">
             {formMode === 'login' 
               ? "Access institutional submissions, track peer feedback logs, and browse customized scholastic guidelines." 
               : "Register your academic affiliations to submit abstracts for IEEE indexing, Springer review, and premium editor routing."
@@ -432,7 +435,7 @@ export default function LoginView({ currentPath, onLoginSuccess, onNavigate }: L
             
             {/* Scholar Role select buttons */}
             <div className="flex flex-col gap-1.5">
-              <label className="font-mono text-[9px] uppercase tracking-widest text-[#9D8F7B] font-bold">Account Designation</label>
+              <label className="font-mono text-[9px] uppercase tracking-widest text-[#6F5E48] font-bold">Account Designation</label>
               <div className="grid grid-cols-2 gap-2.5">
                 <button
                   type="button"
@@ -472,7 +475,7 @@ export default function LoginView({ currentPath, onLoginSuccess, onNavigate }: L
                     transition={{ duration: 0.3 }}
                     className="flex flex-col gap-1.5 overflow-hidden group"
                   >
-                    <label className="font-mono text-[9px] uppercase tracking-widest text-[#9D8F7B] group-hover:text-primary-maroon group-focus-within:text-primary-maroon transition-colors duration-300 font-bold">Scholar Full Name</label>
+                    <label className="font-mono text-[9px] uppercase tracking-widest text-[#6F5E48] group-hover:text-primary-maroon group-focus-within:text-primary-maroon transition-colors duration-300 font-bold">Scholar Full Name</label>
                     <div className="relative">
                       <User className="w-4 h-4 text-accent-gold absolute left-3.5 top-3.5 group-hover:scale-105 group-focus-within:scale-110 transition-transform duration-300" />
                       <input 
@@ -482,7 +485,7 @@ export default function LoginView({ currentPath, onLoginSuccess, onNavigate }: L
                         placeholder="e.g. Alistair J. Evans"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        className="w-full pl-10 pr-4 py-3 bg-[#FCFBF9]/60 hover:bg-white border border-accent-gold/25 focus:border-accent-gold focus:bg-white focus:ring-4 focus:ring-accent-gold/10 outline-none transition-all duration-300 text-charcoal font-medium text-xs rounded-xs"
+                        className="w-full pl-10 pr-4 py-3 bg-[#FAF7F1] hover:bg-white border border-accent-gold/35 focus:border-accent-gold focus:bg-white focus:ring-4 focus:ring-accent-gold/15 outline-none transition-all duration-300 text-charcoal font-semibold text-xs rounded-xs"
                       />
                     </div>
                   </motion.div>
@@ -491,7 +494,7 @@ export default function LoginView({ currentPath, onLoginSuccess, onNavigate }: L
 
               {/* Email input (Both modes) */}
               <div className="flex flex-col gap-1.5 group">
-                <label className="font-mono text-[9px] uppercase tracking-widest text-[#9D8F7B] group-hover:text-primary-maroon group-focus-within:text-primary-maroon transition-colors duration-300 font-bold">Institutional Email address</label>
+                <label className="font-mono text-[9px] uppercase tracking-widest text-[#6F5E48] group-hover:text-primary-maroon group-focus-within:text-primary-maroon transition-colors duration-300 font-bold">Institutional Email address</label>
                 <div className="relative">
                   <Mail className="w-4 h-4 text-accent-gold absolute left-3.5 top-3.5 group-hover:scale-105 group-focus-within:scale-110 transition-transform duration-300" />
                   <input 
@@ -501,7 +504,7 @@ export default function LoginView({ currentPath, onLoginSuccess, onNavigate }: L
                     placeholder="e.g. name@university.ac.uk"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 bg-[#FCFBF9]/60 hover:bg-white border border-accent-gold/25 focus:border-accent-gold focus:bg-white focus:ring-4 focus:ring-accent-gold/10 outline-none transition-all duration-300 text-charcoal font-medium text-xs rounded-xs"
+                    className="w-full pl-10 pr-4 py-3 bg-[#FAF7F1] hover:bg-white border border-accent-gold/35 focus:border-accent-gold focus:bg-white focus:ring-4 focus:ring-accent-gold/15 outline-none transition-all duration-300 text-charcoal font-semibold text-xs rounded-xs"
                   />
                 </div>
               </div>
@@ -517,7 +520,7 @@ export default function LoginView({ currentPath, onLoginSuccess, onNavigate }: L
                       transition={{ duration: 0.3 }}
                       className="flex flex-col gap-1.5 overflow-hidden group"
                     >
-                      <label className="font-mono text-[9px] uppercase tracking-widest text-[#9D8F7B] group-hover:text-primary-maroon group-focus-within:text-primary-maroon transition-colors duration-300 font-bold">Institutional Affiliation</label>
+                      <label className="font-mono text-[9px] uppercase tracking-widest text-[#6F5E48] group-hover:text-primary-maroon group-focus-within:text-primary-maroon transition-colors duration-300 font-bold">Institutional Affiliation</label>
                       <div className="relative">
                         <Building className="w-4 h-4 text-accent-gold absolute left-3.5 top-3.5 group-hover:scale-105 group-focus-within:scale-110 transition-transform duration-300" />
                         <input 
@@ -527,7 +530,7 @@ export default function LoginView({ currentPath, onLoginSuccess, onNavigate }: L
                           placeholder="e.g. University of Wolverhampton"
                           value={university}
                           onChange={(e) => setUniversity(e.target.value)}
-                          className="w-full pl-10 pr-4 py-3 bg-[#FCFBF9]/60 hover:bg-white border border-accent-gold/25 focus:border-accent-gold focus:bg-white focus:ring-4 focus:ring-accent-gold/10 outline-none transition-all duration-300 text-charcoal font-medium text-xs rounded-xs"
+                          className="w-full pl-10 pr-4 py-3 bg-[#FAF7F1] hover:bg-white border border-accent-gold/35 focus:border-accent-gold focus:bg-white focus:ring-4 focus:ring-accent-gold/15 outline-none transition-all duration-300 text-charcoal font-semibold text-xs rounded-xs"
                         />
                       </div>
                     </motion.div>
@@ -541,7 +544,7 @@ export default function LoginView({ currentPath, onLoginSuccess, onNavigate }: L
                       className="flex flex-col gap-3.5 overflow-hidden"
                     >
                       <div className="flex flex-col gap-1.5 group">
-                        <label className="font-mono text-[9px] uppercase tracking-widest text-[#9D8F7B] group-hover:text-primary-maroon group-focus-within:text-primary-maroon transition-colors duration-300 font-bold">Country / Region</label>
+                        <label className="font-mono text-[9px] uppercase tracking-widest text-[#6F5E48] group-hover:text-primary-maroon group-focus-within:text-primary-maroon transition-colors duration-300 font-bold">Country / Region</label>
                         <div className="relative">
                           <Globe className="w-4 h-4 text-accent-gold absolute left-3.5 top-3.5 pointer-events-none group-hover:scale-105 group-focus-within:scale-110 transition-transform duration-300" />
                           <select 
@@ -549,7 +552,7 @@ export default function LoginView({ currentPath, onLoginSuccess, onNavigate }: L
                             id="reg-input-country"
                             value={country}
                             onChange={(e) => setCountry(e.target.value)}
-                            className="w-full pl-10 pr-8 py-3 bg-[#FCFBF9]/60 hover:bg-white border border-accent-gold/25 focus:border-accent-gold focus:bg-white focus:ring-4 focus:ring-accent-gold/10 outline-none transition-all duration-200 text-charcoal font-medium text-xs rounded-xs appearance-none cursor-pointer"
+                            className="w-full pl-10 pr-8 py-3 bg-[#FAF7F1] hover:bg-white border border-accent-gold/35 focus:border-accent-gold focus:bg-white focus:ring-4 focus:ring-accent-gold/15 outline-none transition-all duration-200 text-charcoal font-semibold text-xs rounded-xs appearance-none cursor-pointer"
                           >
                             {COUNTRIES_DATA.map((c) => (
                               <option key={c.name} value={c.name}>
@@ -566,8 +569,8 @@ export default function LoginView({ currentPath, onLoginSuccess, onNavigate }: L
                       </div>
 
                       <div className="flex flex-col gap-1.5 group">
-                        <label className="font-mono text-[9px] uppercase tracking-widest text-[#9D8F7B] group-hover:text-primary-maroon group-focus-within:text-primary-maroon transition-colors duration-300 font-bold">Phone Number</label>
-                        <div className="relative flex items-center w-full bg-[#FCFBF9]/60 hover:bg-white border border-accent-gold/25 focus-within:border-accent-gold focus-within:bg-white focus-within:ring-4 focus-within:ring-accent-gold/10 outline-none transition-all duration-300 rounded-xs overflow-hidden h-[42px]">
+                        <label className="font-mono text-[9px] uppercase tracking-widest text-[#6F5E48] group-hover:text-primary-maroon group-focus-within:text-primary-maroon transition-colors duration-300 font-bold">Phone Number</label>
+                        <div className="relative flex items-center w-full bg-[#FAF7F1] hover:bg-white border border-accent-gold/35 focus-within:border-accent-gold focus-within:bg-white focus-within:ring-4 focus-within:ring-accent-gold/15 outline-none transition-all duration-300 rounded-xs overflow-hidden h-[42px]">
                           
                           {/* Phone Icon */}
                           <Phone className="w-4 h-4 text-accent-gold ml-3.5 shrink-0" />
@@ -607,7 +610,7 @@ export default function LoginView({ currentPath, onLoginSuccess, onNavigate }: L
                             placeholder="e.g. 7911 123456"
                             value={phoneNumber}
                             onChange={(e) => setPhoneNumber(e.target.value)}
-                            className="w-full h-full bg-transparent border-0 outline-none focus:outline-none focus:ring-0 text-charcoal font-medium text-xs pl-1 pr-4"
+                            className="w-full h-full bg-transparent border-0 outline-none focus:outline-none focus:ring-0 text-charcoal font-semibold text-xs pl-1 pr-4"
                           />
                         </div>
                       </div>
@@ -626,7 +629,7 @@ export default function LoginView({ currentPath, onLoginSuccess, onNavigate }: L
                     transition={{ duration: 0.3 }}
                     className="flex flex-col gap-1.5 overflow-hidden group"
                   >
-                    <label className="font-mono text-[9px] uppercase tracking-widest text-[#9D8F7B] group-hover:text-primary-maroon group-focus-within:text-primary-maroon transition-colors duration-300 font-bold">ORCID Researcher ID</label>
+                    <label className="font-mono text-[9px] uppercase tracking-widest text-[#6F5E48] group-hover:text-primary-maroon group-focus-within:text-primary-maroon transition-colors duration-300 font-bold">ORCID Researcher ID</label>
                     <div className="relative">
                       <Award className="w-4 h-4 text-accent-gold absolute left-3.5 top-3.5 group-hover:scale-105 group-focus-within:scale-110 transition-transform duration-300" />
                       <input 
@@ -636,7 +639,7 @@ export default function LoginView({ currentPath, onLoginSuccess, onNavigate }: L
                         placeholder="e.g. 0000-0002-1825-0097"
                         value={orcid}
                         onChange={(e) => setOrcid(e.target.value)}
-                        className="w-full pl-10 pr-4 py-3 bg-[#FCFBF9]/60 hover:bg-white border border-accent-gold/25 focus:border-accent-gold focus:bg-white focus:ring-4 focus:ring-accent-gold/10 outline-none transition-all duration-300 text-charcoal font-medium text-xs rounded-xs"
+                        className="w-full pl-10 pr-4 py-3 bg-[#FAF7F1] hover:bg-white border border-accent-gold/35 focus:border-accent-gold focus:bg-white focus:ring-4 focus:ring-accent-gold/15 outline-none transition-all duration-300 text-charcoal font-semibold text-xs rounded-xs"
                       />
                     </div>
                   </motion.div>
@@ -645,7 +648,7 @@ export default function LoginView({ currentPath, onLoginSuccess, onNavigate }: L
 
               {/* Password input (Both modes) */}
               <div className="flex flex-col gap-1.5 group">
-                <label className="font-mono text-[9px] uppercase tracking-widest text-[#9D8F7B] group-hover:text-primary-maroon group-focus-within:text-primary-maroon transition-colors duration-300 font-bold">Secret Passphrase</label>
+                <label className="font-mono text-[9px] uppercase tracking-widest text-[#6F5E48] group-hover:text-primary-maroon group-focus-within:text-primary-maroon transition-colors duration-300 font-bold">Secret Passphrase</label>
                 <div className="relative">
                   <Lock className="w-4 h-4 text-accent-gold absolute left-3.5 top-3.5 group-hover:scale-105 group-focus-within:scale-110 transition-transform duration-300" />
                   <input 
@@ -655,7 +658,7 @@ export default function LoginView({ currentPath, onLoginSuccess, onNavigate }: L
                     placeholder="•••••••••••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 bg-[#FCFBF9]/60 hover:bg-white border border-accent-gold/25 focus:border-accent-gold focus:bg-white focus:ring-4 focus:ring-accent-gold/10 outline-none transition-all duration-300 text-charcoal font-medium text-xs rounded-xs"
+                    className="w-full pl-10 pr-4 py-3 bg-[#FAF7F1] hover:bg-white border border-accent-gold/35 focus:border-accent-gold focus:bg-white focus:ring-4 focus:ring-accent-gold/15 outline-none transition-all duration-300 text-charcoal font-semibold text-xs rounded-xs"
                   />
                 </div>
               </div>
@@ -684,7 +687,7 @@ export default function LoginView({ currentPath, onLoginSuccess, onNavigate }: L
               <div className="mt-2 flex flex-col gap-2">
                 <div className="flex items-center gap-2">
                   <div className="h-px bg-accent-gold/25 flex-grow" />
-                  <span className="text-[8px] font-mono tracking-widest text-[#9D8F7B] uppercase font-bold">Or Demo Roles</span>
+                  <span className="text-[8px] font-mono tracking-widest text-[#6F5E48] uppercase font-bold">Or Demo Roles</span>
                   <div className="h-px bg-accent-gold/25 flex-grow" />
                 </div>
                 <button

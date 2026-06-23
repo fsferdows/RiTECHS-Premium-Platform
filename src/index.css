@@ -617,58 +617,47 @@ html, body, #root, #app, main, section, nav, footer, .glass-card, h1, h2, h3, h4
   color: #000000 !important;
 }
 
-/* Guard: If inside a dark background element within theme-light, preserve white text */
+/* Guard: If inside an element that actually retains a dark background in theme-light, preserve white text */
+.theme-light .keep-dark, .theme-light .keep-dark *,
 .theme-light .text-white, .theme-light .text-white *,
 .theme-light .bg-primary-maroon, .theme-light .bg-primary-maroon *,
 .theme-light .bg-maroon-dark, .theme-light .bg-maroon-dark *,
 .theme-light .bg-maroon-light, .theme-light .bg-maroon-light *,
 .theme-light .bg-primary-navy, .theme-light .bg-primary-navy *,
 .theme-light .bg-charcoal, .theme-light .bg-charcoal *,
+.theme-light .bg-black, .theme-light .bg-black *,
 .theme-light .bg-[#3D0C11], .theme-light .bg-[#3D0C11] *,
 .theme-light .bg-[#4A0E17], .theme-light .bg-[#4A0E17] *,
 .theme-light .bg-[#4D0F17], .theme-light .bg-[#4D0F17] *,
 .theme-light .bg-[#1f090d], .theme-light .bg-[#1f090d] *,
 .theme-light .bg-[#2C0509], .theme-light .bg-[#2C0509] *,
+.theme-light .bg-[#2D060A], .theme-light .bg-[#2D060A] *,
+.theme-light .bg-[#200306], .theme-light .bg-[#200306] *,
 .theme-light .bg-primary-maroon\/40, .theme-light .bg-primary-maroon\/40 *,
 .theme-light .bg-primary-navy\/80, .theme-light .bg-primary-navy\/80 *,
-.theme-light .bg-black, .theme-light .bg-black *,
-.theme-light [id="mentor-spotlight"], .theme-light [id="mentor-spotlight"] *,
-.theme-light [id="mentor-common-view-container"] .bg-primary-maroon,
-.theme-light [id="mentor-common-view-container"] .bg-primary-maroon *,
-.theme-light [id="mentor-common-view-container"] .bg-maroon-dark,
-.theme-light [id="mentor-common-view-container"] .bg-maroon-dark *,
-.theme-light [id="mentor-common-view-container"] .bg-gradient-to-r,
-.theme-light [id="mentor-common-view-container"] .bg-gradient-to-r *,
-.theme-light [id="mentor-common-view-container"] .bg-[#2D060A],
-.theme-light [id="mentor-common-view-container"] .bg-[#2D060A] *,
-.theme-light [id="mentor-common-view-container"] .bg-[#200306],
-.theme-light [id="mentor-common-view-container"] .bg-[#200306] *,
-.theme-light [id="mentor-common-view-container"] .bg-[#2C0509],
-.theme-light [id="mentor-common-view-container"] .bg-[#2C0509] * {
+.theme-light [id="mentor-spotlight"], .theme-light [id="mentor-spotlight"] * {
   color: #ffffff !important;
 }
 
-/* Specificity override for span elements inside dark backgrounds in theme-light */
-.theme-light .bg-primary-navy span:not(.text-accent-gold),
+/* Specificity override for span elements inside actual dark backgrounds in theme-light */
+.theme-light .keep-dark span:not(.text-accent-gold),
+.theme-light .text-white span:not(.text-accent-gold),
 .theme-light .bg-primary-maroon span:not(.text-accent-gold),
 .theme-light .bg-maroon-dark span:not(.text-accent-gold),
 .theme-light .bg-maroon-light span:not(.text-accent-gold),
+.theme-light .bg-primary-navy span:not(.text-accent-gold),
 .theme-light .bg-charcoal span:not(.text-accent-gold),
+.theme-light .bg-black span:not(.text-accent-gold),
 .theme-light .bg-[#3D0C11] span:not(.text-accent-gold),
 .theme-light .bg-[#4A0E17] span:not(.text-accent-gold),
 .theme-light .bg-[#4D0F17] span:not(.text-accent-gold),
 .theme-light .bg-[#1f090d] span:not(.text-accent-gold),
 .theme-light .bg-[#2C0509] span:not(.text-accent-gold),
+.theme-light .bg-[#2D060A] span:not(.text-accent-gold),
+.theme-light .bg-[#200306] span:not(.text-accent-gold),
 .theme-light .bg-primary-maroon\/40 span:not(.text-accent-gold),
 .theme-light .bg-primary-navy\/80 span:not(.text-accent-gold),
-.theme-light .bg-black span:not(.text-accent-gold),
-.theme-light [id="mentor-spotlight"] span:not(.text-accent-gold),
-.theme-light [id="mentor-common-view-container"] .bg-primary-maroon span:not(.text-accent-gold),
-.theme-light [id="mentor-common-view-container"] .bg-maroon-dark span:not(.text-accent-gold),
-.theme-light [id="mentor-common-view-container"] .bg-[#2D060A] span:not(.text-accent-gold),
-.theme-light [id="mentor-common-view-container"] .bg-[#200306] span:not(.text-accent-gold),
-.theme-light [id="mentor-common-view-container"] .bg-[#2C0509] span:not(.text-accent-gold),
-.theme-light [id="mentor-common-view-container"] .bg-gradient-to-r span:not(.text-accent-gold) {
+.theme-light [id="mentor-spotlight"] span:not(.text-accent-gold) {
   color: #ffffff !important;
 }
 
