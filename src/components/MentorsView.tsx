@@ -354,7 +354,7 @@ export default function MentorsView({ mentors, onNavigate }: MentorsViewProps) {
         const idStr = match[1];
         const found = mentors.find(m => String(m.id) === idStr);
         if (found) {
-          handleOpenMentor(found);
+          onNavigate(`#/mentor-common-view/${found.id}`);
         }
       }
     };
@@ -771,8 +771,7 @@ export default function MentorsView({ mentors, onNavigate }: MentorsViewProps) {
                     toggleFavorite(Number(mentor.id));
                   }}
                   onClick={() => {
-                    handleOpenMentor(mentor);
-                    window.location.hash = `#/mentors?mentorId=${mentor.id}`;
+                    onNavigate(`#/mentor-common-view/${mentor.id}`);
                   }} 
                 />
               </motion.div>
@@ -1654,7 +1653,7 @@ export default function MentorsView({ mentors, onNavigate }: MentorsViewProps) {
                           type="button"
                           onClick={() => {
                             setShowQuestionnaire(false);
-                            handleOpenMentor(rec);
+                            onNavigate(`#/mentor-common-view/${rec.id}`);
                           }}
                           className="px-2 py-1.5 bg-accent-gold text-primary-maroon font-mono text-[7px] font-bold uppercase hover:bg-white tracking-widest whitespace-nowrap shrink-0 cursor-pointer"
                         >

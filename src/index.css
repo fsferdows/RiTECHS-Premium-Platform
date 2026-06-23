@@ -632,7 +632,19 @@ html, body, #root, #app, main, section, nav, footer, .glass-card, h1, h2, h3, h4
 .theme-light .bg-primary-maroon\/40, .theme-light .bg-primary-maroon\/40 *,
 .theme-light .bg-primary-navy\/80, .theme-light .bg-primary-navy\/80 *,
 .theme-light .bg-black, .theme-light .bg-black *,
-.theme-light [id="mentor-spotlight"], .theme-light [id="mentor-spotlight"] * {
+.theme-light [id="mentor-spotlight"], .theme-light [id="mentor-spotlight"] *,
+.theme-light [id="mentor-common-view-container"] .bg-primary-maroon,
+.theme-light [id="mentor-common-view-container"] .bg-primary-maroon *,
+.theme-light [id="mentor-common-view-container"] .bg-maroon-dark,
+.theme-light [id="mentor-common-view-container"] .bg-maroon-dark *,
+.theme-light [id="mentor-common-view-container"] .bg-gradient-to-r,
+.theme-light [id="mentor-common-view-container"] .bg-gradient-to-r *,
+.theme-light [id="mentor-common-view-container"] .bg-[#2D060A],
+.theme-light [id="mentor-common-view-container"] .bg-[#2D060A] *,
+.theme-light [id="mentor-common-view-container"] .bg-[#200306],
+.theme-light [id="mentor-common-view-container"] .bg-[#200306] *,
+.theme-light [id="mentor-common-view-container"] .bg-[#2C0509],
+.theme-light [id="mentor-common-view-container"] .bg-[#2C0509] * {
   color: #ffffff !important;
 }
 
@@ -650,7 +662,13 @@ html, body, #root, #app, main, section, nav, footer, .glass-card, h1, h2, h3, h4
 .theme-light .bg-primary-maroon\/40 span:not(.text-accent-gold),
 .theme-light .bg-primary-navy\/80 span:not(.text-accent-gold),
 .theme-light .bg-black span:not(.text-accent-gold),
-.theme-light [id="mentor-spotlight"] span:not(.text-accent-gold) {
+.theme-light [id="mentor-spotlight"] span:not(.text-accent-gold),
+.theme-light [id="mentor-common-view-container"] .bg-primary-maroon span:not(.text-accent-gold),
+.theme-light [id="mentor-common-view-container"] .bg-maroon-dark span:not(.text-accent-gold),
+.theme-light [id="mentor-common-view-container"] .bg-[#2D060A] span:not(.text-accent-gold),
+.theme-light [id="mentor-common-view-container"] .bg-[#200306] span:not(.text-accent-gold),
+.theme-light [id="mentor-common-view-container"] .bg-[#2C0509] span:not(.text-accent-gold),
+.theme-light [id="mentor-common-view-container"] .bg-gradient-to-r span:not(.text-accent-gold) {
   color: #ffffff !important;
 }
 
@@ -781,7 +799,8 @@ span.text-accent-gold {
 .theme-light .bg-primary-maroon\/40 .text-accent-gold, .theme-light .bg-primary-maroon\/40 * .text-accent-gold,
 .theme-light .bg-primary-navy\/80 .text-accent-gold, .theme-light .bg-primary-navy\/80 * .text-accent-gold,
 .theme-light .bg-black .text-accent-gold, .theme-light .bg-black * .text-accent-gold,
-.theme-light [id="mentor-spotlight"] .text-accent-gold, .theme-light [id="mentor-spotlight"] * .text-accent-gold {
+.theme-light [id="mentor-spotlight"] .text-accent-gold, .theme-light [id="mentor-spotlight"] * .text-accent-gold,
+.theme-light [id="mentor-common-view-container"] .text-accent-gold, .theme-light [id="mentor-common-view-container"] * .text-accent-gold {
   color: #C9A961 !important;
 }
 

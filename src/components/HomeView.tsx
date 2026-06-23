@@ -245,7 +245,7 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
                   mentor={mentor}
                   isDark={true}
                   className="border-accent-gold/20"
-                  onClick={() => setSelectedHomeMentor(mentor)}
+                  onClick={() => onNavigate(`#/mentor-common-view/${mentor.id}`)}
                 />
               </div>
             ))}

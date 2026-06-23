@@ -196,7 +196,7 @@ export default function MentorCommonView({ mentors, currentPath, onNavigate }: M
 
       const newBooking: AcademicBooking = {
         id: meetingId,
-        mentorId: mentor.id,
+        mentorId: Number(mentor.id),
         mentorName: mentor.name,
         mentorImage: mentor.image,
         date: finalDate,
@@ -291,11 +291,11 @@ export default function MentorCommonView({ mentors, currentPath, onNavigate }: M
     );
   }
 
-  const mentorAvailability = getAvailabilityStatus(mentor.id);
+  const mentorAvailability = getAvailabilityStatus(Number(mentor.id));
   const activeReviews = endorsements[String(mentor.id)] || [];
 
   return (
-    <div className="min-h-screen bg-neutral-warm pb-16 pt-24 select-none">
+    <div id="mentor-common-view-container" className="min-h-screen bg-neutral-warm pb-16 pt-24 select-none">
       <div className="max-w-6xl mx-auto px-6">
         
         {/* Navigation & Actions Row */}
