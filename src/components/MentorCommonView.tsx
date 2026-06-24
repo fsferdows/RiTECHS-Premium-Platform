@@ -10,6 +10,7 @@ interface MentorCommonViewProps {
   mentors: Mentor[];
   currentPath: string;
   onNavigate: (path: string) => void;
+  theme?: 'light' | 'dark';
 }
 
 interface AcademicBooking {
@@ -24,7 +25,7 @@ interface AcademicBooking {
   meetingUrl: string;
 }
 
-export default function MentorCommonView({ mentors, currentPath, onNavigate }: MentorCommonViewProps) {
+export default function MentorCommonView({ mentors, currentPath, onNavigate, theme = 'dark' }: MentorCommonViewProps) {
   // Extract mentorId from path, supporting both '#/mentor-common-view/353' and '#/mentor-common-view?mentorId=353'
   const getMentorIdFromPath = () => {
     if (currentPath.includes('?mentorId=')) {
@@ -295,17 +296,22 @@ export default function MentorCommonView({ mentors, currentPath, onNavigate }: M
   const activeReviews = endorsements[String(mentor.id)] || [];
 
   return (
-    <div id="mentor-common-view-container" className="min-h-screen bg-neutral-warm pb-16 pt-24 select-none">
+    <div 
+      id="mentor-common-view-container" 
+      className={`min-h-screen pb-12 pt-20 select-none transition-colors duration-300 ${
+        theme === 'light' ? 'bg-[#FCFBF9]' : 'bg-[#140204]'
+      }`}
+    >
       <div className="max-w-6xl mx-auto px-6">
         
         {/* Navigation & Actions Row */}
-        <div className="flex flex-wrap items-center justify-between gap-4 mb-6 border-b border-accent-gold/15 pb-4">
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-5 border-b border-accent-gold/15 pb-3">
           <button
             onClick={() => onNavigate('#/mentors')}
-            className="group flex items-center gap-2 text-[9.5px] font-mono uppercase tracking-widest text-[#C9A961] hover:text-white transition-colors cursor-pointer"
+            className="group flex items-center gap-2 text-[9.5px] font-mono uppercase tracking-widest text-[#C9A961] hover:text-white transition-colors cursor-pointer back-to-mentors-btn"
           >
             <ArrowLeft className="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" />
-            <span>Volver a la Lista de Mentores</span>
+            <span>Back to Mentors Registry</span>
           </button>
 
           <div className="flex items-center gap-2">
@@ -333,12 +339,12 @@ export default function MentorCommonView({ mentors, currentPath, onNavigate }: M
         </div>
 
         {/* Cinematic Header Block */}
-        <div className="bg-gradient-to-r from-primary-maroon via-[#3D0C11] to-maroon-dark border border-accent-gold/35 shadow-2xl relative overflow-hidden premium-noise rounded-sm mb-8">
+        <div className="bg-gradient-to-r from-primary-maroon via-[#3D0C11] to-maroon-dark border border-accent-gold/35 shadow-2xl relative overflow-hidden premium-noise rounded-sm mb-6">
           <div className="absolute top-0 right-0 w-80 h-80 bg-accent-gold/5 rounded-bl-full pointer-events-none blur-2xl animate-pulse" />
           
-          <div className="p-6 md:p-8 flex flex-col md:flex-row items-center gap-6 relative z-10">
+          <div className="p-5 md:p-6 flex flex-col md:flex-row items-center gap-5 md:gap-6 relative z-10">
             {/* Aspect ratio framed photo */}
-            <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-sm overflow-hidden border-2 border-accent-gold shadow-xl shrink-0 bg-maroon-dark">
+            <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-sm overflow-hidden border-2 border-accent-gold shadow-xl shrink-0 bg-maroon-dark">
               <img 
                 src={mentor.image} 
                 alt={mentor.name} 
@@ -346,10 +352,10 @@ export default function MentorCommonView({ mentors, currentPath, onNavigate }: M
                 className="w-full h-full object-cover" 
               />
             </div>
-
+ 
             {/* Title / Badge Metadata */}
-            <div className="text-center md:text-left flex-grow space-y-2">
-              <div className="flex flex-wrap items-center justify-center md:justify-start gap-2">
+            <div className="text-center md:text-left flex-grow space-y-1.5">
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-1.5">
                 <span className="text-[8px] font-mono bg-accent-gold text-primary-maroon px-2 py-0.5 rounded-full font-bold uppercase">
                   VERIFIED ADVISORY CHAIR
                 </span>
@@ -360,24 +366,24 @@ export default function MentorCommonView({ mentors, currentPath, onNavigate }: M
                   PORTFOLIO ACTIVE
                 </span>
               </div>
-
-              <h1 className="font-serif-display text-xl sm:text-2xl md:text-3xl font-extrabold text-white tracking-wide uppercase leading-tight">
+ 
+              <h1 className="font-serif-display text-lg sm:text-xl md:text-2xl font-extrabold text-white tracking-wide uppercase leading-tight">
                 {mentor.name}
               </h1>
-
+ 
               <p className="text-[10px] sm:text-xs text-neutral-300 font-mono tracking-widest uppercase font-semibold">
                 {mentor.title} • {mentor.university}
               </p>
-
+ 
               <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-4 gap-y-1 text-[10px] font-mono text-neutral-400">
                 <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5 text-accent-gold" /> {mentor.country}</span>
                 <span className="flex items-center gap-1.5 text-accent-gold font-extrabold">
                   <Star className="w-3.5 h-3.5 text-accent-gold fill-accent-gold" /> {mentor.rating} ADVISOR RATING
                 </span>
               </div>
-
+ 
               {/* Research Tags */}
-              <div className="flex flex-wrap justify-center md:justify-start gap-1.5 pt-2">
+              <div className="flex flex-wrap justify-center md:justify-start gap-1.5 pt-1">
                 {mentor.fields.map((f, i) => (
                   <span 
                     key={i} 
@@ -398,26 +404,26 @@ export default function MentorCommonView({ mentors, currentPath, onNavigate }: M
           <div className="lg:col-span-7 space-y-8 text-left">
             
             {/* Scholarly biography */}
-            <div className="bg-primary-maroon border border-accent-gold/20 p-6 relative rounded-sm shadow-md text-white select-text">
+            <div className="bg-primary-maroon border border-accent-gold/20 p-4 sm:p-5 relative rounded-sm shadow-md text-white select-text">
               <div className="absolute top-0 right-0 w-20 h-20 bg-accent-gold/5 rounded-bl-full pointer-events-none" />
-              <h3 className="font-serif-display text-sm tracking-widest uppercase text-accent-gold border-b border-accent-gold/15 pb-2 mb-3.5 flex items-center gap-1.5">
+              <h3 className="font-serif-display text-xs sm:text-sm tracking-widest uppercase text-accent-gold border-b border-accent-gold/15 pb-2 mb-2.5 flex items-center gap-1.5">
                 <Award className="w-4 h-4 text-accent-gold" /> Academic Biography & Focus Scope
               </h3>
-              <p className="text-xs sm:text-sm text-neutral-200 leading-relaxed font-light font-sans whitespace-pre-line">
+              <p className="text-xs sm:text-[13px] text-neutral-200 leading-relaxed font-light font-sans whitespace-pre-line">
                 {mentor.bio}
               </p>
             </div>
 
             {/* Indexed publications list */}
-            <div className="bg-primary-maroon border border-accent-gold/20 p-6 rounded-sm shadow-md text-white">
-              <h3 className="font-serif-display text-sm tracking-widest uppercase text-accent-gold border-b border-accent-gold/15 pb-2 mb-4 flex items-center gap-1.5">
+            <div className="bg-primary-maroon border border-accent-gold/20 p-4 sm:p-5 rounded-sm shadow-md text-white">
+              <h3 className="font-serif-display text-xs sm:text-sm tracking-widest uppercase text-accent-gold border-b border-accent-gold/15 pb-2 mb-3 flex items-center gap-1.5">
                 <BookOpen className="w-4 h-4 text-accent-gold" /> Indexed Publications & Accepted Portfolios
               </h3>
               
-              <div className="space-y-3 max-h-[300px] overflow-y-auto pr-2 select-text">
+              <div className="space-y-2.5 max-h-[250px] overflow-y-auto pr-2 select-text">
                 {mentor.publications.map((pubmed, idx) => (
-                  <div key={idx} className="bg-maroon-dark/50 border border-accent-gold/15 p-3 flex gap-3 rounded-xs hover:border-accent-gold/40 transition-colors">
-                    <Award className="w-4 h-4 text-accent-gold shrink-0 mt-0.5" />
+                  <div key={idx} className="bg-maroon-dark/50 border border-accent-gold/15 p-2.5 flex gap-2.5 rounded-xs hover:border-accent-gold/40 transition-colors">
+                    <Award className="w-3.5 h-3.5 text-accent-gold shrink-0 mt-0.5" />
                     <div className="space-y-1">
                       <p className="text-xs font-mono font-medium text-neutral-100 leading-tight">
                         {pubmed}
@@ -434,10 +440,10 @@ export default function MentorCommonView({ mentors, currentPath, onNavigate }: M
             </div>
 
             {/* Endorsements Component */}
-            <div className="bg-primary-maroon border border-accent-gold/20 p-6 rounded-sm shadow-md text-white space-y-6">
+            <div className="bg-primary-maroon border border-accent-gold/20 p-4 sm:p-5 rounded-sm shadow-md text-white space-y-4">
               
-              <div className="flex items-center justify-between border-b border-accent-gold/15 pb-2.5">
-                <h3 className="font-serif-display text-sm tracking-widest uppercase text-accent-gold flex items-center gap-1.5">
+              <div className="flex items-center justify-between border-b border-accent-gold/15 pb-2">
+                <h3 className="font-serif-display text-xs sm:text-sm tracking-widest uppercase text-accent-gold flex items-center gap-1.5">
                   <Star className="w-4 h-4 text-accent-gold fill-accent-gold" /> Scholar Testimonials & Endorsements
                 </h3>
                 <span className="text-[9px] font-mono text-neutral-300">
@@ -446,12 +452,12 @@ export default function MentorCommonView({ mentors, currentPath, onNavigate }: M
               </div>
 
               {/* Form trigger submission */}
-              <form onSubmit={handleSubmitEndorsement} className="bg-maroon-dark/45 border border-accent-gold/15 p-4 rounded-xs space-y-3">
+              <form onSubmit={handleSubmitEndorsement} className="bg-maroon-dark/45 border border-accent-gold/15 p-3.5 rounded-xs space-y-2.5">
                 <p className="font-mono text-[8px] text-accent-gold uppercase tracking-wider font-extrabold flex items-center gap-1">
                   <Sparkles className="w-3 h-3 text-accent-gold animate-pulse" /> Write Your Scholarly Review or Endorsement
                 </p>
                 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   <div className="space-y-1 text-left">
                     <label className="text-[7px] font-mono uppercase text-neutral-400 font-bold block">Author / Scholar Name</label>
                     <input 
@@ -460,7 +466,7 @@ export default function MentorCommonView({ mentors, currentPath, onNavigate }: M
                       value={newReviewName}
                       onChange={(e) => setNewReviewName(e.target.value)}
                       placeholder="E.g., Dr. Alice Vance, PhD"
-                      className="border border-accent-gold/25 bg-maroon-dark text-white p-2 text-xs focus:border-accent-gold outline-none w-full rounded-xs placeholder-neutral-500 font-mono"
+                      className="border border-accent-gold/25 bg-maroon-dark text-white p-1.5 text-[11px] focus:border-accent-gold outline-none w-full rounded-xs placeholder-neutral-500 font-mono"
                     />
                   </div>
                   <div className="space-y-1 text-left">
@@ -470,14 +476,14 @@ export default function MentorCommonView({ mentors, currentPath, onNavigate }: M
                       value={newReviewTitle}
                       onChange={(e) => setNewReviewTitle(e.target.value)}
                       placeholder="E.g., Associate Prof. / PhD Candidate"
-                      className="border border-accent-gold/25 bg-maroon-dark text-white p-2 text-xs focus:border-accent-gold outline-none w-full rounded-xs placeholder-neutral-500 font-mono"
+                      className="border border-accent-gold/25 bg-maroon-dark text-white p-1.5 text-[11px] focus:border-accent-gold outline-none w-full rounded-xs placeholder-neutral-500 font-mono"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-1 text-left">
                   <label className="text-[7px] font-mono uppercase text-neutral-400 font-bold block">Rating Assessment</label>
-                  <div className="flex bg-[#2C0509] p-1.5 border border-accent-gold/15 self-start rounded-xs w-max gap-1">
+                  <div className="flex bg-[#2C0509] p-1 border border-accent-gold/15 self-start rounded-xs w-max gap-1">
                     {[1, 2, 3, 4, 5].map(stars => (
                       <button
                         key={stars}
@@ -485,7 +491,7 @@ export default function MentorCommonView({ mentors, currentPath, onNavigate }: M
                         onClick={() => setNewReviewRating(stars)}
                         className="p-0.5 filter hover:brightness-125 transition-all text-accent-gold"
                       >
-                        <Star className={`w-4 h-4 ${newReviewRating >= stars ? 'fill-accent-gold text-accent-gold' : 'text-neutral-600'}`} />
+                        <Star className={`w-3.5 h-3.5 ${newReviewRating >= stars ? 'fill-accent-gold text-accent-gold' : 'text-neutral-600'}`} />
                       </button>
                     ))}
                   </div>
@@ -495,15 +501,15 @@ export default function MentorCommonView({ mentors, currentPath, onNavigate }: M
                   <label className="text-[7px] font-mono uppercase text-neutral-400 font-bold block">Review Narrative & Testimony</label>
                   <textarea
                     required
-                    rows={3}
+                    rows={2}
                     value={newReviewComment}
                     onChange={(e) => setNewReviewComment(e.target.value)}
-                    placeholder="Provide details about your manuscript co-authorship research, LaTeX document audit help, or response to peer review queries..."
-                    className="border border-accent-gold/25 bg-maroon-dark text-white p-2 text-xs focus:border-accent-gold outline-none w-full rounded-xs placeholder-neutral-500 font-light"
+                    placeholder="Provide details about your manuscript co-authorship research..."
+                    className="border border-accent-gold/25 bg-maroon-dark text-white p-1.5 text-[11px] focus:border-accent-gold outline-none w-full rounded-xs placeholder-neutral-500 font-light"
                   />
                 </div>
 
-                <div className="flex justify-between items-center gap-2 pt-1.5">
+                <div className="flex justify-between items-center gap-2 pt-1">
                   {endorseSuccess ? (
                     <p className="font-mono text-[8px] text-emerald-400 font-bold animate-pulse">✓ ENDORSEMENT PUBLISHED TO BROWSER LEDGER!</p>
                   ) : (
@@ -511,7 +517,7 @@ export default function MentorCommonView({ mentors, currentPath, onNavigate }: M
                   )}
                   <button
                     type="submit"
-                    className="bg-accent-gold hover:bg-[#B3934B] text-primary-maroon px-4 py-2 text-[8px] font-mono uppercase tracking-widest font-extrabold transition-all cursor-pointer rounded-xs"
+                    className="bg-accent-gold hover:bg-[#B3934B] text-primary-maroon px-3 py-1.5 text-[8px] font-mono uppercase tracking-widest font-extrabold transition-all cursor-pointer rounded-xs"
                   >
                     Publish Testimonial
                   </button>
@@ -557,8 +563,8 @@ export default function MentorCommonView({ mentors, currentPath, onNavigate }: M
           <div className="lg:col-span-5 space-y-8 text-left">
             
             {/* Live Availability visual calendar slots */}
-            <div className="bg-primary-maroon border border-accent-gold/25 p-5 relative text-white rounded-sm">
-              <div className="flex items-center gap-1.5 mb-2.5">
+            <div className="bg-primary-maroon border border-accent-gold/25 p-4 sm:p-4.5 relative text-white rounded-sm">
+              <div className="flex items-center gap-1.5 mb-2">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
@@ -568,7 +574,7 @@ export default function MentorCommonView({ mentors, currentPath, onNavigate }: M
                 </span>
               </div>
 
-              <div className="font-serif-display text-sm font-bold text-white leading-snug mb-3">
+              <div className="font-serif-display text-xs sm:text-sm font-bold text-white leading-snug mb-2.5">
                 {mentorAvailability.summary}
               </div>
 
@@ -581,7 +587,7 @@ export default function MentorCommonView({ mentors, currentPath, onNavigate }: M
                         setConsultTimeSlot(`${s.time} (${s.day})`);
                       }
                     }}
-                    className={`p-2 border flex flex-col justify-between transition-all rounded-xs ${
+                    className={`p-1.5 border flex flex-col justify-between transition-all rounded-xs ${
                       s.isBooked 
                         ? 'bg-black/45 border-red-950/20 opacity-40 cursor-not-allowed text-neutral-500' 
                         : consultTimeSlot.startsWith(s.time) && consultTimeSlot.includes(s.day)
@@ -606,12 +612,12 @@ export default function MentorCommonView({ mentors, currentPath, onNavigate }: M
             </div>
 
             {/* Booking Form Card */}
-            <div className="bg-gradient-to-br from-primary-maroon to-maroon-dark border-2 border-accent-gold/30 p-5 rounded-sm shadow-xl text-white">
-              <h3 className="font-serif-display text-sm tracking-widest uppercase text-accent-gold border-b border-accent-gold/15 pb-2 mb-4 flex items-center gap-1.5 font-bold">
+            <div className="bg-gradient-to-br from-primary-maroon to-maroon-dark border-2 border-accent-gold/30 p-4 sm:p-4.5 rounded-sm shadow-xl text-white">
+              <h3 className="font-serif-display text-xs sm:text-sm tracking-widest uppercase text-accent-gold border-b border-accent-gold/15 pb-2 mb-3 flex items-center gap-1.5 font-bold">
                 <Calendar className="w-4 h-4 text-accent-gold" /> Propose Secure Audit Consultation
               </h3>
 
-              <form onSubmit={handleProposeConsultation} className="space-y-4">
+              <form onSubmit={handleProposeConsultation} className="space-y-3">
                 
                 {/* Topic field */}
                 <div className="space-y-1">
@@ -624,7 +630,7 @@ export default function MentorCommonView({ mentors, currentPath, onNavigate }: M
                     value={consultTopic}
                     onChange={(e) => setConsultTopic(e.target.value)}
                     placeholder="E.g., Quantum Crypto integration for Grid Smart Meters"
-                    className="border border-[#C9A961]/25 bg-[#200306] text-white p-2 text-xs focus:border-accent-gold outline-none w-full rounded-xs placeholder-neutral-600 font-mono"
+                    className="border border-[#C9A961]/25 bg-[#200306] text-white p-1.5 text-[11px] focus:border-accent-gold outline-none w-full rounded-xs placeholder-neutral-600 font-mono"
                   />
                 </div>
 
@@ -636,7 +642,7 @@ export default function MentorCommonView({ mentors, currentPath, onNavigate }: M
                   <select 
                     value={consultMode}
                     onChange={(e) => setConsultMode(e.target.value)}
-                    className="border border-[#C9A961]/25 bg-[#200306] text-white p-2 text-xs focus:border-accent-gold outline-none w-full rounded-xs font-mono"
+                    className="border border-[#C9A961]/25 bg-[#200306] text-white p-1.5 text-[11px] focus:border-accent-gold outline-none w-full rounded-xs font-mono"
                   >
                     <option value="Pre-Submission Peer Review">Pre-Submission Peer Review</option>
                     <option value="LaTeX Proof-Style Verification">LaTeX Proof-Style Verification</option>
@@ -646,7 +652,7 @@ export default function MentorCommonView({ mentors, currentPath, onNavigate }: M
                 </div>
 
                 {/* Time Type Selectors */}
-                <div className="space-y-2">
+                <div className="space-y-1.5">
                   <label className="text-[7.5px] font-mono uppercase text-neutral-400 font-bold block">
                     Select Consultation Date Mode
                   </label>
@@ -655,7 +661,7 @@ export default function MentorCommonView({ mentors, currentPath, onNavigate }: M
                     <button
                       type="button"
                       onClick={() => setConsultDateType('quick')}
-                      className={`flex-1 py-1.5 text-[8.5px] font-mono uppercase font-bold tracking-wide border rounded-xs transition-colors cursor-pointer ${
+                      className={`flex-1 py-1.2 text-[8.5px] font-mono uppercase font-bold tracking-wide border rounded-xs transition-colors cursor-pointer ${
                         consultDateType === 'quick' 
                           ? 'bg-accent-gold text-primary-maroon border-accent-gold font-extrabold' 
                           : 'bg-[#200306] border-[#C9A961]/25 text-[#C9A961]'
@@ -666,7 +672,7 @@ export default function MentorCommonView({ mentors, currentPath, onNavigate }: M
                     <button
                       type="button"
                       onClick={() => setConsultDateType('custom')}
-                      className={`flex-1 py-1.5 text-[8.5px] font-mono uppercase font-bold tracking-wide border rounded-xs transition-colors cursor-pointer ${
+                      className={`flex-1 py-1.2 text-[8.5px] font-mono uppercase font-bold tracking-wide border rounded-xs transition-colors cursor-pointer ${
                         consultDateType === 'custom' 
                           ? 'bg-accent-gold text-primary-maroon border-accent-gold font-extrabold' 
                           : 'bg-[#200306] border-[#C9A961]/25 text-[#C9A961]'
@@ -677,13 +683,13 @@ export default function MentorCommonView({ mentors, currentPath, onNavigate }: M
                   </div>
 
                   {consultDateType === 'quick' ? (
-                    <div className="grid grid-cols-1 gap-1.5 pt-1">
+                    <div className="grid grid-cols-1 gap-1 pt-0.5">
                       {upcomingDates.map((d, index) => (
                         <button
                           key={index}
                           type="button"
                           onClick={() => setQuickDateSelected(d.formatted)}
-                          className={`p-2 text-[9px] font-mono text-left border rounded-xs transition-all flex justify-between items-center cursor-pointer ${
+                          className={`p-1.5 text-[9px] font-mono text-left border rounded-xs transition-all flex justify-between items-center cursor-pointer ${
                             quickDateSelected === d.formatted 
                               ? 'bg-accent-gold/15 border-accent-gold text-white font-bold' 
                               : 'bg-[#200306]/90 border-[#C9A961]/15 text-neutral-200 hover:border-[#C9A961]/40'
@@ -700,21 +706,21 @@ export default function MentorCommonView({ mentors, currentPath, onNavigate }: M
                       required={consultDateType === 'custom'}
                       value={consultDate}
                       onChange={(e) => setConsultDate(e.target.value)}
-                      className="border border-[#C9A961]/25 bg-[#200306] text-white p-2 text-xs focus:border-accent-gold outline-none w-full rounded-xs font-mono"
+                      className="border border-[#C9A961]/25 bg-[#200306] text-white p-1.5 text-[11px] focus:border-accent-gold outline-none w-full rounded-xs font-mono"
                     />
                   )}
                 </div>
 
                 {/* Slot chosen indicator */}
-                <div className="bg-black/35 p-3.5 border border-accent-gold/15 rounded-xs space-y-1">
+                <div className="bg-black/35 p-2.5 border border-accent-gold/15 rounded-xs space-y-1">
                   <span className="text-[7px] font-mono text-neutral-400 uppercase tracking-widest font-extrabold block">Selected Appointment Slot</span>
                   {consultTimeSlot ? (
-                    <div className="flex items-center gap-2 text-emerald-400 font-mono text-xs font-bold">
-                      <CheckSquare className="w-4 h-4 shrink-0 text-emerald-400" />
+                    <div className="flex items-center gap-2 text-emerald-400 font-mono text-[11px] font-bold">
+                      <CheckSquare className="w-3.5 h-3.5 shrink-0 text-emerald-400" />
                       <span>{consultTimeSlot} ({consultDateType === 'quick' ? quickDateSelected : (consultDate || 'No Date Inputted')})</span>
                     </div>
                   ) : (
-                    <p className="text-rose-400 text-[9.5px] font-mono font-bold leading-normal italic">
+                    <p className="text-rose-400 text-[9px] font-mono font-bold leading-normal italic">
                       ⚠ Please click on any "Select" button on the live availability grid above.
                     </p>
                   )}
@@ -723,21 +729,21 @@ export default function MentorCommonView({ mentors, currentPath, onNavigate }: M
                 <button
                   type="submit"
                   disabled={bookingLoading}
-                  className="w-full bg-accent-gold hover:bg-[#B3934B] text-primary-maroon font-mono text-[9.5px] tracking-widest uppercase font-extrabold py-3 shadow-[0_4px_12px_rgba(201,169,97,0.2)] hover:shadow-[0_6px_20px_rgba(201,169,97,0.35)] transition-all cursor-pointer rounded-xs flex items-center justify-center gap-2"
+                  className="w-full bg-accent-gold hover:bg-[#B3934B] text-primary-maroon font-mono text-[9.5px] tracking-widest uppercase font-extrabold py-2.5 shadow-[0_4px_12px_rgba(201,169,97,0.2)] hover:shadow-[0_6px_20px_rgba(201,169,97,0.35)] transition-all cursor-pointer rounded-xs flex items-center justify-center gap-2"
                 >
                   {bookingLoading ? (
                     <>
-                      <Loader className="w-4 h-4 animate-spin text-primary-maroon" /> Calculating Peer Availability...
+                      <Loader className="w-3.5 h-3.5 animate-spin text-primary-maroon" /> Calculating Peer Availability...
                     </>
                   ) : (
                     <>
-                      <Sparkles className="w-4 h-4" /> Schedule Conference Booking Entry
+                      <Sparkles className="w-3.5 h-3.5" /> Schedule Conference Booking Entry
                     </>
                   )}
                 </button>
 
                 {bookingSuccess && (
-                  <div className="bg-emerald-950/35 border-l-4 border-emerald-500 p-3 mt-3">
+                  <div className="bg-emerald-950/35 border-l-4 border-emerald-500 p-2.5 mt-2">
                     <p className="font-mono text-[9px] text-emerald-400 font-bold animate-pulse">
                       ⚡ SUCCESS! REQUEST SUBMITTED TO SECURE LEDGER
                     </p>
@@ -750,15 +756,15 @@ export default function MentorCommonView({ mentors, currentPath, onNavigate }: M
             </div>
 
             {/* Direct Contact Info card */}
-            <div className="bg-primary-maroon border border-accent-gold/20 p-5 rounded-xs text-left">
+            <div className="bg-primary-maroon border border-accent-gold/20 p-4 rounded-xs text-left">
               <span className="text-[7.5px] font-mono text-[#C9A961]/70 uppercase tracking-widest font-bold block mb-1">Direct Advisor Access</span>
-              <h4 className="font-serif-display text-xs font-bold text-white mb-2 leading-tight">Inquire Formal Collaboration Program</h4>
-              <p className="text-[9.5px] font-sans text-neutral-300 leading-relaxed mb-3">
+              <h4 className="font-serif-display text-xs font-bold text-white mb-1.5 leading-tight">Inquire Formal Collaboration Program</h4>
+              <p className="text-[9.5px] font-sans text-neutral-300 leading-relaxed mb-2.5">
                 Secure formal, direct mail-channel access holds continuous proof audits. Ensure standard email guidelines are met.
               </p>
               <a 
                 href={`mailto:${mentor.email}`}
-                className="bg-accent-gold hover:bg-[#B3934B] text-primary-maroon font-mono text-[8px] tracking-widest uppercase font-extrabold text-center py-2 px-3 transition-colors flex items-center justify-center gap-1.5 w-full rounded-xs cursor-pointer"
+                className="bg-accent-gold hover:bg-[#B3934B] text-primary-maroon font-mono text-[8px] tracking-widest uppercase font-extrabold text-center py-1.5 px-2.5 transition-colors flex items-center justify-center gap-1.5 w-full rounded-xs cursor-pointer"
               >
                 <Mail className="w-3.5 h-3.5 text-primary-maroon" /> Direct Advisor Query Email
               </a>

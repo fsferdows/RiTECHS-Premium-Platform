@@ -34,7 +34,7 @@ export function ConferenceCard({ conf, onNavigate, className = "", searchTerm = 
   return (
     <TiltCard 
       id={`conf-card-${conf.slug}`}
-      className={`bg-primary-maroon border border-accent-gold/15 flex flex-col h-full relative group transition-all duration-300 shadow-lg hover:border-accent-gold/40 rounded-xs ${className}`}
+      className={`bg-primary-maroon border border-accent-gold/15 flex flex-col h-full relative group transition-all duration-300 shadow-lg hover:border-accent-gold/40 rounded-xs premium-card-glow ${className}`}
     >
       <div className="h-1 bg-accent-gold/30 group-hover:bg-accent-gold transition-all duration-300 w-full" />
 

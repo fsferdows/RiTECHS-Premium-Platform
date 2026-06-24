@@ -433,6 +433,7 @@ export default function App() {
           mentors={mentors}
           currentPath={currentPath}
           onNavigate={handleNavigate}
+          theme={theme}
         />
       );
     }

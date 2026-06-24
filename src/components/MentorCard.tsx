@@ -25,7 +25,7 @@ export function MentorCard({
     <TiltCard 
       id={`mentor-card-${mentor.id}`}
       onClick={onClick}
-      className={`flex flex-col cursor-pointer group border-b-2 overflow-hidden h-full rounded-xs transition-all duration-300 shadow-sm ${
+      className={`flex flex-col cursor-pointer group border-b-2 overflow-hidden h-full rounded-xs transition-all duration-300 shadow-sm premium-card-glow ${
         isDark 
           ? 'bg-[#3D0C11] border-accent-gold/25 hover:border-b-accent-gold hover:shadow-[0_20px_50px_rgba(201,169,97,0.2)]'
           : 'bg-[#3D0C11] border-accent-gold/25 hover:border-b-accent-gold hover:shadow-[0_20px_50px_rgba(201,169,97,0.2)]'

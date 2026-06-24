@@ -793,3 +793,206 @@ span.text-accent-gold {
   color: #C9A961 !important;
 }
 
+/* ==========================================
+   ULTIMATE 1000x LUXURY & HIGH-FIDELITY OVERRIDES
+   ========================================== */
+
+/* Robust high-specificity white-text recovery inside all dark backgrounds under light theme */
+.theme-light .keep-light-text, .theme-light .keep-light-text *,
+.theme-light .bg-primary-navy, .theme-light .bg-primary-navy *,
+.theme-light .bg-primary-maroon, .theme-light .bg-primary-maroon *,
+.theme-light .bg-maroon-dark, .theme-light .bg-maroon-dark *,
+.theme-light .bg-maroon-light, .theme-light .bg-maroon-light *,
+.theme-light .bg-charcoal, .theme-light .bg-charcoal *,
+.theme-light .bg-[#3D0C11], .theme-light .bg-[#3D0C11] *,
+.theme-light .bg-[#4A0E17], .theme-light .bg-[#4A0E17] *,
+.theme-light .bg-[#2D060A], .theme-light .bg-[#2D060A] *,
+.theme-light .bg-[#200306], .theme-light .bg-[#200306] *,
+.theme-light .bg-primary-maroon\/40, .theme-light .bg-primary-maroon\/40 *,
+.theme-light .bg-primary-navy\/80, .theme-light .bg-primary-navy\/80 *,
+.theme-light [id="mentor-spotlight"], .theme-light [id="mentor-spotlight"] *,
+.theme-light [id="academic-transmissions"], .theme-light [id="academic-transmissions"] *,
+.theme-light [id="featured-conferences"], .theme-light [id="featured-conferences"] *,
+.theme-light [id="partners-marquee"], .theme-light [id="partners-marquee"] *,
+.theme-light [id="impact-stats"], .theme-light [id="impact-stats"] *,
+.theme-light [id="testimonials"], .theme-light [id="testimonials"] *,
+.theme-light [id="banner-cta"], .theme-light [id="banner-cta"] * {
+  --color-charcoal: #ffffff !important;
+  color: #ffffff !important;
+}
+
+/* Even stronger tag-level overrides for light-theme elements wrapped inside dark blocks */
+.theme-light .bg-primary-navy h1, .theme-light .bg-primary-navy h2, .theme-light .bg-primary-navy h3, .theme-light .bg-primary-navy h4, .theme-light .bg-primary-navy p, .theme-light .bg-primary-navy span, .theme-light .bg-primary-navy div, .theme-light .bg-primary-navy li, .theme-light .bg-primary-navy a, .theme-light .bg-primary-navy label,
+.theme-light .bg-primary-maroon h1, .theme-light .bg-primary-maroon h2, .theme-light .bg-primary-maroon h3, .theme-light .bg-primary-maroon h4, .theme-light .bg-primary-maroon p, .theme-light .bg-primary-maroon span, .theme-light .bg-primary-maroon div, .theme-light .bg-primary-maroon li, .theme-light .bg-primary-maroon a, .theme-light .bg-primary-maroon label,
+.theme-light .bg-maroon-dark h1, .theme-light .bg-maroon-dark h2, .theme-light .bg-maroon-dark h3, .theme-light .bg-maroon-dark h4, .theme-light .bg-maroon-dark p, .theme-light .bg-maroon-dark span, .theme-light .bg-maroon-dark div, .theme-light .bg-maroon-dark li, .theme-light .bg-maroon-dark a, .theme-light .bg-maroon-dark label,
+.theme-light .bg-maroon-light h1, .theme-light .bg-maroon-light h2, .theme-light .bg-maroon-light h3, .theme-light .bg-maroon-light h4, .theme-light .bg-maroon-light p, .theme-light .bg-maroon-light span, .theme-light .bg-maroon-light div, .theme-light .bg-maroon-light li, .theme-light .bg-maroon-light a, .theme-light .bg-maroon-light label,
+.theme-light .bg-\[\#3D0C11\] h1, .theme-light .bg-\[\#3D0C11\] h2, .theme-light .bg-\[\#3D0C11\] h3, .theme-light .bg-\[\#3D0C11\] h4, .theme-light .bg-\[\#3D0C11\] p, .theme-light .bg-\[\#3D0C11\] span, .theme-light .bg-\[\#3D0C11\] div, .theme-light .bg-\[\#3D0C11\] li, .theme-light .bg-\[\#3D0C11\] a, .theme-light .bg-\[\#3D0C11\] label,
+.theme-light .bg-\[\#4A0E17\] h1, .theme-light .bg-\[\#4A0E17\] h2, .theme-light .bg-\[\#4A0E17\] h3, .theme-light .bg-\[\#4A0E17\] h4, .theme-light .bg-\[\#4A0E17\] p, .theme-light .bg-\[\#4A0E17\] span, .theme-light .bg-\[\#4A0E17\] div, .theme-light .bg-\[\#4A0E17\] li, .theme-light .bg-\[\#4A0E17\] a, .theme-light .bg-\[\#4A0E17\] label,
+.theme-light .bg-\[\#2D060A\] h1, .theme-light .bg-\[\#2D060A\] h2, .theme-light .bg-\[\#2D060A\] h3, .theme-light .bg-\[\#2D060A\] h4, .theme-light .bg-\[\#2D060A\] p, .theme-light .bg-\[\#2D060A\] span, .theme-light .bg-\[\#2D060A\] div, .theme-light .bg-\[\#2D060A\] li, .theme-light .bg-\[\#2D060A\] a, .theme-light .bg-\[\#2D060A\] label,
+.theme-light [id="featured-conferences"] h1, .theme-light [id="featured-conferences"] h2, .theme-light [id="featured-conferences"] h3, .theme-light [id="featured-conferences"] h4, .theme-light [id="featured-conferences"] p, .theme-light [id="featured-conferences"] span, .theme-light [id="featured-conferences"] div, .theme-light [id="featured-conferences"] li, .theme-light [id="featured-conferences"] a,
+.theme-light [id="academic-transmissions"] h1, .theme-light [id="academic-transmissions"] h2, .theme-light [id="academic-transmissions"] h3, .theme-light [id="academic-transmissions"] h4, .theme-light [id="academic-transmissions"] p, .theme-light [id="academic-transmissions"] span, .theme-light [id="academic-transmissions"] div, .theme-light [id="academic-transmissions"] li, .theme-light [id="academic-transmissions"] a {
+  color: #ffffff !important;
+}
+
+/* Day theme dark context gold highlight protection */
+.theme-light .bg-primary-navy .text-accent-gold,
+.theme-light .bg-primary-maroon .text-accent-gold,
+.theme-light .bg-maroon-dark .text-accent-gold,
+.theme-light .bg-maroon-light .text-accent-gold,
+.theme-light .bg-\[\#3D0C11\] .text-accent-gold,
+.theme-light .bg-\[\#4A0E17\] .text-accent-gold,
+.theme-light .bg-\[\#2D060A\] .text-accent-gold,
+.theme-light [id="featured-conferences"] .text-accent-gold,
+.theme-light [id="academic-transmissions"] .text-accent-gold,
+.theme-light .bg-primary-navy * .text-accent-gold,
+.theme-light .bg-primary-maroon * .text-accent-gold,
+.theme-light .bg-maroon-dark * .text-accent-gold,
+.theme-light .bg-maroon-light * .text-accent-gold,
+.theme-light .bg-\[\#3D0C11\] * .text-accent-gold,
+.theme-light .bg-\[\#4A0E17\] * .text-accent-gold,
+.theme-light .bg-\[\#2D060A\] * .text-accent-gold,
+.theme-light [id="featured-conferences"] * .text-accent-gold,
+.theme-light [id="academic-transmissions"] * .text-accent-gold {
+  color: #C9A961 !important;
+}
+
+/* 1000x Luxury Hover Glow effect on cards */
+.premium-card-glow {
+  position: relative;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.premium-card-glow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  box-shadow: 0 0 35px rgba(201, 169, 97, 0.28);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.premium-card-glow:hover {
+  transform: translateY(-5px) scale(1.01);
+  border-color: rgba(201, 169, 97, 0.55) !important;
+}
+
+.premium-card-glow:hover::after {
+  opacity: 1;
+}
+
+/* Glassmorphism overlays */
+.luxury-glass {
+  background: rgba(10, 31, 68, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(201, 169, 97, 0.2);
+}
+
+/* Shimmer animation for golden highlight tags */
+@keyframes gold-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.text-shimmer-gold {
+  background: linear-gradient(90deg, #C9A961 0%, #FFFDF9 50%, #C9A961 100%);
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: gold-shimmer 6s linear infinite;
+}
+
+/* Tactile bounce micro-animations */
+.hover-tactile {
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.hover-tactile:hover {
+  transform: scale(1.05);
+}
+.hover-tactile:active {
+  transform: scale(0.95);
+}
+
+/* LIGHT THEME GOLD AND WHITE RETENTION OVERRIDES */
+.theme-light .bg-primary-maroon span,
+.theme-light .bg-primary-maroon p,
+.theme-light .bg-primary-maroon div,
+.theme-light .bg-primary-maroon li,
+.theme-light .bg-primary-maroon a,
+.theme-light .bg-primary-maroon label,
+.theme-light .bg-primary-maroon font,
+.theme-light .bg-primary-maroon select,
+.theme-light .bg-primary-maroon option,
+.theme-light .bg-maroon-dark span,
+.theme-light .bg-maroon-dark p,
+.theme-light .bg-maroon-dark div,
+.theme-light .bg-maroon-dark li,
+.theme-light .bg-maroon-dark a,
+.theme-light .bg-maroon-dark label,
+.theme-light .bg-maroon-light span,
+.theme-light .bg-maroon-light p,
+.theme-light .bg-maroon-light div,
+.theme-light .bg-\[\#3D0C11\] span,
+.theme-light .bg-\[\#3D0C11\] p,
+.theme-light .bg-\[\#3D0C11\] div,
+.theme-light .bg-\[\#4A0E17\] span,
+.theme-light .bg-\[\#4A0E17\] p,
+.theme-light .bg-\[\#4A0E17\] div,
+.theme-light .bg-\[\#2D060A\] span,
+.theme-light .bg-\[\#2D060A\] p,
+.theme-light .bg-\[\#2D060A\] div,
+.theme-light .bg-\[\#200306\] span,
+.theme-light .bg-\[\#200306\] p,
+.theme-light .bg-\[\#200306\] div,
+.theme-light [id="mentor-common-view-container"] .bg-primary-maroon span,
+.theme-light [id="mentor-common-view-container"] .bg-primary-maroon p,
+.theme-light [id="mentor-common-view-container"] .bg-primary-maroon div,
+.theme-light [id="mentor-common-view-container"] .bg-maroon-dark span,
+.theme-light [id="mentor-common-view-container"] .bg-maroon-dark p,
+.theme-light [id="mentor-common-view-container"] .bg-maroon-dark div,
+.theme-light [id="mentor-common-view-container"] .bg-gradient-to-r span,
+.theme-light [id="mentor-common-view-container"] .bg-gradient-to-r p,
+.theme-light [id="mentor-common-view-container"] .bg-gradient-to-r div,
+.theme-light [id="mentor-common-view-container"] .bg-gradient-to-br span,
+.theme-light [id="mentor-common-view-container"] .bg-gradient-to-br p,
+.theme-light [id="mentor-common-view-container"] .bg-gradient-to-br div {
+  color: #ffffff !important;
+}
+
+/* Ensure bright gold always shines on maroon backgrounds in light theme */
+.theme-light .bg-primary-maroon .text-accent-gold,
+.theme-light .bg-primary-maroon * .text-accent-gold,
+.theme-light .bg-maroon-dark .text-accent-gold,
+.theme-light .bg-maroon-dark * .text-accent-gold,
+.theme-light .bg-\[\#3D0C11\] .text-accent-gold,
+.theme-light .bg-\[\#3D0C11\] * .text-accent-gold,
+.theme-light .bg-\[\#4A0E17\] .text-accent-gold,
+.theme-light .bg-\[\#4A0E17\] * .text-accent-gold,
+.theme-light .bg-maroon-light .text-accent-gold,
+.theme-light .bg-maroon-light * .text-accent-gold,
+.theme-light .bg-\[\#2D060A\] .text-accent-gold,
+.theme-light .bg-\[\#2D060A\] * .text-accent-gold,
+.theme-light .bg-\[\#200306\] .text-accent-gold,
+.theme-light .bg-\[\#200306\] * .text-accent-gold,
+.theme-light [id="mentor-common-view-container"] .bg-primary-maroon .text-accent-gold,
+.theme-light [id="mentor-common-view-container"] .bg-primary-maroon * .text-accent-gold,
+.theme-light [id="mentor-common-view-container"] .bg-maroon-dark .text-accent-gold,
+.theme-light [id="mentor-common-view-container"] .bg-maroon-dark * .text-accent-gold,
+.theme-light [id="mentor-common-view-container"] .bg-gradient-to-r .text-accent-gold,
+.theme-light [id="mentor-common-view-container"] .bg-gradient-to-r * .text-accent-gold,
+.theme-light [id="mentor-common-view-container"] .bg-gradient-to-br .text-accent-gold,
+.theme-light [id="mentor-common-view-container"] .bg-gradient-to-br * .text-accent-gold {
+  color: #C9A961 !important;
+}
+
+/* back button hover text color correction */
+.theme-light .back-to-mentors-btn:hover,
+.theme-light .back-to-mentors-btn:hover * {
+  color: #4A0E17 !important;
+}
+
+

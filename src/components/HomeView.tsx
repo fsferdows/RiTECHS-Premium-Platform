@@ -136,7 +136,7 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
               { value: "15,000+", label: "Researchers Served" },
               { value: "98%", label: "Satisfaction Rate" }
             ].map((stat, idx) => (
-              <TiltCard key={idx} className="bg-primary-maroon/40 p-6 text-center border border-accent-gold/20 hover:border-accent-gold/50 transition-all duration-300 group">
+              <TiltCard key={idx} className="bg-primary-maroon/40 p-6 text-center border border-accent-gold/20 hover:border-accent-gold/50 transition-all duration-300 group premium-card-glow">
                 <div className="font-serif-display text-4.5xl sm:text-5xl font-extrabold text-white mb-2 group-hover:text-accent-gold transition-colors">
                   {stat.value}
                 </div>
@@ -558,7 +558,7 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
             ].map((srv, idx) => (
               <TiltCard 
                 key={idx}
-                className="bg-white/5 border border-white/10 p-8 flex flex-col hover:border-accent-gold/40 group text-left h-full"
+                className="bg-white/5 border border-white/10 p-8 flex flex-col hover:border-accent-gold/40 group text-left h-full premium-card-glow"
               >
                 <div className="mb-6">{srv.icon}</div>
                 <h3 className="font-serif-display text-xl text-white font-medium mb-4">{srv.title}</h3>
