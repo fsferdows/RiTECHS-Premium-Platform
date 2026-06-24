@@ -262,40 +262,40 @@ html, body, #root, #app, main, section, nav, footer, .glass-card, h1, h2, h3, h4
 }
 
 /* Redesign headers & display components to meet luxury scholastic standards */
-.theme-light h1,
-.theme-light h2,
-.theme-light h3,
-.theme-light h4,
-.theme-light .font-serif-display {
+.theme-light h1:not(.keep-dark, .keep-dark *, [class*="bg-primary-"], [class*="bg-primary-"] *, [class*="bg-maroon-"], [class*="bg-maroon-"] *, [class*="bg-gradient-"], [class*="bg-gradient-"] *, [class*="bg-[#14"], [class*="bg-[#14"] *, [class*="bg-[#2D"], [class*="bg-[#2D"] *, [class*="bg-[#20"], [class*="bg-[#20"] *, [class*="bg-[#3D"], [class*="bg-[#3D"] *, [class*="bg-[#4A"], [class*="bg-[#4A"] *, .keep-light-text, .keep-light-text *, [id="mentor-common-view-container"], [id="mentor-common-view-container"] *),
+.theme-light h2:not(.keep-dark, .keep-dark *, [class*="bg-primary-"], [class*="bg-primary-"] *, [class*="bg-maroon-"], [class*="bg-maroon-"] *, [class*="bg-gradient-"], [class*="bg-gradient-"] *, [class*="bg-[#14"], [class*="bg-[#14"] *, [class*="bg-[#2D"], [class*="bg-[#2D"] *, [class*="bg-[#20"], [class*="bg-[#20"] *, [class*="bg-[#3D"], [class*="bg-[#3D"] *, [class*="bg-[#4A"], [class*="bg-[#4A"] *, .keep-light-text, .keep-light-text *, [id="mentor-common-view-container"], [id="mentor-common-view-container"] *),
+.theme-light h3:not(.keep-dark, .keep-dark *, [class*="bg-primary-"], [class*="bg-primary-"] *, [class*="bg-maroon-"], [class*="bg-maroon-"] *, [class*="bg-gradient-"], [class*="bg-gradient-"] *, [class*="bg-[#14"], [class*="bg-[#14"] *, [class*="bg-[#2D"], [class*="bg-[#2D"] *, [class*="bg-[#20"], [class*="bg-[#20"] *, [class*="bg-[#3D"], [class*="bg-[#3D"] *, [class*="bg-[#4A"], [class*="bg-[#4A"] *, .keep-light-text, .keep-light-text *, [id="mentor-common-view-container"], [id="mentor-common-view-container"] *),
+.theme-light h4:not(.keep-dark, .keep-dark *, [class*="bg-primary-"], [class*="bg-primary-"] *, [class*="bg-maroon-"], [class*="bg-maroon-"] *, [class*="bg-gradient-"], [class*="bg-gradient-"] *, [class*="bg-[#14"], [class*="bg-[#14"] *, [class*="bg-[#2D"], [class*="bg-[#2D"] *, [class*="bg-[#20"], [class*="bg-[#20"] *, [class*="bg-[#3D"], [class*="bg-[#3D"] *, [class*="bg-[#4A"], [class*="bg-[#4A"] *, .keep-light-text, .keep-light-text *, [id="mentor-common-view-container"], [id="mentor-common-view-container"] *),
+.theme-light .font-serif-display:not(.keep-dark, .keep-dark *, [class*="bg-primary-"], [class*="bg-primary-"] *, [class*="bg-maroon-"], [class*="bg-maroon-"] *, [class*="bg-gradient-"], [class*="bg-gradient-"] *, [class*="bg-[#14"], [class*="bg-[#14"] *, [class*="bg-[#2D"], [class*="bg-[#2D"] *, [class*="bg-[#20"], [class*="bg-[#20"] *, [class*="bg-[#3D"], [class*="bg-[#3D"] *, [class*="bg-[#4A"], [class*="bg-[#4A"] *, .keep-light-text, .keep-light-text *, [id="mentor-common-view-container"], [id="mentor-common-view-container"] *) {
   color: #000000 !important; /* Pure black text on white/light background */
 }
 
 /* Comfortable reading script for body paragraphs & listings */
-.theme-light p,
-.theme-light li,
-.theme-light td,
-.theme-light th,
-.theme-light .font-serif-accent {
+.theme-light p:not(.keep-dark, .keep-dark *, [class*="bg-primary-"], [class*="bg-primary-"] *, [class*="bg-maroon-"], [class*="bg-maroon-"] *, [class*="bg-gradient-"], [class*="bg-gradient-"] *, [class*="bg-[#14"], [class*="bg-[#14"] *, [class*="bg-[#2D"], [class*="bg-[#2D"] *, [class*="bg-[#20"], [class*="bg-[#20"] *, [class*="bg-[#3D"], [class*="bg-[#3D"] *, [class*="bg-[#4A"], [class*="bg-[#4A"] *, .keep-light-text, .keep-light-text *, [id="mentor-common-view-container"], [id="mentor-common-view-container"] *),
+.theme-light li:not(.keep-dark, .keep-dark *, [class*="bg-primary-"], [class*="bg-primary-"] *, [class*="bg-maroon-"], [class*="bg-maroon-"] *, [class*="bg-gradient-"], [class*="bg-gradient-"] *, [class*="bg-[#14"], [class*="bg-[#14"] *, [class*="bg-[#2D"], [class*="bg-[#2D"] *, [class*="bg-[#20"], [class*="bg-[#20"] *, [class*="bg-[#3D"], [class*="bg-[#3D"] *, [class*="bg-[#4A"], [class*="bg-[#4A"] *, .keep-light-text, .keep-light-text *, [id="mentor-common-view-container"], [id="mentor-common-view-container"] *),
+.theme-light td:not(.keep-dark, .keep-dark *, [class*="bg-primary-"], [class*="bg-primary-"] *, [class*="bg-maroon-"], [class*="bg-maroon-"] *, [class*="bg-gradient-"], [class*="bg-gradient-"] *, [class*="bg-[#14"], [class*="bg-[#14"] *, [class*="bg-[#2D"], [class*="bg-[#2D"] *, [class*="bg-[#20"], [class*="bg-[#20"] *, [class*="bg-[#3D"], [class*="bg-[#3D"] *, [class*="bg-[#4A"], [class*="bg-[#4A"] *, .keep-light-text, .keep-light-text *, [id="mentor-common-view-container"], [id="mentor-common-view-container"] *),
+.theme-light th:not(.keep-dark, .keep-dark *, [class*="bg-primary-"], [class*="bg-primary-"] *, [class*="bg-maroon-"], [class*="bg-maroon-"] *, [class*="bg-gradient-"], [class*="bg-gradient-"] *, [class*="bg-[#14"], [class*="bg-[#14"] *, [class*="bg-[#2D"], [class*="bg-[#2D"] *, [class*="bg-[#20"], [class*="bg-[#20"] *, [class*="bg-[#3D"], [class*="bg-[#3D"] *, [class*="bg-[#4A"], [class*="bg-[#4A"] *, .keep-light-text, .keep-light-text *, [id="mentor-common-view-container"], [id="mentor-common-view-container"] *),
+.theme-light .font-serif-accent:not(.keep-dark, .keep-dark *, [class*="bg-primary-"], [class*="bg-primary-"] *, [class*="bg-maroon-"], [class*="bg-maroon-"] *, [class*="bg-gradient-"], [class*="bg-gradient-"] *, [class*="bg-[#14"], [class*="bg-[#14"] *, [class*="bg-[#2D"], [class*="bg-[#2D"] *, [class*="bg-[#20"], [class*="bg-[#20"] *, [class*="bg-[#3D"], [class*="bg-[#3D"] *, [class*="bg-[#4A"], [class*="bg-[#4A"] *, .keep-light-text, .keep-light-text *, [id="mentor-common-view-container"], [id="mentor-common-view-container"] *) {
   color: #000000 !important; /* Pure black reading text */
 }
 
 /* Selective span styling to prevent breaking icons, dynamic badge text and gold call-outs */
-.theme-light span:not(.text-accent-gold):not(.badge-text):not(.text-red-400):not(.text-green-400):not(.text-green-500) {
+.theme-light span:not(.keep-dark, .keep-dark *, [class*="bg-primary-"], [class*="bg-primary-"] *, [class*="bg-maroon-"], [class*="bg-maroon-"] *, [class*="bg-gradient-"], [class*="bg-gradient-"] *, [class*="bg-[#14"], [class*="bg-[#14"] *, [class*="bg-[#2D"], [class*="bg-[#2D"] *, [class*="bg-[#20"], [class*="bg-[#20"] *, [class*="bg-[#3D"], [class*="bg-[#3D"] *, [class*="bg-[#4A"], [class*="bg-[#4A"] *, .keep-light-text, .keep-light-text *, [id="mentor-common-view-container"], [id="mentor-common-view-container"] *):not(.text-accent-gold):not(.badge-text):not(.text-red-400):not(.text-green-400):not(.text-green-500) {
   color: #000000 !important;
 }
 
 /* Safeguard and restore exact intended text colors inside all buttons and links */
-.theme-light button,
-.theme-light button *,
-.theme-light .luxury-btn,
-.theme-light .luxury-btn *,
+.theme-light button:not(.keep-dark, .keep-dark *, [class*="bg-primary-"], [class*="bg-primary-"] *, [class*="bg-maroon-"], [class*="bg-maroon-"] *, [class*="bg-gradient-"], [class*="bg-gradient-"] *, [class*="bg-[#14"], [class*="bg-[#14"] *, [class*="bg-[#2D"], [class*="bg-[#2D"] *, [class*="bg-[#20"], [class*="bg-[#20"] *, [class*="bg-[#3D"], [class*="bg-[#3D"] *, [class*="bg-[#4A"], [class*="bg-[#4A"] *, .keep-light-text, .keep-light-text *, [id="mentor-common-view-container"], [id="mentor-common-view-container"] *),
+.theme-light button:not(.keep-dark, .keep-dark *, [class*="bg-primary-"], [class*="bg-primary-"] *, [class*="bg-maroon-"], [class*="bg-maroon-"] *, [class*="bg-gradient-"], [class*="bg-gradient-"] *, [class*="bg-[#14"], [class*="bg-[#14"] *, [class*="bg-[#2D"], [class*="bg-[#2D"] *, [class*="bg-[#20"], [class*="bg-[#20"] *, [class*="bg-[#3D"], [class*="bg-[#3D"] *, [class*="bg-[#4A"], [class*="bg-[#4A"] *, .keep-light-text, .keep-light-text *, [id="mentor-common-view-container"], [id="mentor-common-view-container"] *) *,
+.theme-light .luxury-btn:not(.keep-dark, .keep-dark *, [class*="bg-primary-"], [class*="bg-primary-"] *, [class*="bg-maroon-"], [class*="bg-maroon-"] *, [class*="bg-gradient-"], [class*="bg-gradient-"] *, [class*="bg-[#14"], [class*="bg-[#14"] *, [class*="bg-[#2D"], [class*="bg-[#2D"] *, [class*="bg-[#20"], [class*="bg-[#20"] *, [class*="bg-[#3D"], [class*="bg-[#3D"] *, [class*="bg-[#4A"], [class*="bg-[#4A"] *, .keep-light-text, .keep-light-text *, [id="mentor-common-view-container"], [id="mentor-common-view-container"] *),
+.theme-light .luxury-btn:not(.keep-dark, .keep-dark *, [class*="bg-primary-"], [class*="bg-primary-"] *, [class*="bg-maroon-"], [class*="bg-maroon-"] *, [class*="bg-gradient-"], [class*="bg-gradient-"] *, [class*="bg-[#14"], [class*="bg-[#14"] *, [class*="bg-[#2D"], [class*="bg-[#2D"] *, [class*="bg-[#20"], [class*="bg-[#20"] *, [class*="bg-[#3D"], [class*="bg-[#3D"] *, [class*="bg-[#4A"], [class*="bg-[#4A"] *, .keep-light-text, .keep-light-text *, [id="mentor-common-view-container"], [id="mentor-common-view-container"] *) *,
 .theme-light #submit-auth-form,
 .theme-light #submit-auth-form * {
   color: inherit !important;
 }
 
 /* Ensure gold markers and icons are high contrast and premium */
-.theme-light .text-accent-gold {
+.theme-light .text-accent-gold:not(.keep-dark, .keep-dark *, [class*="bg-primary-"], [class*="bg-primary-"] *, [class*="bg-maroon-"], [class*="bg-maroon-"] *, [class*="bg-gradient-"], [class*="bg-gradient-"] *, [class*="bg-[#14"], [class*="bg-[#14"] *, [class*="bg-[#2D"], [class*="bg-[#2D"] *, [class*="bg-[#20"], [class*="bg-[#20"] *, [class*="bg-[#3D"], [class*="bg-[#3D"] *, [class*="bg-[#4A"], [class*="bg-[#4A"] *, .keep-light-text, .keep-light-text *, [id="mentor-common-view-container"], [id="mentor-common-view-container"] *) {
   color: #8C6D23 !important; /* Deep legacy gold */
 }
 .theme-light .text-accent-gold\/80,

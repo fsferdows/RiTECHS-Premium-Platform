@@ -317,7 +317,7 @@ export default function MentorCommonView({ mentors, currentPath, onNavigate, the
           <div className="flex items-center gap-2">
             <button
               onClick={handleCopyLink}
-              className="bg-black/40 border border-accent-gold/30 hover:border-accent-gold text-accent-gold text-[9px] font-mono tracking-wider uppercase px-3 py-1.5 transition-colors flex items-center gap-1.5 rounded-xs cursor-pointer"
+              className="bg-black/40 border border-accent-gold/30 hover:border-accent-gold text-accent-gold text-[9px] font-mono tracking-wider uppercase px-3 py-1.5 transition-colors flex items-center gap-1.5 rounded-xs cursor-pointer keep-dark"
               title="Copy the direct URL of this common view profile"
             >
               <Copy className="w-3 h-3" />
@@ -326,7 +326,7 @@ export default function MentorCommonView({ mentors, currentPath, onNavigate, the
 
             <button
               onClick={toggleFavorite}
-              className={`border text-[9px] font-mono tracking-wider uppercase px-3 py-1.5 transition-all flex items-center gap-1.5 rounded-xs cursor-pointer ${
+              className={`border text-[9px] font-mono tracking-wider uppercase px-3 py-1.5 transition-all flex items-center gap-1.5 rounded-xs cursor-pointer keep-dark ${
                 isFavorite 
                   ? 'bg-rose-700 border-rose-500 text-white shadow-lg' 
                   : 'bg-black/40 border-[#C9A961]/35 text-[#C9A961] hover:text-rose-400 hover:border-rose-400/50'
@@ -339,7 +339,7 @@ export default function MentorCommonView({ mentors, currentPath, onNavigate, the
         </div>
 
         {/* Cinematic Header Block */}
-        <div className="bg-gradient-to-r from-primary-maroon via-[#3D0C11] to-maroon-dark border border-accent-gold/35 shadow-2xl relative overflow-hidden premium-noise rounded-sm mb-6">
+        <div className="bg-gradient-to-r from-primary-maroon via-[#3D0C11] to-maroon-dark border border-accent-gold/35 shadow-2xl relative overflow-hidden premium-noise rounded-sm mb-6 keep-dark">
           <div className="absolute top-0 right-0 w-80 h-80 bg-accent-gold/5 rounded-bl-full pointer-events-none blur-2xl animate-pulse" />
           
           <div className="p-5 md:p-6 flex flex-col md:flex-row items-center gap-5 md:gap-6 relative z-10">
@@ -404,7 +404,7 @@ export default function MentorCommonView({ mentors, currentPath, onNavigate, the
           <div className="lg:col-span-7 space-y-8 text-left">
             
             {/* Scholarly biography */}
-            <div className="bg-primary-maroon border border-accent-gold/20 p-4 sm:p-5 relative rounded-sm shadow-md text-white select-text">
+            <div className="bg-primary-maroon border border-accent-gold/20 p-4 sm:p-5 relative rounded-sm shadow-md text-white select-text keep-dark">
               <div className="absolute top-0 right-0 w-20 h-20 bg-accent-gold/5 rounded-bl-full pointer-events-none" />
               <h3 className="font-serif-display text-xs sm:text-sm tracking-widest uppercase text-accent-gold border-b border-accent-gold/15 pb-2 mb-2.5 flex items-center gap-1.5">
                 <Award className="w-4 h-4 text-accent-gold" /> Academic Biography & Focus Scope
@@ -415,7 +415,7 @@ export default function MentorCommonView({ mentors, currentPath, onNavigate, the
             </div>
 
             {/* Indexed publications list */}
-            <div className="bg-primary-maroon border border-accent-gold/20 p-4 sm:p-5 rounded-sm shadow-md text-white">
+            <div className="bg-primary-maroon border border-accent-gold/20 p-4 sm:p-5 rounded-sm shadow-md text-white keep-dark">
               <h3 className="font-serif-display text-xs sm:text-sm tracking-widest uppercase text-accent-gold border-b border-accent-gold/15 pb-2 mb-3 flex items-center gap-1.5">
                 <BookOpen className="w-4 h-4 text-accent-gold" /> Indexed Publications & Accepted Portfolios
               </h3>
@@ -440,7 +440,7 @@ export default function MentorCommonView({ mentors, currentPath, onNavigate, the
             </div>
 
             {/* Endorsements Component */}
-            <div className="bg-primary-maroon border border-accent-gold/20 p-4 sm:p-5 rounded-sm shadow-md text-white space-y-4">
+            <div className="bg-primary-maroon border border-accent-gold/20 p-4 sm:p-5 rounded-sm shadow-md text-white space-y-4 keep-dark">
               
               <div className="flex items-center justify-between border-b border-accent-gold/15 pb-2">
                 <h3 className="font-serif-display text-xs sm:text-sm tracking-widest uppercase text-accent-gold flex items-center gap-1.5">
@@ -563,7 +563,7 @@ export default function MentorCommonView({ mentors, currentPath, onNavigate, the
           <div className="lg:col-span-5 space-y-8 text-left">
             
             {/* Live Availability visual calendar slots */}
-            <div className="bg-primary-maroon border border-accent-gold/25 p-4 sm:p-4.5 relative text-white rounded-sm">
+            <div className="bg-primary-maroon border border-accent-gold/25 p-4 sm:p-4.5 relative text-white rounded-sm keep-dark">
               <div className="flex items-center gap-1.5 mb-2">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -612,7 +612,7 @@ export default function MentorCommonView({ mentors, currentPath, onNavigate, the
             </div>
 
             {/* Booking Form Card */}
-            <div className="bg-gradient-to-br from-primary-maroon to-maroon-dark border-2 border-accent-gold/30 p-4 sm:p-4.5 rounded-sm shadow-xl text-white">
+            <div className="bg-gradient-to-br from-primary-maroon to-maroon-dark border-2 border-accent-gold/30 p-4 sm:p-4.5 rounded-sm shadow-xl text-white keep-dark">
               <h3 className="font-serif-display text-xs sm:text-sm tracking-widest uppercase text-accent-gold border-b border-accent-gold/15 pb-2 mb-3 flex items-center gap-1.5 font-bold">
                 <Calendar className="w-4 h-4 text-accent-gold" /> Propose Secure Audit Consultation
               </h3>
@@ -756,7 +756,7 @@ export default function MentorCommonView({ mentors, currentPath, onNavigate, the
             </div>
 
             {/* Direct Contact Info card */}
-            <div className="bg-primary-maroon border border-accent-gold/20 p-4 rounded-xs text-left">
+            <div className="bg-primary-maroon border border-accent-gold/20 p-4 rounded-xs text-left keep-dark">
               <span className="text-[7.5px] font-mono text-[#C9A961]/70 uppercase tracking-widest font-bold block mb-1">Direct Advisor Access</span>
               <h4 className="font-serif-display text-xs font-bold text-white mb-1.5 leading-tight">Inquire Formal Collaboration Program</h4>
               <p className="text-[9.5px] font-sans text-neutral-300 leading-relaxed mb-2.5">
