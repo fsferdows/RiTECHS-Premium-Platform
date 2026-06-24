@@ -69,59 +69,86 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
   const isDraggingRef = useRef(false);
   const startXRef = useRef(0);
   const scrollLeftRef = useRef(0);
+  const isHoveredRef = useRef(false);
 
-  const handleMouseDown = (e: React.MouseEvent) => {
-    if (!mentorsRef.current || isAutoScrolling) return;
+  // Unified drag start
+  const handleDragStart = (pageX: number) => {
+    if (!mentorsRef.current) return;
+    setIsAutoScrolling(false);
     isDraggingRef.current = true;
-    startXRef.current = e.pageX - mentorsRef.current.offsetLeft;
+    startXRef.current = pageX - mentorsRef.current.offsetLeft;
     scrollLeftRef.current = mentorsRef.current.scrollLeft;
   };
 
-  const handleMouseMove = (e: React.MouseEvent) => {
+  const handleDragMove = (pageX: number) => {
     if (!isDraggingRef.current || !mentorsRef.current) return;
-    e.preventDefault();
-    const x = e.pageX - mentorsRef.current.offsetLeft;
+    const x = pageX - mentorsRef.current.offsetLeft;
     const walk = (x - startXRef.current) * 1.5;
     mentorsRef.current.scrollLeft = scrollLeftRef.current - walk;
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    handleDragStart(e.pageX);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDraggingRef.current) return;
+    e.preventDefault();
+    handleDragMove(e.pageX);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    handleDragStart(e.touches[0].pageX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    handleDragMove(e.touches[0].pageX);
   };
 
   const handleMouseUpOrLeave = () => {
     isDraggingRef.current = false;
   };
 
-  const handleInteraction = () => {
-    if (isAutoScrolling) {
-      setIsAutoScrolling(false);
-    }
-  };
-
   const handlePrev = () => {
-    if (isAutoScrolling) {
-      setIsAutoScrolling(false);
-      setTimeout(() => {
-        if (mentorsRef.current) {
-          mentorsRef.current.scrollLeft = 0;
-          slideLeft(mentorsRef);
-        }
-      }, 50);
-    } else {
-      slideLeft(mentorsRef);
-    }
+    setIsAutoScrolling(false);
+    slideLeft(mentorsRef);
   };
 
   const handleNext = () => {
-    if (isAutoScrolling) {
-      setIsAutoScrolling(false);
-      setTimeout(() => {
-        if (mentorsRef.current) {
-          mentorsRef.current.scrollLeft = 0;
-          slideRight(mentorsRef);
-        }
-      }, 50);
-    } else {
-      slideRight(mentorsRef);
-    }
+    setIsAutoScrolling(false);
+    slideRight(mentorsRef);
   };
+
+  useEffect(() => {
+    if (!isAutoScrolling) return;
+
+    let animationId: number;
+    const speed = 0.55; // Extremely smooth, elegant continuous motion speed
+
+    const scrollStep = () => {
+      const el = mentorsRef.current;
+      if (!el) {
+        animationId = requestAnimationFrame(scrollStep);
+        return;
+      }
+
+      // Only scroll if the user is not actively interacting
+      if (!isHoveredRef.current && !isDraggingRef.current) {
+        el.scrollLeft += speed;
+
+        // Continuous wrap-around at half width (since array is duplicated)
+        const halfWidth = el.scrollWidth / 2;
+        if (halfWidth > 0 && el.scrollLeft >= halfWidth) {
+          el.scrollLeft = el.scrollLeft - halfWidth;
+        }
+      }
+
+      animationId = requestAnimationFrame(scrollStep);
+    };
+
+    animationId = requestAnimationFrame(scrollStep);
+    return () => cancelAnimationFrame(animationId);
+  }, [isAutoScrolling, mentors]);
 
   useEffect(() => {
     setVideoHasError(false);
@@ -370,63 +397,41 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
         </div>
 
         {/* Sliding Marquee / Interactive Track Container */}
-        <div className="relative w-full overflow-hidden py-4 bg-maroon-dark/65 border-y border-accent-gold/10">
-          {isAutoScrolling ? (
-            /* Auto-sliding continuous loop marquee */
-            <motion.div 
-              variants={staggerContainerVariants}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true, margin: "-40px" }}
-              className="flex gap-6 animate-carousel-scroll hover:[animation-play-state:paused] w-max select-none cursor-grab active:cursor-grabbing"
-              onMouseDown={handleInteraction}
-              onTouchStart={handleInteraction}
-            >
-              {[...mentors.slice(0, 8), ...mentors.slice(0, 8)].map((mentor, index) => (
-                <motion.div 
-                  key={`${mentor.id}-${index}`} 
-                  variants={staggerItemVariants}
-                  className="w-[250px] sm:w-[290px] shrink-0 transform hover:scale-[1.02] transition-transform duration-300"
-                >
-                  <MentorCard 
-                    mentor={mentor}
-                    isDark={true}
-                    className="border-accent-gold/20"
-                    onClick={() => onNavigate(`#/mentor-common-view/${mentor.id}`)}
-                  />
-                </motion.div>
-              ))}
-            </motion.div>
-          ) : (
-            /* Static / Manual smooth-scrolling track */
-            <motion.div 
-              ref={mentorsRef}
-              onMouseDown={handleMouseDown}
-              onMouseMove={handleMouseMove}
-              onMouseUp={handleMouseUpOrLeave}
-              onMouseLeave={handleMouseUpOrLeave}
-              variants={staggerContainerVariants}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true, margin: "-40px" }}
-              className="flex gap-6 overflow-x-auto scrollbar-none scroll-smooth w-full px-6 select-none cursor-grab active:cursor-grabbing"
-            >
-              {mentors.map((mentor, index) => (
-                <motion.div 
-                  key={`${mentor.id}-manual-${index}`} 
-                  variants={staggerItemVariants}
-                  className="w-[250px] sm:w-[290px] shrink-0 transform hover:scale-[1.02] transition-transform duration-300"
-                >
-                  <MentorCard 
-                    mentor={mentor}
-                    isDark={true}
-                    className="border-accent-gold/20"
-                    onClick={() => onNavigate(`#/mentor-common-view/${mentor.id}`)}
-                  />
-                </motion.div>
-              ))}
-            </motion.div>
-          )}
+        <div 
+          className="relative w-full overflow-hidden py-4 bg-maroon-dark/65 border-y border-accent-gold/10"
+          onMouseEnter={() => { isHoveredRef.current = true; }}
+          onMouseLeave={() => { isHoveredRef.current = false; handleMouseUpOrLeave(); }}
+        >
+          <motion.div 
+            ref={mentorsRef}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUpOrLeave}
+            onMouseLeave={handleMouseUpOrLeave}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleMouseUpOrLeave}
+            variants={staggerContainerVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-40px" }}
+            className="flex gap-6 overflow-x-auto scrollbar-none scroll-smooth w-full px-6 select-none cursor-grab active:cursor-grabbing"
+          >
+            {[...mentors, ...mentors].map((mentor, index) => (
+              <motion.div 
+                key={`${mentor.id}-slide-${index}`} 
+                variants={staggerItemVariants}
+                className="w-[250px] sm:w-[290px] shrink-0 transform hover:scale-[1.02] transition-transform duration-300"
+              >
+                <MentorCard 
+                  mentor={mentor}
+                  isDark={true}
+                  className="border-accent-gold/20"
+                  onClick={() => onNavigate(`#/mentor-common-view/${mentor.id}`)}
+                />
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </FadeUpSection>
 
