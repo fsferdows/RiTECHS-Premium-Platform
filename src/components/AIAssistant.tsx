@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Sparkles, MessageSquare, BookOpen, ToggleRight, X, ChevronUp, ChevronDown, CheckCircle, Flame, Send, ArrowRight, Loader } from 'lucide-react';
 
-export default function AIAssistant() {
+export default function AIAssistant({ theme = 'dark' }: { theme?: 'light' | 'dark' }) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'proof' | 'consult' | 'match'>('proof');
   const [inputVal, setInputVal] = useState('');
@@ -86,13 +86,17 @@ export default function AIAssistant() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="pointer-events-auto flex items-center gap-3 bg-gradient-to-r from-primary-navy to-[#1a2f64] border-2 border-accent-gold/40 hover:border-accent-gold text-accent-gold px-4 py-3 rounded-full shadow-2xl transition-all hover:scale-105 group active:scale-95"
+          className={`pointer-events-auto flex items-center gap-3 border-2 px-4 py-3 rounded-full shadow-2xl transition-all hover:scale-105 group active:scale-95 cursor-pointer keep-light-text ${
+            theme === 'light'
+              ? 'bg-gradient-to-r from-[#F4F1E8] to-[#EAE6D8] border-[#8C6D23]/40 hover:border-[#8C6D23] text-[#8C6D23]'
+              : 'bg-[#0d1b3e] border-accent-gold/40 hover:border-accent-gold text-accent-gold'
+          }`}
           title="Open Academic Copilot"
           id="ai-assistant-toggle-trigger"
         >
           <div className="relative">
-            <Sparkles className="w-5 h-5 text-accent-gold animate-pulse text-yellow-300" />
-            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-yellow-400 rounded-full animate-ping" />
+            <Sparkles className={`w-5 h-5 animate-pulse ${theme === 'light' ? 'text-[#8C6D23]' : 'text-accent-gold'}`} />
+            <span className={`absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full animate-ping ${theme === 'light' ? 'bg-[#8C6D23]' : 'bg-yellow-400'}`} />
           </div>
           <span className="font-mono text-[10px] tracking-widest uppercase font-bold pr-1 select-none">
             ACADEMIC COPILOT
@@ -104,26 +108,44 @@ export default function AIAssistant() {
       {isOpen && (
         <div
           id="ai-academic-companion-panel"
-          className="pointer-events-auto bg-primary-navy/95 border border-accent-gold/30 w-[350px] sm:w-[420px] max-h-[85vh] rounded-md shadow-2xl backdrop-blur-md text-white flex flex-col overflow-hidden animate-scale-up"
+          className={`pointer-events-auto border w-[350px] sm:w-[420px] max-h-[85vh] rounded-md shadow-2xl backdrop-blur-md flex flex-col overflow-hidden animate-scale-up keep-light-text ${
+            theme === 'light'
+              ? 'bg-[#FCFBF9]/95 border-[#8C6D23]/30 text-neutral-800'
+              : 'bg-[#0d1b3e]/95 border-accent-gold/30 text-white'
+          }`}
         >
           {/* Header Panel */}
-          <div className="bg-gradient-to-r from-[#0d1b3e] to-[#1e3264] border-b border-accent-gold/20 p-4 flex justify-between items-center select-none">
+          <div className={`border-b p-4 flex justify-between items-center select-none ${
+            theme === 'light'
+              ? 'bg-gradient-to-r from-[#F4F1E8] to-[#EAE6D8] border-[#8C6D23]/20'
+              : 'bg-gradient-to-r from-[#0d1b3e] to-[#1e3264] border-accent-gold/20'
+          }`}>
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-accent-gold/15 border border-accent-gold flex items-center justify-center text-accent-gold">
-                <Sparkles className="w-4 h-4 text-accent-gold" />
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center border ${
+                theme === 'light'
+                  ? 'bg-[#8C6D23]/10 border-[#8C6D23] text-[#8C6D23]'
+                  : 'bg-accent-gold/15 border border-accent-gold text-accent-gold'
+              }`}>
+                <Sparkles className="w-4 h-4" />
               </div>
               <div className="text-left">
-                <span className="text-[9px] font-mono tracking-widest text-[#C9A961] uppercase font-bold leading-none block">
+                <span className={`text-[9px] font-mono tracking-widest uppercase font-bold leading-none block ${
+                  theme === 'light' ? 'text-[#8C6D23]' : 'text-[#C9A961]'
+                }`}>
                   RITECHS ELITE SERVICES
                 </span>
-                <h4 className="font-serif-display text-xs font-bold text-white tracking-widest uppercase">
+                <h4 className={`font-serif-display text-xs font-bold tracking-widest uppercase ${
+                  theme === 'light' ? 'text-neutral-900' : 'text-white'
+                }`}>
                   Academic Copilot
                 </h4>
               </div>
             </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="text-white/40 hover:text-accent-gold transition-colors p-1"
+              className={`transition-colors p-1 cursor-pointer ${
+                theme === 'light' ? 'text-neutral-500 hover:text-[#8C6D23]' : 'text-white/40 hover:text-accent-gold'
+              }`}
               title="Close Panel"
             >
               <X className="w-4 h-4" />
@@ -131,27 +153,47 @@ export default function AIAssistant() {
           </div>
 
           {/* Tab Selector Segment */}
-          <div className="flex border-b border-white/5 bg-[#0a1532] text-[10px] select-none">
+          <div className={`flex border-b text-[10px] select-none ${
+            theme === 'light' ? 'border-[#8C6D23]/10 bg-[#F4F1E8]' : 'border-white/5 bg-[#0a1532]'
+          }`}>
             <button
               onClick={() => { setActiveTab('proof'); setResult(null); setInputVal(''); }}
-              className={`flex-1 py-3 text-center font-mono uppercase tracking-wider font-bold border-b-2 transition-all ${
-                activeTab === 'proof' ? 'border-accent-gold text-accent-gold bg-[#C9A961]/5' : 'border-transparent text-white/50 hover:text-white'
+              className={`flex-1 py-3 text-center font-mono uppercase tracking-wider font-bold border-b-2 transition-all cursor-pointer ${
+                activeTab === 'proof' 
+                  ? theme === 'light'
+                    ? 'border-[#8C6D23] text-[#8C6D23] bg-[#8C6D23]/5'
+                    : 'border-accent-gold text-accent-gold bg-[#C9A961]/5'
+                  : theme === 'light'
+                    ? 'border-transparent text-neutral-500 hover:text-neutral-800'
+                    : 'border-transparent text-white/50 hover:text-white'
               }`}
             >
               Proofreader
             </button>
             <button
               onClick={() => { setActiveTab('consult'); setResult(null); setInputVal(''); }}
-              className={`flex-1 py-3 text-center font-mono uppercase tracking-wider font-bold border-b-2 transition-all ${
-                activeTab === 'consult' ? 'border-accent-gold text-accent-gold bg-[#C9A961]/5' : 'border-transparent text-white/50 hover:text-white'
+              className={`flex-1 py-3 text-center font-mono uppercase tracking-wider font-bold border-b-2 transition-all cursor-pointer ${
+                activeTab === 'consult' 
+                  ? theme === 'light'
+                    ? 'border-[#8C6D23] text-[#8C6D23] bg-[#8C6D23]/5'
+                    : 'border-accent-gold text-accent-gold bg-[#C9A961]/5'
+                  : theme === 'light'
+                    ? 'border-transparent text-neutral-500 hover:text-neutral-800'
+                    : 'border-transparent text-white/50 hover:text-white'
               }`}
             >
               Consult AI
             </button>
             <button
               onClick={() => { setActiveTab('match'); setResult(null); setInputVal(''); }}
-              className={`flex-1 py-3 text-center font-mono uppercase tracking-wider font-bold border-b-2 transition-all ${
-                activeTab === 'match' ? 'border-accent-gold text-accent-gold bg-[#C9A961]/5' : 'border-transparent text-white/50 hover:text-white'
+              className={`flex-1 py-3 text-center font-mono uppercase tracking-wider font-bold border-b-2 transition-all cursor-pointer ${
+                activeTab === 'match' 
+                  ? theme === 'light'
+                    ? 'border-[#8C6D23] text-[#8C6D23] bg-[#8C6D23]/5'
+                    : 'border-accent-gold text-accent-gold bg-[#C9A961]/5'
+                  : theme === 'light'
+                    ? 'border-transparent text-neutral-500 hover:text-neutral-800'
+                    : 'border-transparent text-white/50 hover:text-white'
               }`}
             >
               Matchmaker
@@ -162,16 +204,26 @@ export default function AIAssistant() {
           <div className="flex-grow overflow-y-auto p-4 flex flex-col gap-4 text-xs">
             {activeTab === 'proof' && (
               <div className="flex flex-col gap-3 text-left">
-                <div className="bg-white/5 border border-white/10 p-3 rounded-[2px] leading-relaxed text-white/80 select-none">
+                <div className={`border p-3 rounded-[2px] leading-relaxed select-none ${
+                  theme === 'light'
+                    ? 'bg-[#8C6D23]/5 border-[#8C6D23]/15 text-neutral-700'
+                    : 'bg-white/5 border border-white/10 text-white/80'
+                }`}>
                   🔬 Paste your research drafts below, specify your target template format (e.g. <strong>IEEE</strong>, <strong>Springer</strong>, <strong>Nature</strong>), and get elite structural refinement.
                 </div>
 
                 <div className="flex flex-col gap-1 select-none">
-                  <label className="text-[9px] uppercase tracking-widest text-[#C9A961]/80 font-mono font-bold">Target Publisher Profile</label>
+                  <label className={`text-[9px] uppercase tracking-widest font-mono font-bold ${
+                    theme === 'light' ? 'text-[#8C6D23]' : 'text-[#C9A961]/80'
+                  }`}>Target Publisher Profile</label>
                   <select
                     value={targetVenue}
                     onChange={(e) => setTargetVenue(e.target.value)}
-                    className="bg-[#0b1736] border border-accent-gold/25 text-white p-2 text-xs focus:border-accent-gold outline-none"
+                    className={`p-2 text-xs outline-none border ${
+                      theme === 'light'
+                        ? 'bg-[#FCFBF9] border-[#8C6D23]/30 text-neutral-800 focus:border-[#8C6D23]'
+                        : 'bg-[#0b1736] border border-accent-gold/25 text-white focus:border-accent-gold'
+                    }`}
                   >
                     <option value="IEEE Transactions">IEEE Transactions Format</option>
                     <option value="Springer Nature Link">Springer Journal Blueprint</option>
@@ -182,11 +234,15 @@ export default function AIAssistant() {
 
                 <div className="flex flex-col gap-1">
                   <div className="flex justify-between items-center">
-                    <label className="text-[9px] uppercase tracking-widest text-[#C9A961]/80 font-mono font-bold select-none">Draft Abstract</label>
+                    <label className={`text-[9px] uppercase tracking-widest font-mono font-bold select-none ${
+                      theme === 'light' ? 'text-[#8C6D23]' : 'text-[#C9A961]/80'
+                    }`}>Draft Abstract</label>
                     <button
                       type="button"
                       onClick={handleSelectSample}
-                      className="text-[9px] text-accent-gold hover:underline font-mono"
+                      className={`text-[9px] font-mono hover:underline cursor-pointer ${
+                        theme === 'light' ? 'text-[#8C6D23]' : 'text-accent-gold'
+                      }`}
                     >
                       Use Sample Manuscript
                     </button>
@@ -196,21 +252,35 @@ export default function AIAssistant() {
                     value={inputVal}
                     onChange={(e) => setInputVal(e.target.value)}
                     placeholder="Enter your summary abstract here..."
-                    className="w-full bg-[#0b1736] border border-white/10 p-3 text-xs outline-none focus:border-accent-gold transition-colors text-white resize-none"
+                    className={`w-full p-3 text-xs outline-none border transition-colors resize-none ${
+                      theme === 'light'
+                        ? 'bg-[#FCFBF9] border-[#8C6D23]/20 text-neutral-800 placeholder-neutral-400 focus:border-[#8C6D23]'
+                        : 'bg-[#0b1736] border border-white/10 text-white placeholder-neutral-500 focus:border-accent-gold'
+                    }`}
                   />
                 </div>
               </div>
             )}
 
             {activeTab === 'consult' && (
-              <div className="flex-grow flex flex-col gap-3 min-h-[180px] max-h-[30vh] overflow-y-auto bg-black/20 p-3 border border-white/10 text-left">
+              <div className={`flex-grow flex flex-col gap-3 min-h-[180px] max-h-[30vh] overflow-y-auto p-3 border text-left rounded-sm ${
+                theme === 'light'
+                  ? 'bg-[#F4F1E8] border-[#8C6D23]/15'
+                  : 'bg-black/20 border border-white/10'
+              }`}>
                 {chatLog.map((msg, idx) => (
                   <div key={idx} className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}>
-                    <span className="text-[8px] font-mono tracking-widest text-[#C9A961]/70 uppercase font-bold mb-0.5 select-none">
+                    <span className={`text-[8px] font-mono tracking-widest uppercase font-bold mb-0.5 select-none ${
+                      theme === 'light' ? 'text-[#8C6D23]' : 'text-[#C9A961]/70'
+                    }`}>
                       {msg.sender === 'user' ? 'Scholar' : 'RiTECHS Elite Copilot'}
                     </span>
                     <div className={`p-2.5 rounded-sm max-w-[85%] leading-relaxed ${
-                      msg.sender === 'user' ? 'bg-[#C9A961] text-primary-navy font-medium' : 'bg-white/5 border border-white/10 text-white/90'
+                      msg.sender === 'user' 
+                        ? 'bg-[#C9A961] text-[#140204] font-medium' 
+                        : theme === 'light'
+                          ? 'bg-[#FCFBF9] border border-[#8C6D23]/20 text-neutral-800 font-normal'
+                          : 'bg-white/5 border border-white/10 text-white/90 font-light'
                     }`}>
                       {msg.text}
                     </div>
@@ -222,17 +292,25 @@ export default function AIAssistant() {
 
             {activeTab === 'match' && (
               <div className="flex flex-col gap-3 text-left">
-                <div className="bg-white/5 border border-white/10 p-3 rounded-[2px] leading-relaxed text-white/80 select-none">
+                <div className={`border p-3 rounded-[2px] leading-relaxed select-none ${
+                  theme === 'light'
+                    ? 'bg-[#8C6D23]/5 border-[#8C6D23]/15 text-neutral-700'
+                    : 'bg-white/5 border border-white/10 text-white/80'
+                }`}>
                   🧭 Specify your research's primary theme keywords (e.g. <em>TinyML grid load, Cybersecurity cryptosystems, 6G</em>) and our pipeline will align them with corresponding events.
                 </div>
 
                 <div className="flex flex-col gap-1">
                   <div className="flex justify-between items-center">
-                    <label className="text-[9px] uppercase tracking-widest text-[#C9A961]/80 font-mono font-bold select-none">Scientific Keywords</label>
+                    <label className={`text-[9px] uppercase tracking-widest font-mono font-bold select-none ${
+                      theme === 'light' ? 'text-[#8C6D23]' : 'text-[#C9A961]/80'
+                    }`}>Scientific Keywords</label>
                     <button
                       type="button"
                       onClick={handleSelectSample}
-                      className="text-[9px] text-accent-gold hover:underline font-mono"
+                      className={`text-[9px] font-mono hover:underline cursor-pointer ${
+                        theme === 'light' ? 'text-[#8C6D23]' : 'text-accent-gold'
+                      }`}
                     >
                       Fill sample keyword
                     </button>
@@ -242,7 +320,11 @@ export default function AIAssistant() {
                     value={inputVal}
                     onChange={(e) => setInputVal(e.target.value)}
                     placeholder="Decentralized identity systems, smart grids..."
-                    className="w-full bg-[#0b1736] border border-white/10 p-3 text-xs outline-none focus:border-accent-gold transition-colors text-white"
+                    className={`w-full p-3 text-xs outline-none border transition-colors ${
+                      theme === 'light'
+                        ? 'bg-[#FCFBF9] border-[#8C6D23]/25 text-neutral-800 placeholder-neutral-400 focus:border-[#8C6D23]'
+                        : 'bg-[#0b1736] border border-white/10 text-white placeholder-neutral-500 focus:border-accent-gold'
+                    }`}
                   />
                 </div>
               </div>
@@ -253,11 +335,15 @@ export default function AIAssistant() {
               <button
                 onClick={handleAction}
                 disabled={loading || !inputVal.trim()}
-                className="w-full bg-accent-gold hover:bg-[#B3934B] text-primary-navy hover:text-black py-3 uppercase tracking-widest font-mono font-bold text-xs flex items-center justify-center gap-2 transition-all disabled:opacity-40 select-none"
+                className={`w-full py-3 uppercase tracking-widest font-mono font-bold text-xs flex items-center justify-center gap-2 transition-all disabled:opacity-40 select-none cursor-pointer ${
+                  theme === 'light'
+                    ? 'bg-[#8C6D23] hover:bg-[#72571A] text-white'
+                    : 'bg-accent-gold hover:bg-[#B3934B] text-primary-navy'
+                }`}
               >
                 {loading ? (
                   <>
-                    <Loader className="w-4 h-4 animate-spin text-primary-navy" />
+                    <Loader className={`w-4 h-4 animate-spin ${theme === 'light' ? 'text-white' : 'text-primary-navy'}`} />
                     Assembling Analysis...
                   </>
                 ) : (
@@ -271,8 +357,14 @@ export default function AIAssistant() {
 
             {/* Generated output visualization */}
             {result && (
-              <div className="bg-[#0b1736] border border-accent-gold/40 p-4 leading-relaxed text-left text-white/95 max-h-[35vh] overflow-y-auto text-xs prose-premium whitespace-pre-wrap select-text">
-                <div className="text-[10px] uppercase tracking-widest font-mono text-accent-gold font-bold mb-2 select-none">
+              <div className={`border p-4 leading-relaxed text-left max-h-[35vh] overflow-y-auto text-xs prose-premium whitespace-pre-wrap select-text rounded-xs ${
+                theme === 'light'
+                  ? 'bg-[#F4F1E8] border-[#8C6D23]/30 text-neutral-800'
+                  : 'bg-[#0b1736] border border-accent-gold/40 text-white/95'
+              }`}>
+                <div className={`text-[10px] uppercase tracking-widest font-mono font-bold mb-2 select-none ${
+                  theme === 'light' ? 'text-[#8C6D23]' : 'text-accent-gold'
+                }`}>
                   ★ ADVISORY CLASSIFICATION REPORT:
                 </div>
                 {result}
@@ -282,18 +374,28 @@ export default function AIAssistant() {
 
           {/* Chat input for consult tab */}
           {activeTab === 'consult' && (
-            <form onSubmit={handleAction} className="p-3 border-t border-white/10 bg-[#0a1532] flex gap-2">
+            <form onSubmit={handleAction} className={`p-3 border-t flex gap-2 ${
+              theme === 'light' ? 'border-[#8C6D23]/10 bg-[#EAE6D8]' : 'border-white/10 bg-[#0a1532]'
+            }`}>
               <input
                 type="text"
                 value={inputVal}
                 onChange={(e) => setInputVal(e.target.value)}
                 placeholder="Ask any journal writing support question..."
-                className="flex-grow bg-[#050c1f] text-white border border-white/10 px-3 py-2 text-xs outline-none focus:border-accent-gold"
+                className={`flex-grow px-3 py-2 text-xs outline-none border ${
+                  theme === 'light'
+                    ? 'bg-[#FCFBF9] text-neutral-800 border-[#8C6D23]/25 placeholder-neutral-400 focus:border-[#8C6D23]'
+                    : 'bg-[#050c1f] text-white border border-white/10 placeholder-neutral-500 focus:border-accent-gold'
+                }`}
               />
               <button
                 type="submit"
                 disabled={loading || !inputVal.trim()}
-                className="bg-accent-gold hover:bg-[#B3934B] text-primary-navy px-4 py-2 font-mono uppercase tracking-wider font-bold text-[10px] flex items-center gap-1 hover:text-black active:scale-95 disabled:opacity-30"
+                className={`px-4 py-2 font-mono uppercase tracking-wider font-bold text-[10px] flex items-center gap-1 active:scale-95 disabled:opacity-30 cursor-pointer ${
+                  theme === 'light'
+                    ? 'bg-[#8C6D23] hover:bg-[#72571A] text-white'
+                    : 'bg-accent-gold hover:bg-[#B3934B] text-primary-navy'
+                }`}
               >
                 {loading ? <Loader className="w-3.5 h-3.5 animate-spin" /> : <Send className="w-3.5 h-3.5" />}
               </button>

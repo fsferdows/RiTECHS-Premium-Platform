@@ -602,7 +602,7 @@ export default function App() {
       <Footer onNavigate={handleNavigate} />
 
       {/* Floating Elite Academic Copilot Widget */}
-      <AIAssistant />
+      <AIAssistant theme={theme} />
     </div>
   );
 }
