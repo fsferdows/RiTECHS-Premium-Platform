@@ -1,6 +1,6 @@
 import { ArrowRight, Globe, Shield, Zap, Users, GraduationCap, ArrowUpRight, Award, MessageSquare, BookOpen, ChevronLeft, ChevronRight, Search, Play, Pause, Video, Volume2, VolumeX, X, Star, Mail } from 'lucide-react';
 import { Conference, Mentor, BlogPost } from '../types';
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ALL_PARTNERS } from '../data';
 import { motion, AnimatePresence } from 'motion/react';
 import { TiltCard } from './TiltCard';
@@ -15,6 +15,29 @@ interface HomeViewProps {
   mentors: Mentor[];
   blogs: BlogPost[];
 }
+
+const staggerContainerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08,
+    }
+  }
+};
+
+const staggerItemVariants = {
+  hidden: { opacity: 0, y: 25 },
+  show: { 
+    opacity: 1, 
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 120,
+      damping: 18
+    }
+  }
+};
 
 export default function HomeView({ onNavigate, conferences, mentors, blogs }: HomeViewProps) {
   const conferencesRef = useRef<HTMLDivElement>(null);
@@ -39,6 +62,66 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
   const [videoHasError, setVideoHasError] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedHomeMentor, setSelectedHomeMentor] = useState<Mentor | null>(null);
+
+  const [isAutoScrolling, setIsAutoScrolling] = useState(true);
+
+  // Drag to scroll states
+  const isDraggingRef = useRef(false);
+  const startXRef = useRef(0);
+  const scrollLeftRef = useRef(0);
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!mentorsRef.current || isAutoScrolling) return;
+    isDraggingRef.current = true;
+    startXRef.current = e.pageX - mentorsRef.current.offsetLeft;
+    scrollLeftRef.current = mentorsRef.current.scrollLeft;
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDraggingRef.current || !mentorsRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - mentorsRef.current.offsetLeft;
+    const walk = (x - startXRef.current) * 1.5;
+    mentorsRef.current.scrollLeft = scrollLeftRef.current - walk;
+  };
+
+  const handleMouseUpOrLeave = () => {
+    isDraggingRef.current = false;
+  };
+
+  const handleInteraction = () => {
+    if (isAutoScrolling) {
+      setIsAutoScrolling(false);
+    }
+  };
+
+  const handlePrev = () => {
+    if (isAutoScrolling) {
+      setIsAutoScrolling(false);
+      setTimeout(() => {
+        if (mentorsRef.current) {
+          mentorsRef.current.scrollLeft = 0;
+          slideLeft(mentorsRef);
+        }
+      }, 50);
+    } else {
+      slideLeft(mentorsRef);
+    }
+  };
+
+  const handleNext = () => {
+    if (isAutoScrolling) {
+      setIsAutoScrolling(false);
+      setTimeout(() => {
+        if (mentorsRef.current) {
+          mentorsRef.current.scrollLeft = 0;
+          slideRight(mentorsRef);
+        }
+      }, 50);
+    } else {
+      slideRight(mentorsRef);
+    }
+  };
 
   useEffect(() => {
     setVideoHasError(false);
@@ -126,7 +209,7 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-10">
             <h3 className="text-xs font-mono tracking-widest text-accent-gold uppercase mb-2">Scale & Network</h3>
-            <h2 className="font-serif-display text-2.5xl sm:text-4.5xl text-white font-bold leading-tight tracking-tight">Rigorous Global Engagement</h2>
+            <h2 className="font-serif-display text-2.5xl sm:text-4.5xl text-white font-light leading-tight tracking-tight">Rigorous Global <span className="font-serif-accent italic text-accent-gold font-normal">Engagement</span></h2>
           </div>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
@@ -157,8 +240,8 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
               <span className="text-[10px] font-mono tracking-[0.2em] text-accent-gold uppercase font-bold bg-[#C9A961]/10 px-3 py-1 border border-accent-gold/25 rounded-full inline-block mb-3 select-none">
                 ACADEMIC FORUMS & SCHOLAR PLACEMENTS
               </span>
-              <h2 className="font-serif-display text-2.5xl sm:text-4.5xl text-white font-bold leading-tight tracking-tight">
-                Featured Conferences
+              <h2 className="font-serif-display text-2.5xl sm:text-4.5xl text-white font-light leading-tight tracking-tight">
+                Featured <span className="font-serif-accent italic text-accent-gold font-normal">Conferences</span>
               </h2>
             </div>
             <div className="flex items-center gap-3 mt-4 md:mt-0">
@@ -188,68 +271,162 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
           </div>
 
           <div className="relative">
-            <div 
+            <motion.div 
               ref={conferencesRef}
+              variants={staggerContainerVariants}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: "-40px" }}
               className="flex gap-6 overflow-x-auto scroll-smooth no-scrollbar py-2 -mx-6 px-6 md:mx-0 md:px-0"
               style={{ scrollSnapType: 'x mandatory' }}
             >
               {conferences.map((conf) => (
-                <div 
+                <motion.div 
                   key={conf.slug} 
+                  variants={staggerItemVariants}
                   className="w-[285px] sm:w-[335px] shrink-0 scroll-snap-align-start"
                 >
                   <ConferenceCard 
                     conf={conf}
                     onNavigate={onNavigate}
                   />
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
         </div>
       </FadeUpSection>
 
       {/* 5. Mentor Spotlight */}
       <FadeUpSection id="mentor-spotlight" className="py-12 md:py-20 bg-primary-maroon relative border-y border-accent-gold/15 overflow-hidden premium-noise">
-        <div className="max-w-6xl mx-auto px-6 mb-10">
-          <div className="flex flex-col md:flex-row md:items-end justify-between">
+        <div className="max-w-6xl mx-auto px-6 mb-8">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
             <div>
               <span className="text-[10px] font-mono tracking-[0.2em] text-accent-gold uppercase font-bold bg-[#C9A961]/10 px-3 py-1 border border-accent-gold/25 rounded-full inline-block mb-3 select-none">
                 PEER GUIDANCE DIRECTORY // ESTABLISHED FACULTY
               </span>
-              <h2 className="font-serif-display text-2.5xl sm:text-4.5xl text-white font-bold leading-tight tracking-tight">
-                Popular Mentor Spotlight
+              <h2 className="font-serif-display text-2.5xl sm:text-4.5xl text-white font-light leading-tight tracking-tight">
+                Popular <span className="font-serif-accent italic text-accent-gold font-normal">Mentor Spotlight</span>
               </h2>
             </div>
-            <div className="mt-4 md:mt-0">
+            
+            {/* Professional Interactive Control Deck */}
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4 select-none">
+              {/* Option Selector: Auto vs Manual */}
+              <div className="flex items-center gap-1.5 bg-maroon-dark/90 border border-accent-gold/20 p-1 rounded-full shadow-lg">
+                <button
+                  type="button"
+                  onClick={() => setIsAutoScrolling(true)}
+                  className={`px-3 py-1.5 text-[8.5px] font-mono uppercase tracking-wider rounded-full transition-all duration-300 flex items-center gap-1.5 cursor-pointer ${
+                    isAutoScrolling 
+                      ? 'bg-accent-gold text-primary-maroon font-bold shadow-md' 
+                      : 'text-neutral-400 hover:text-white'
+                  }`}
+                >
+                  <span className={`w-1.5 h-1.5 rounded-full ${isAutoScrolling ? 'bg-primary-maroon animate-pulse' : 'bg-neutral-500'}`} />
+                  Sliding Auto-Loop
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsAutoScrolling(false)}
+                  className={`px-3 py-1.5 text-[8.5px] font-mono uppercase tracking-wider rounded-full transition-all duration-300 flex items-center gap-1.5 cursor-pointer ${
+                    !isAutoScrolling 
+                      ? 'bg-accent-gold text-primary-maroon font-bold shadow-md' 
+                      : 'text-neutral-400 hover:text-white'
+                  }`}
+                >
+                  Interactive Deck
+                </button>
+              </div>
+
+              {/* Step Navigation Arrows */}
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={handlePrev}
+                  className="w-8 h-8 rounded-full border border-accent-gold/30 hover:border-accent-gold hover:bg-white/5 text-accent-gold hover:text-white flex items-center justify-center transition-all duration-300 cursor-pointer active:scale-95"
+                  title="Previous Mentor"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={handleNext}
+                  className="w-8 h-8 rounded-full border border-accent-gold/30 hover:border-accent-gold hover:bg-white/5 text-accent-gold hover:text-white flex items-center justify-center transition-all duration-300 cursor-pointer active:scale-95"
+                  title="Next Mentor"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+
+              <div className="h-6 w-px bg-accent-gold/20 hidden sm:block" />
+
               <button
                 onClick={() => onNavigate("#/mentors")}
-                className="text-xs font-sans uppercase tracking-widest font-semibold text-accent-gold hover:text-white flex items-center gap-1.5 group transition-all duration-300 bg-white/5 hover:bg-white/10 border border-accent-gold/30 px-4 py-2 rounded-xs cursor-pointer"
+                className="text-[10px] font-sans uppercase tracking-widest font-semibold text-accent-gold hover:text-white flex items-center gap-1.5 group transition-all duration-300 bg-white/5 hover:bg-white/10 border border-accent-gold/30 px-3.5 py-1.5 rounded-xs cursor-pointer"
               >
-                View Directory <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+                Full Registry <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
               </button>
             </div>
           </div>
         </div>
 
-        {/* Sliding Marquee Track */}
-        <div className="relative w-full overflow-hidden select-none py-3 bg-maroon-dark/60 border-y border-accent-gold/10">
-          <div className="flex gap-6 animate-carousel-scroll hover:[animation-play-state:paused] w-max select-none cursor-grab active:cursor-grabbing">
-            {/* Duplicating the list to provide a seamless loop */}
-            {[...mentors.slice(0, 8), ...mentors.slice(0, 8)].map((mentor, index) => (
-              <div 
-                key={`${mentor.id}-${index}`} 
-                className="w-[250px] sm:w-[290px] shrink-0 transform hover:scale-[1.02] transition-transform duration-300"
-              >
-                <MentorCard 
-                  mentor={mentor}
-                  isDark={true}
-                  className="border-accent-gold/20"
-                  onClick={() => onNavigate(`#/mentor-common-view/${mentor.id}`)}
-                />
-              </div>
-            ))}
-          </div>
+        {/* Sliding Marquee / Interactive Track Container */}
+        <div className="relative w-full overflow-hidden py-4 bg-maroon-dark/65 border-y border-accent-gold/10">
+          {isAutoScrolling ? (
+            /* Auto-sliding continuous loop marquee */
+            <motion.div 
+              variants={staggerContainerVariants}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: "-40px" }}
+              className="flex gap-6 animate-carousel-scroll hover:[animation-play-state:paused] w-max select-none cursor-grab active:cursor-grabbing"
+              onMouseDown={handleInteraction}
+              onTouchStart={handleInteraction}
+            >
+              {[...mentors.slice(0, 8), ...mentors.slice(0, 8)].map((mentor, index) => (
+                <motion.div 
+                  key={`${mentor.id}-${index}`} 
+                  variants={staggerItemVariants}
+                  className="w-[250px] sm:w-[290px] shrink-0 transform hover:scale-[1.02] transition-transform duration-300"
+                >
+                  <MentorCard 
+                    mentor={mentor}
+                    isDark={true}
+                    className="border-accent-gold/20"
+                    onClick={() => onNavigate(`#/mentor-common-view/${mentor.id}`)}
+                  />
+                </motion.div>
+              ))}
+            </motion.div>
+          ) : (
+            /* Static / Manual smooth-scrolling track */
+            <motion.div 
+              ref={mentorsRef}
+              onMouseDown={handleMouseDown}
+              onMouseMove={handleMouseMove}
+              onMouseUp={handleMouseUpOrLeave}
+              onMouseLeave={handleMouseUpOrLeave}
+              variants={staggerContainerVariants}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: "-40px" }}
+              className="flex gap-6 overflow-x-auto scrollbar-none scroll-smooth w-full px-6 select-none cursor-grab active:cursor-grabbing"
+            >
+              {mentors.map((mentor, index) => (
+                <motion.div 
+                  key={`${mentor.id}-manual-${index}`} 
+                  variants={staggerItemVariants}
+                  className="w-[250px] sm:w-[290px] shrink-0 transform hover:scale-[1.02] transition-transform duration-300"
+                >
+                  <MentorCard 
+                    mentor={mentor}
+                    isDark={true}
+                    className="border-accent-gold/20"
+                    onClick={() => onNavigate(`#/mentor-common-view/${mentor.id}`)}
+                  />
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
         </div>
       </FadeUpSection>
 
@@ -258,7 +435,7 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-12">
             <h3 className="text-xs font-mono tracking-widest text-accent-gold uppercase mb-2">SCHOLASTIC BROADCASTS</h3>
-            <h2 className="font-serif-display text-2.5xl sm:text-4xl text-white font-bold leading-tight">Virtual Symposium & Lecture Screenings</h2>
+            <h2 className="font-serif-display text-2.5xl sm:text-4xl text-white font-light leading-tight">Virtual <span className="font-serif-accent italic text-accent-gold font-normal">Symposium</span> & Lecture Screenings</h2>
             <p className="text-neutral-300 text-xs sm:text-sm font-light max-w-2xl mx-auto mt-2">
               Preview our premium digital curricula and recorded keynotes. Click any lecture on the sidebar to load the real-time scholar feed from our active peer training chapters.
             </p>
@@ -527,15 +704,21 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto mb-12 animate-fade-in">
             <h3 className="text-xs font-mono tracking-widest text-accent-gold uppercase mb-2">Solutions & Support</h3>
-            <h2 className="font-serif-display text-2.5xl sm:text-3.5xl font-bold leading-tight mb-4">
-              Our Academic Pillars
+            <h2 className="font-serif-display text-2.5xl sm:text-3.5xl font-light leading-tight mb-4">
+              Our Academic <span className="font-serif-accent italic text-accent-gold font-normal">Pillars</span>
             </h2>
             <p className="text-white/75 text-sm font-light leading-relaxed font-serif-accent italic">
               "Fostering continuous research capability, language precision, and global publication strategy."
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <motion.div 
+            variants={staggerContainerVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-40px" }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          >
             {[
               {
                 icon: <GraduationCap className="w-8 h-8 text-accent-gold" />,
@@ -556,23 +739,24 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
                 btnText: "Register as Mentee"
               }
             ].map((srv, idx) => (
-              <TiltCard 
-                key={idx}
-                className="bg-white/5 border border-white/10 p-8 flex flex-col hover:border-accent-gold/40 group text-left h-full premium-card-glow"
-              >
-                <div className="mb-6">{srv.icon}</div>
-                <h3 className="font-serif-display text-xl text-white font-medium mb-4">{srv.title}</h3>
-                <p className="text-white/70 text-xs leading-relaxed font-light mb-8">{srv.desc}</p>
-                <button
-                  onClick={() => onNavigate("#/services")}
-                  className="mt-auto text-left text-xs font-sans uppercase tracking-widest text-accent-gold hover:text-white font-semibold flex items-center gap-2 group transition-colors cursor-pointer"
+              <motion.div key={idx} variants={staggerItemVariants}>
+                <TiltCard 
+                  className="bg-white/5 border border-white/10 p-8 flex flex-col hover:border-accent-gold/40 group text-left h-full premium-card-glow animate-none"
                 >
-                  {srv.btnText}
-                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                </button>
-              </TiltCard>
+                  <div className="mb-6">{srv.icon}</div>
+                  <h3 className="font-serif-display text-xl text-white font-medium mb-4">{srv.title}</h3>
+                  <p className="text-white/70 text-xs leading-relaxed font-light mb-8">{srv.desc}</p>
+                  <button
+                    onClick={() => onNavigate("#/services")}
+                    className="mt-auto text-left text-xs font-sans uppercase tracking-widest text-accent-gold hover:text-white font-semibold flex items-center gap-2 group transition-colors cursor-pointer"
+                  >
+                    {srv.btnText}
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  </button>
+                </TiltCard>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </FadeUpSection>
 
@@ -636,7 +820,9 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-10">
             <div>
               <h3 className="text-xs font-mono tracking-widest text-accent-gold uppercase mb-2">Editorial Desk</h3>
-              <h2 className="font-serif-display text-2.5xl sm:text-3.5xl text-primary-navy font-bold">Litterae & Gazette</h2>
+              <h2 className="font-serif-display text-2.5xl sm:text-3.5xl text-primary-navy font-light">
+                Litterae & <span className="font-serif-accent italic text-accent-gold font-normal">Gazette</span>
+              </h2>
             </div>
             <button
               onClick={() => onNavigate("#/blog")}
@@ -711,8 +897,8 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-10">
             <h3 className="text-xs font-mono tracking-widest text-[#9c2535] uppercase mb-2">Academic Alliance</h3>
-            <h2 className="font-serif-display text-2.5xl sm:text-4.5xl text-primary-navy font-bold leading-tight tracking-tight mb-4">
-              Our Trusted Partners
+            <h2 className="font-serif-display text-2.5xl sm:text-4.5xl text-primary-navy font-light leading-tight tracking-tight mb-4">
+              Our Trusted <span className="font-serif-accent italic text-accent-gold font-normal">Partners</span>
             </h2>
             <p className="text-muted-gray text-xs sm:text-sm max-w-2xl mx-auto leading-relaxed font-light">
               We collaborate with premier universities, publishing networks, and enterprise cybersecurity research groups around the world. These alliances validate, co-host, and index our peer-vetted papers.
@@ -733,32 +919,39 @@ export default function HomeView({ onNavigate, conferences, mentors, blogs }: Ho
             />
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <motion.div 
+            variants={staggerContainerVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-40px" }}
+            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+          >
             {ALL_PARTNERS.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase())).map((partner, pIdx) => (
-              <a 
-                href={partner.url} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                key={`${partner.name}-${pIdx}`}
-                className="bg-white hover:bg-white text-stone-850 hover:text-primary-navy border border-stone-200 hover:border-accent-gold/70 p-5 rounded-xs transition-all duration-300 transform hover:-translate-y-1 hover:shadow-md flex flex-col justify-between group"
-              >
-                <div>
-                  <div className="w-8 h-8 rounded-full bg-primary-navy/5 flex items-center justify-center mb-4 group-hover:bg-[#9c2535]/10 transition-colors">
-                    <span className="font-serif-display text-xs font-black text-[#9c2535] group-hover:text-[#9c2535]">
-                      {partner.name.charAt(0)}
-                    </span>
+              <motion.div key={`${partner.name}-${pIdx}`} variants={staggerItemVariants}>
+                <a 
+                  href={partner.url} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="bg-white hover:bg-white text-stone-850 hover:text-primary-navy border border-stone-200 hover:border-accent-gold/70 p-5 rounded-xs transition-all duration-300 transform hover:-translate-y-1 hover:shadow-md flex flex-col justify-between group h-full"
+                >
+                  <div>
+                    <div className="w-8 h-8 rounded-full bg-primary-navy/5 flex items-center justify-center mb-4 group-hover:bg-[#9c2535]/10 transition-colors">
+                      <span className="font-serif-display text-xs font-black text-[#9c2535] group-hover:text-[#9c2535]">
+                        {partner.name.charAt(0)}
+                      </span>
+                    </div>
+                    <h4 className="text-xs font-bold leading-snug tracking-wider uppercase font-sans line-clamp-2">
+                      {partner.name}
+                    </h4>
                   </div>
-                  <h4 className="text-xs font-bold leading-snug tracking-wider uppercase font-sans line-clamp-2">
-                    {partner.name}
-                  </h4>
-                </div>
-                <div className="mt-4 pt-3 border-t border-stone-100 flex items-center justify-between text-[9px] font-mono tracking-widest text-[#9c2535]/75 font-semibold group-hover:text-[#9c2535]">
-                  <span>VISIT PORTAL</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 text-[#9c2535] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </div>
-              </a>
+                  <div className="mt-4 pt-3 border-t border-stone-100 flex items-center justify-between text-[9px] font-mono tracking-widest text-[#9c2535]/75 font-semibold group-hover:text-[#9c2535]">
+                    <span>VISIT PORTAL</span>
+                    <ArrowUpRight className="w-3.5 h-3.5 text-[#9c2535] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </div>
+                </a>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           {ALL_PARTNERS.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase())).length === 0 && (
             <div className="text-center py-12 text-stone-400 text-xs font-mono select-none">
